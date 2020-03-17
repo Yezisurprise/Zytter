@@ -185,8 +185,8 @@ public class Service {
 		return d.updateHerorate();
 	}
 	
-	public int CreateRoomBySystem(int roomid,User user,String gametime,String server,String hostip) {
-		return d.CreateRoomBySystem(roomid, user, gametime, server, hostip);
+	public int CreateRoomBySystem(int roomid,User user,String gametime,String server) {
+		return d.CreateRoomBySystem(roomid, user, gametime, server);
 	}
 	
 	public ArrayList<User> getRankingList() {

@@ -375,9 +375,8 @@ public class Records extends JFrame{
 		this.add(userelo);
 		
 		gameip = new JLabel("");
-		gameip.setBounds(252, 5, 738, 20);
-		gameip.setFont(new Font("Œ¢»Ì—≈∫⁄ Light",Font.PLAIN,15));
-		gameip.setHorizontalAlignment(SwingConstants.RIGHT);
+		gameip.setBounds(253, 482, 471, 15);
+		gameip.setFont(new Font("Œ¢»Ì—≈∫⁄ Light",Font.PLAIN,18));
 		this.add(gameip);
 		
 		this.setEnabled(false);
@@ -480,7 +479,6 @@ public class Records extends JFrame{
 				if(table.getSelectedRow()!=-1) {
 					ShowSpec();
 					r=recordlist.get(table.getSelectedRow());
-					gameip.setText(user.getUsername()+" - "+r.getServer()+" - "+r.getHostip()+" - "+r.getTime());
 					if(r.getP1().equals(user.getUsername())) {
 						userrating.setText("±æ≥°±»»¸Rating£∫"+r.getP1rating());
 						if(r.getP1djs()==0) {

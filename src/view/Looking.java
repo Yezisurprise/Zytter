@@ -285,7 +285,6 @@ public class Looking extends JFrame {
 								if (!user2.getUsername().equals("’À∫≈ªÚ√‹¬Î¥ÌŒÛ£°")) {
 									om.dispose();
 									Looking.this.dispose();
-									Config.bgm.stopBGM();
 									Config.bgm = new BGM();
 									Config.bgm.start();
 									new Main(user2, s).setVisible(true);
