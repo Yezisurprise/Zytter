@@ -1298,17 +1298,18 @@ public class Dao {
 		return i;
 	}
 	
-	public int CreateRoomBySystem(int roomid,User user,String gametime,String server) {
+	public int CreateRoomBySystem(int roomid,User user,String gametime,String server,String hostip) {
 		int i=0;
 		Connection conn = DBUtil.getConnect();
 		PreparedStatement psmt=null;
-		String sql="insert into games(p1,roomid,gametime,server) values(?,?,?,?)";
+		String sql="insert into games(p1,roomid,gametime,server,hostip) values(?,?,?,?,?)";
 		try {
 			psmt=conn.prepareStatement(sql);
 			psmt.setString(1, user.getUsername());
 			psmt.setInt(2, roomid);
 			psmt.setString(3, gametime);
 			psmt.setString(4, server);
+			psmt.setString(5, hostip);
 			i=psmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1386,8 +1387,9 @@ public class Dao {
 				double p1adr = rs.getDouble(26),p2adr = rs.getDouble(27);
 				int p1djs = rs.getInt(28),p2djs = rs.getInt(29);
 				String time = rs.getString(30),server = rs.getString(31);
+				String hostip = rs.getString(32);
 				r = new Record(id, p1, p2, winner, p1elo, p2elo, p1elop, p2elop, p1b1, p1b2, p2b1, p2b2, p1p1,
-						p1p2, p1p3, p2p1, p2p2, p2p3, p1rating, p2rating, p1k, p1d, p2k, p2d, p1adr, p2adr, p1djs, p2djs, time, server);
+						p1p2, p1p3, p2p1, p2p2, p2p3, p1rating, p2rating, p1k, p1d, p2k, p2d, p1adr, p2adr, p1djs, p2djs, time, server, hostip);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1424,8 +1426,9 @@ public class Dao {
 				double p1adr = rs.getDouble(26),p2adr = rs.getDouble(27);
 				int p1djs = rs.getInt(28),p2djs = rs.getInt(29);
 				String time = rs.getString(30),server = rs.getString(31);
+				String hostip = rs.getString(32);
 				r = new Record(id, p1, p2, winner, p1elo, p2elo, p1elop, p2elop, p1b1, p1b2, p2b1, p2b2, p1p1,
-						p1p2, p1p3, p2p1, p2p2, p2p3, p1rating, p2rating, p1k, p1d, p2k, p2d, p1adr, p2adr, p1djs, p2djs, time, server);
+						p1p2, p1p3, p2p1, p2p2, p2p3, p1rating, p2rating, p1k, p1d, p2k, p2d, p1adr, p2adr, p1djs, p2djs, time, server, hostip);
 				a.add(r);
 			}
 		} catch (SQLException e) {

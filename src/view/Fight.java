@@ -1369,11 +1369,11 @@ public class Fight extends JFrame {
 								};
 							}.start();
 						} else {
-							Config.s.updateWinnerGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, elo, rating,
+							Config.s.updateWinnerGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, 0, rating,
 									kill, death, adr, user.getDjs(), user);
 						}
 						new BalanceGame(winlose, user, enemy, kill, death, 
-								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this).setVisible(true);
+								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, 0, Fight.this).setVisible(true);
 						Config.Allheroes.clear();
 						Config.Allitems.clear();
 						Config.Allskills.clear();
@@ -1409,9 +1409,9 @@ public class Fight extends JFrame {
 						gameover = true;
 						String gametime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 						if(server.getIP().equals(Host.officialserver.getIP())) {
-							Config.s.CreateRoomBySystem(roomid, user, gametime, server.getName());
+							Config.s.CreateRoomBySystem(roomid, user, gametime, "官方上海服务器", server.getIP());
 						} else {
-							Config.s.CreateRoomBySystem(roomid, user, gametime, server.getIP());
+							Config.s.CreateRoomBySystem(roomid, user, gametime, server.getName(), server.getIP());
 						}
 						double useror = user.getRating(),enemyor = enemy.getRating();
 						int useroe = user.getElo(),enemyoe = enemy.getElo();
@@ -1448,11 +1448,11 @@ public class Fight extends JFrame {
 								};
 							}.start();
 						} else {
-							Config.s.updateLoserGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, elo, rating,
+							Config.s.updateLoserGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, 0, rating,
 									kill, death, adr, user.getDjs(), user);
 						}
 						new BalanceGame(winlose, user, enemy, kill, death, 
-								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this).setVisible(true);
+								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, 0, Fight.this).setVisible(true);
 						Config.Allheroes.clear();
 						Config.Allitems.clear();
 						Config.Allskills.clear();
