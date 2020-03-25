@@ -909,40 +909,44 @@ public class Fight extends JFrame {
 								if(!str.equals("-help")) {
 									if(!str.equals("-p")) {
 										if(!str.equals("-r")) {
-											if(!str.equals("-jh")) {
-												if(!str.equals("-mymax")) {
-													if(!str.equals("-enemymax")) {
-														if(!str.equals("-lxs")) {
-															if(!str.equals("-xyh")) {
-																UpdateJTextArea("你对对方说："+str+"\n\n");
-																pw3.write(user.getUsername()+"（"+userh.getName()+"）说："+str+"\n");
-																pw3.flush();
+											if(!str.equals("-sur")) {
+												if(!str.equals("-jh")) {
+													if(!str.equals("-mymax")) {
+														if(!str.equals("-enemymax")) {
+															if(!str.equals("-lxs")) {
+																if(!str.equals("-xyh")) {
+																	UpdateJTextArea("你对对方说："+str+"\n\n");
+																	pw3.write(user.getUsername()+"（"+userh.getName()+"）说："+str+"\n");
+																	pw3.flush();
+																} else {
+																	if(userh.getId()==Config.xyh.getId()) {
+																		UpdateJTextArea("你当前的洁净点为："+userh.xyh+"\n\n");
+																	} else {
+																		UpdateJTextArea("你无权使用该口令。\n\n");
+																	}
+																}
 															} else {
-																if(userh.getId()==Config.xyh.getId()) {
-																	UpdateJTextArea("你当前的洁净点为："+userh.xyh+"\n\n");
+																if(userh.getId()==Config.lxs.getId()) {
+																	UpdateJTextArea("你当前的秒杀概率为："+userh.lxsE*10+"%\n\n");
 																} else {
 																	UpdateJTextArea("你无权使用该口令。\n\n");
 																}
 															}
 														} else {
-															if(userh.getId()==Config.lxs.getId()) {
-																UpdateJTextArea("你当前的秒杀概率为："+userh.lxsE*10+"%\n\n");
-															} else {
-																UpdateJTextArea("你无权使用该口令。\n\n");
-															}
+															UpdateJTextArea("对方当前英雄："+enemyh.getName()+"\n最大生命值："+enemyhpt.getMaximum()+"\n最大魔法值："+enemympt.getMaximum()+"\n\n");
 														}
 													} else {
-														UpdateJTextArea("对方当前英雄："+enemyh.getName()+"\n最大生命值："+enemyhpt.getMaximum()+"\n最大魔法值："+enemympt.getMaximum()+"\n\n");
+														UpdateJTextArea("你当前的英雄："+userh.getName()+"\n最大生命值："+userhpt.getMaximum()+"\n最大魔法值："+usermpt.getMaximum()+"\n\n");
 													}
 												} else {
-													UpdateJTextArea("你当前的英雄："+userh.getName()+"\n最大生命值："+userhpt.getMaximum()+"\n最大魔法值："+usermpt.getMaximum()+"\n\n");
+													if(gsu!=null) {
+														gsu.setVisible(true);
+													} else {
+														UpdateJTextArea("任务未完成或无权使用该口令。\n\n");
+													}
 												}
 											} else {
-												if(gsu!=null) {
-													gsu.setVisible(true);
-												} else {
-													UpdateJTextArea("任务未完成或无权使用该口令。\n\n");
-												}
+												sur();
 											}
 										} else {
 											setpause(0);
@@ -983,7 +987,7 @@ public class Fight extends JFrame {
 		
 		UpdateJTextArea("欢迎来到Zytter！现在为热身时间，20秒后比赛正式开始。"+"\n\n");
 		
-		UpdateJTextArea("当前版本号："+Config.clientversion+"（v1.4a）"+"\n\n");
+		UpdateJTextArea("当前版本号："+Config.clientversion+"（v1.5a）"+"\n\n");
 		
 		whoact.setText("热身时间");
 		
@@ -1334,9 +1338,9 @@ public class Fight extends JFrame {
 						gameover = true;
 						double useror = user.getRating(),enemyor = enemy.getRating();
 						int useroe = user.getElo(),enemyoe = enemy.getElo();
+						getElo();//计算出elo和Rating
 						if(server.getIP().equals(Host.officialserver.getIP())) {
 							Config.s.addHeroPlay();
-							getElo();//计算出elo和Rating
 							user.setAll(user.getAll()+1);//赛季场次+1
 							user.setWin(user.getWin()+1);//赛季胜场+1
 							DecimalFormat df=new DecimalFormat("0.00");//设置保留位数
@@ -1369,11 +1373,11 @@ public class Fight extends JFrame {
 								};
 							}.start();
 						} else {
-							Config.s.updateWinnerGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, elo, rating,
+							Config.s.updateWinnerGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, 0, rating,
 									kill, death, adr, user.getDjs(), user);
 						}
 						new BalanceGame(winlose, user, enemy, kill, death, 
-								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this).setVisible(true);
+								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, 0, Fight.this).setVisible(true);
 						Config.Allheroes.clear();
 						Config.Allitems.clear();
 						Config.Allskills.clear();
@@ -1409,14 +1413,14 @@ public class Fight extends JFrame {
 						gameover = true;
 						String gametime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 						if(server.getIP().equals(Host.officialserver.getIP())) {
-							Config.s.CreateRoomBySystem(roomid, user, gametime, server.getName());
+							Config.s.CreateRoomBySystem(roomid, user, gametime, "官方上海服务器", server.getIP());
 						} else {
-							Config.s.CreateRoomBySystem(roomid, user, gametime, server.getIP());
+							Config.s.CreateRoomBySystem(roomid, user, gametime, server.getName(), server.getIP());
 						}
 						double useror = user.getRating(),enemyor = enemy.getRating();
 						int useroe = user.getElo(),enemyoe = enemy.getElo();
+						getElo();//计算出elo和Rating
 						if(server.getIP().equals(Host.officialserver.getIP())) {
-							getElo();//计算出elo和Rating
 							user.setAll(user.getAll()+1);//赛季场次+1
 							user.setLose(user.getLose()+1);//赛季败场+1
 							DecimalFormat df=new DecimalFormat("0.00");//设置保留位数
@@ -1448,11 +1452,11 @@ public class Fight extends JFrame {
 								};
 							}.start();
 						} else {
-							Config.s.updateLoserGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, elo, rating,
+							Config.s.updateLoserGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, 0, rating,
 									kill, death, adr, user.getDjs(), user);
 						}
 						new BalanceGame(winlose, user, enemy, kill, death, 
-								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this).setVisible(true);
+								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, 0, Fight.this).setVisible(true);
 						Config.Allheroes.clear();
 						Config.Allitems.clear();
 						Config.Allskills.clear();
@@ -8102,7 +8106,7 @@ public class Fight extends JFrame {
 					UpdateJTextArea("本场比赛你已经没有暂停机会了（每人每场最多3次机会）。\n\n");
 				}
 			} else {
-				JOptionPane.showMessageDialog(null, "不在行动时间内，无法暂停。");
+				UpdateJTextArea("不在行动时间内，无法暂停。");
 			}
 		} else if(yn==0) {
 			if(!ispause) {
@@ -8121,6 +8125,16 @@ public class Fight extends JFrame {
 			}
 		}
 		
+	}
+	
+	void sur() { // 投降
+		if(r>=13) {
+			winlose = false;
+			setE(9);
+			UpdateJTextArea("你投降了，对方获得了本次比赛的胜利！游戏将在回合结束时结束。\n\n");
+		} else {
+			UpdateJTextArea("第13回合前不允许投降，请努力进行游戏！\n\n");
+		}
 	}
 	
 	void getHelp() {
@@ -8343,6 +8357,11 @@ public class Fight extends JFrame {
 				ispause=false;
 				break;
 			}
+			case 9:{//对方投降
+				winlose=true;
+				UpdateJTextArea("【"+enemyh.getName()+"】（"+enemy.getUsername()+"）投降了！你获得了本次比赛的胜利！\n\n");
+				break;
+			}
 			case 11:{//结晶之力
 				enemyh.jhjj=1;
 				UpdateEnemyHeroSkill();
@@ -8356,6 +8375,9 @@ public class Fight extends JFrame {
 			case 13:{//结晶之力
 				enemyh.jhjj=3;
 				UpdateEnemyHeroSkill();
+				break;
+			}
+			case 14:{//
 				break;
 			}
 			case 26:{//夜宴之声

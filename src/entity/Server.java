@@ -5,7 +5,7 @@ public class Server {
 	private String name;
 	private String IP;
 	
-	private int id,status;
+	private int id,status=0;
 	private String password;
 	private String tip;
 	private String ver;

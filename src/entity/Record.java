@@ -13,7 +13,7 @@ public class Record {
 	private int p1k,p1d,p2k,p2d;//杀敌死亡数
 	private double p1adr,p2adr;//平均伤害
 	private int p1djs,p2djs;//定级赛
-	private String time,server;//比赛时间，服务器
+	private String time,server,hostip;//比赛时间，服务器名称，服务器IP
 	
 	public int getId() {
 		return id;
@@ -195,10 +195,17 @@ public class Record {
 	public void setServer(String server) {
 		this.server = server;
 	}
+	public String getHostip() {
+		return hostip;
+	}
+	public void setHostip(String hostip) {
+		this.hostip = hostip;
+	}
 	
 	public Record(int id, String p1, String p2, String winner, int p1elo, int p2elo, int p1elop, int p2elop, int p1b1,
 			int p1b2, int p2b1, int p2b2, int p1p1, int p1p2, int p1p3, int p2p1, int p2p2, int p2p3, double p1rating,
-			double p2rating, int p1k, int p1d, int p2k, int p2d, double p1adr, double p2adr, int p1djs, int p2djs, String time, String server) {
+			double p2rating, int p1k, int p1d, int p2k, int p2d, double p1adr, double p2adr, int p1djs, int p2djs,
+			String time, String server, String hostip) {
 		super();
 		this.id = id;
 		this.p1 = p1;
@@ -230,6 +237,7 @@ public class Record {
 		this.p2djs = p2djs;
 		this.time = time;
 		this.server = server;
+		this.hostip = hostip;
 	}
 	
 }

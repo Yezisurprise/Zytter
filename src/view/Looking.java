@@ -189,7 +189,21 @@ public class Looking extends JFrame {
 						om.setEnabled(false);
 						Looking.this.setEnabled(false);
 						Server s=servers.get(table.getSelectedRow());
-						ConnectServer(s);
+						if(s.getStatus()==1) {
+							JOptionPane.showMessageDialog(null, "该服务器设置了禁止连接，无法连接至该服务器。");
+						} else {
+							String pw=s.getPassword();
+							if(pw!=null&&pw.equals("")) {
+								String input = JOptionPane.showInputDialog("请输入该服务器的连接密码：");
+								if(input.equals(pw)) {
+									ConnectServer(s);
+								} else {
+									JOptionPane.showMessageDialog(null, "密码验证错误。");
+								}
+							} else {
+								ConnectServer(s);
+							}
+						}
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "未选中任何服务器。");
@@ -212,11 +226,15 @@ public class Looking extends JFrame {
 					if(!ip.equals("")) {
 						if(isIPAddressByRegex(ip)) {
 							if(!ip.equals(Host.officialserver.getIP())) {
-								if(JOptionPane.showConfirmDialog(null, "确定连接到此服务器？", "连接服务器", JOptionPane.YES_NO_OPTION)==0) {
-									om.setEnabled(false);
-									Looking.this.setEnabled(false);
-									Server s = new Server(ip, ip);
-									ConnectServer(s);
+								if(!isExistIP(ip)) {
+									if(JOptionPane.showConfirmDialog(null, "确定连接到此服务器？", "连接服务器", JOptionPane.YES_NO_OPTION)==0) {
+										om.setEnabled(false);
+										Looking.this.setEnabled(false);
+										Server s = new Server(ip, ip);
+										ConnectServer(s);
+									}
+								} else {
+									JOptionPane.showMessageDialog(null, "不能通过这种方式连接列表中存在的服务器。");
 								}
 							} else {
 								JOptionPane.showMessageDialog(null, "不能通过这种方式连接官方服务器。");
@@ -262,6 +280,15 @@ public class Looking extends JFrame {
 		
 	}
 	
+	public boolean isExistIP(String ip) {
+		for (Server s : servers) {
+			if (ip.equals(s.getIP())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
     public boolean isIPAddressByRegex(String str) {
         String regex = "\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}";
         if (str.matches(regex)) {
@@ -285,6 +312,7 @@ public class Looking extends JFrame {
 								if (!user2.getUsername().equals("账号或密码错误！")) {
 									om.dispose();
 									Looking.this.dispose();
+									Config.bgm.stopBGM();
 									Config.bgm = new BGM();
 									Config.bgm.start();
 									new Main(user2, s).setVisible(true);
@@ -431,20 +459,20 @@ public class Looking extends JFrame {
 					if(s.getStatus()!=1) {
 						dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "否", s.getTip(), "空闲" });
 					} else {
-						dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "否", s.getTip(), "爆满" });
+						dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "否", s.getTip(), "禁止连接" });
 					}
 				} else {
 					if(s.getStatus()!=1) {
 						dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "是", s.getTip(), "空闲" });
 					} else {
-						dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "是", s.getTip(), "爆满" });
+						dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "是", s.getTip(), "禁止连接" });
 					}
 				}
 			} else {
 				if(s.getStatus()!=1) {
 					dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "否", s.getTip(), "空闲" });
 				} else {
-					dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "否", s.getTip(), "爆满" });
+					dtm.addRow(new Object[] { s.getId(), s.getName(), s.getIP(), "否", s.getTip(), "禁止连接" });
 				}
 			}
 			

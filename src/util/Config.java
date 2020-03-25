@@ -17,7 +17,7 @@ public class Config {
 	 * - 游戏常量定义
 	 */
 	public static final String GlobalTitle = "Zytter Client"; // 全局界面标题
-	public static final int clientversion = 20200316; // 客户端版本号
+	public static final int clientversion = 20200325; // 客户端版本号
 	public static final String version = clientversion + " by Zy初心组"; // 版本号
 	public static Service s = new Service(); // 用于调用Dao包底层方法
 	public static boolean isinroom = false; // 玩家是否处于房间状态
