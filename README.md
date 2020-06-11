@@ -27,4 +27,4 @@ Two players choose three heroes from the hero pool to fight in turn.
 3) When the specific health value is the same, the match room owner wins.
 
 详细中文文档：https://www.wrss.org/p/28
-更新日志：https://www.wrss.org/zytter.html
+更新日志：https://www.wrss.org/zytter
