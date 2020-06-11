@@ -190,17 +190,31 @@ public class Looking extends JFrame {
 						Looking.this.setEnabled(false);
 						Server s=servers.get(table.getSelectedRow());
 						if(s.getStatus()==1) {
+							om.setEnabled(true);
+							Looking.this.setEnabled(true);
 							JOptionPane.showMessageDialog(null, "该服务器设置了禁止连接，无法连接至该服务器。");
 						} else {
-							String pw=s.getPassword();
-							if(pw!=null&&pw.equals("")) {
-								String input = JOptionPane.showInputDialog("请输入该服务器的连接密码：");
-								if(input.equals(pw)) {
-									ConnectServer(s);
+							String pw = s.getPassword();
+							if(pw!=null) { // 密码不为null
+								if(!pw.equals("")) { // 密码不为空
+									String input = JOptionPane.showInputDialog("请输入该服务器的连接密码：");
+									if(input.equals(pw)) {
+										ConnectServer(s);
+									} else {
+										om.setEnabled(true);
+										Looking.this.setEnabled(true);
+										JOptionPane.showMessageDialog(null, "密码验证错误。");
+										om.setVisible(true);
+										Looking.this.setVisible(true);
+									}
 								} else {
-									JOptionPane.showMessageDialog(null, "密码验证错误。");
+									om.setVisible(true);
+									Looking.this.setVisible(true);
+									ConnectServer(s);
 								}
 							} else {
+								om.setVisible(true);
+								Looking.this.setVisible(true);
 								ConnectServer(s);
 							}
 						}
@@ -349,7 +363,7 @@ public class Looking extends JFrame {
 		} else {
 			om.setEnabled(true);
 			Looking.this.setEnabled(true);
-			JOptionPane.showMessageDialog(null, "？");
+			JOptionPane.showMessageDialog(null, "遇到未知错误，请稍后重试。");
 		}
 	}
 	

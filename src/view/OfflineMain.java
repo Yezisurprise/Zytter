@@ -110,7 +110,7 @@ public class OfflineMain extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Desktop.getDesktop().browse(new URI("https://www.wrss.org/zytter.html"));
+					Desktop.getDesktop().browse(new URI("https://www.wrss.org/zytter?username="+user.getUsername()+"&id="+user.getUid()));
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				} catch (URISyntaxException e1) {

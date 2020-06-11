@@ -213,7 +213,7 @@ public class Login extends JFrame {
 									JOptionPane.showMessageDialog(null,"游戏服务器处于关闭状态，暂时无法登录。");
 								}
 							} else {
-								JOptionPane.showMessageDialog(null,"？");
+								JOptionPane.showMessageDialog(null,"遇到未知错误，请稍后重试。");
 							}
 						} else {
 							User user=Config.s.queryUser(sryhm.getText().trim(),String.valueOf(srmm.getPassword()));
@@ -258,7 +258,7 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Desktop.getDesktop().browse(new URI("https://www.wrss.org/zytter.html"));
+					Desktop.getDesktop().browse(new URI("https://www.wrss.org/zytter"));
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				} catch (URISyntaxException e1) {

@@ -174,6 +174,8 @@ public class Fight extends JFrame {
 	
 	boolean eatequip = true; // 吃装备的机会
 	
+	boolean isonline = true; // 是否在线
+	
 	/**
 	 * Send Socket
 	 */
@@ -958,7 +960,33 @@ public class Fight extends JFrame {
 									getHelp();
 								}
 							} else {
-								UpdateJTextArea("你无权使用该口令。\n\n");
+								if(!isonline) {
+									UpdateJTextArea("你已经与服务器断开连接。游戏结束，5秒后返回主界面。\n\n");
+									new Thread() {
+										@Override
+										public void run() {
+											try {
+												Thread.sleep(5000);
+											} catch (InterruptedException e1) {
+												e1.printStackTrace();
+											}
+											dispose();
+											Config.bgm.stopBGM();
+											new Thread() {
+												@Override
+												public void run() {
+													Config.s.DeleteRoom(user);
+												}
+											}.start();
+											new Main(Config.s.queryUser(user.getUid()),server).setVisible(true);
+											Config.bgm = new BGM();
+											Config.bgm.setBGM(0);
+											Config.bgm.start();
+										}
+									}.start();
+								} else {
+									UpdateJTextArea("你无权使用该口令。\n\n");
+								}
 							}
 						} else {
 							UpdateJTextArea("你无权使用该口令。\n\n");
@@ -987,7 +1015,7 @@ public class Fight extends JFrame {
 		
 		UpdateJTextArea("欢迎来到Zytter！现在为热身时间，20秒后比赛正式开始。"+"\n\n");
 		
-		UpdateJTextArea("当前版本号："+Config.clientversion+"（v1.5a）"+"\n\n");
+		UpdateJTextArea("当前版本号："+Config.clientversion+"（"+Config.clientengversion+"）"+"\n\n");
 		
 		whoact.setText("热身时间");
 		
@@ -1375,9 +1403,10 @@ public class Fight extends JFrame {
 						} else {
 							Config.s.updateWinnerGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, 0, rating,
 									kill, death, adr, user.getDjs(), user);
+							elo = 0;
 						}
 						new BalanceGame(winlose, user, enemy, kill, death, 
-								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, 0, Fight.this).setVisible(true);
+								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this).setVisible(true);
 						Config.Allheroes.clear();
 						Config.Allitems.clear();
 						Config.Allskills.clear();
@@ -1454,9 +1483,10 @@ public class Fight extends JFrame {
 						} else {
 							Config.s.updateLoserGameRecord(roomid, roomcreater, userbanned, userpicked, useroe, 0, rating,
 									kill, death, adr, user.getDjs(), user);
+							elo = 0;
 						}
 						new BalanceGame(winlose, user, enemy, kill, death, 
-								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, 0, Fight.this).setVisible(true);
+								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this).setVisible(true);
 						Config.Allheroes.clear();
 						Config.Allitems.clear();
 						Config.Allskills.clear();
@@ -3138,7 +3168,8 @@ public class Fight extends JFrame {
 				}.start();
 				
 			} catch (IOException e) {
-				UpdateJTextArea("你已经与服务器断开连接。\n\n");
+				isonline = false;
+				UpdateJTextArea("你已经与服务器断开连接。使用 -disconnect 口令退出当前对局并返回主界面。\n\n");
 			}
 		}
 		
@@ -3194,7 +3225,8 @@ public class Fight extends JFrame {
 					}
 				}
 			} catch (IOException e) {
-				UpdateJTextArea("你已经与服务器断开连接。\n\n");
+				isonline = false;
+				UpdateJTextArea("你已经与服务器断开连接。使用 -disconnect 口令退出当前对局并返回主界面。\n\n");
 			} finally {
 				close4();
 			}
@@ -3238,7 +3270,8 @@ public class Fight extends JFrame {
 					UpdateJTextArea("游戏结束，你已经和聊天房间断开连接。\n\n");
 				}
 			} catch (IOException e) {
-				UpdateJTextArea("你已经与服务器断开连接。\n\n");
+				isonline = false;
+				UpdateJTextArea("你已经与服务器断开连接。使用 -disconnect 口令退出当前对局并返回主界面。\n\n");
 			} finally {
 				close3();
 			}
@@ -8139,7 +8172,7 @@ public class Fight extends JFrame {
 	
 	void getHelp() {
 		UpdateJTextArea("当前可用命令如下：\n\n");
-		UpdateJTextArea("-p 暂停游戏\n-r 解除暂停\n-jh 激活结晶之力\n-mymax 查询英雄上限\n-enemymax 查询对方英雄上限\n-lxs 刘晓释魔王怒秒杀概率\n-xyh 谢悠涵洁净点数量"+"\n\n");
+		UpdateJTextArea("-p 暂停游戏\n-r 解除暂停\n-sur 投降（第13回合后可用）\n-jh 激活结晶之力\n-mymax 查询英雄上限\n-enemymax 查询对方英雄上限\n-lxs 刘晓释魔王怒秒杀概率\n-xyh 谢悠涵洁净点数量"+"\n\n");
 	}
 	
 	class openStore extends Thread {
@@ -8267,6 +8300,14 @@ public class Fight extends JFrame {
 		}
 		if(id>=113&&id<=126) {//吃装备
 			
+		}
+		if(id==-99) {//对方掉线了
+			isonline = false;
+			close();
+			close2();
+			close3();
+			close4();
+			close5();
 		}
 		switch(id) {
 			case 0:{//回合延时
