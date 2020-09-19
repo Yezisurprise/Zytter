@@ -2130,6 +2130,8 @@ public class Dao {
 			jb.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hh.jpg")));
 		} else if (itemid == 26) {
 			jb.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/yyzs.jpg")));
+		} else if (itemid == 27) {
+			jb.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hysz.jpg")));
 		}
 		jb.setContentAreaFilled(false);
 		jb.setToolTipText(Config.Allitems.get(itemid-1).getItem());
@@ -2189,6 +2191,8 @@ public class Dao {
 			return new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hh.jpg"));
 		} else if (itemid == 26) {
 			return new ImageIcon(this.getClass().getClassLoader().getResource("img/items/yyzs.jpg"));
+		} else if (itemid == 27) {
+			return new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hysz.jpg"));
 		}
 		return new ImageIcon(this.getClass().getClassLoader().getResource("img/useitem.png"));
 	}

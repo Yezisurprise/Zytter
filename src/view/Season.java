@@ -67,7 +67,7 @@ public class Season extends JFrame {
 		season.setBounds(561, 11, 429, 50);
 		this.add(season);
 		
-		JLabel seasontime = new JLabel("\u8D5B\u5B63\u65F6\u95F4\uFF1A2020\u5E741\u67087\u65E5~2020\u5E7411\u670827\u65E5");
+		JLabel seasontime = new JLabel("\u8D5B\u5B63\u65F6\u95F4\uFF1A2020\u5E741\u67087\u65E5~2020\u5E7410\u670831\u65E5");
 		seasontime.setFont(new Font("Î¢ÈíÑÅºÚ", Font.BOLD, 18));
 		seasontime.setHorizontalAlignment(SwingConstants.CENTER);
 		seasontime.setBounds(561, 71, 429, 42);

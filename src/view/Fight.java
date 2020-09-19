@@ -122,6 +122,8 @@ public class Fight extends JFrame {
 	
 	int mp = 0; // 魔法消耗
 	
+	int nextround; // 下一个回合 旧版中startfight()的循环参数i
+	
 	int r = 0 , limitr = 35; // 回合数
 	
 	int rend = 1; // 回合结束数（总是比r高1）
@@ -788,6 +790,9 @@ public class Fight extends JFrame {
 													if(op==4&&userh.getId()==Config.hyq.getId()) { // 郈与却 云霄之巅 的使用判断
 														userh.setXdl(userh.getXdl()+999);
 													}
+													if(op==1&&userh.getId()==Config.sjj.getId()) { // 苏璟静 闪现+ 的使用判断
+														userh.setXdl(userh.getXdl()+999);
+													}
 													if(op==2&&userh.getId()==Config.ysn.getId()){ // 杨圣诺 陨落星辰 的使用判断
 														if(JOptionPane.showConfirmDialog(null,"使用Q技能【新星冲刺】？")==0) {
 															if(selected==1) {
@@ -1032,8 +1037,8 @@ public class Fight extends JFrame {
 		 * 回合对战
 		 */
 		try {
-			for(int i=1;i<=limitr;i++) {
-				if(i==6 || i==13 || i==20 || i==27 || i==32 || (i>35&&((i-33)%5==0))) {
+			for(nextround=1;nextround<=limitr;nextround++) {
+				if(nextround==6 || nextround==13 || nextround==20 || nextround==27 || nextround==32 || (nextround>35&&((nextround-33)%5==0))) {
 					/*
 					 * 商店回合
 					 */
@@ -1041,18 +1046,18 @@ public class Fight extends JFrame {
 					UpdateJTextArea("- 商店回合 -\n\n");
 					round.setText("商店回合");
 					whoact.setText("请在商店里购买物品");
-					if(i<35) {
+					if(nextround<35) {
 						UpdateJTextArea("王国商店为大家发放了工资：2块金币。\n\n");
 						gold+=2;
 						tip1.setText("当前拥有金币："+gold);
-						new openStore(this,i,20,gold,djh,user,userh).start();
+						new openStore(this,nextround,20,gold,djh,user,userh).start();
 						remain=22;
 						remaintime.setText("还剩" + remain + "秒");
 					} else {
 						UpdateJTextArea("王国商店为大家发放了工资：4块金币。\n\n");
 						gold+=4;
 						tip1.setText("当前拥有金币："+gold);
-						new openStore(this,i,15,gold,djh,user,userh).start();
+						new openStore(this,nextround,15,gold,djh,user,userh).start();
 						remain=17;
 						remaintime.setText("还剩" + remain + "秒");
 					}
@@ -1064,7 +1069,7 @@ public class Fight extends JFrame {
 						}
 						remaintime.setText("还剩" + remain + "秒");
 					}
-					switch(i) {
+					switch(nextround) {
 						case 6:{
 							userhpt.setMaximum(userhpt.getMaximum()+4);
 							userh.setHp(userh.getHp()+4);
@@ -1271,7 +1276,7 @@ public class Fight extends JFrame {
 				usertx.setToolTipText(userh.getProperty());
 				enemytx.setToolTipText(enemyh.getProperty());
 				atk.setToolTipText("<html>使用普通攻击。<br /><br />提示：最多可造成"+userh.getAtk()+"点物理伤害。</html>");
-				action(user, enemy, i);
+				action(user, enemy, nextround);
 				while(selected == 0 && enemyop == 0) {
 					Thread.sleep(100);
 				}
@@ -1609,36 +1614,28 @@ public class Fight extends JFrame {
 
 	public void setrobd(int d) {
 		robd+=d;
-		if(robd>12&&robd<=24) {
+		if(robd>15&&robd<=30) {
 			gold++;
-			UpdateJTextArea("你累计造成12点物理伤害，从对方身上掠夺了1块金币！\n\n");
-			robd-=12;
-		} else if(robd>24&&robd<=36) {
+			UpdateJTextArea("你累计造成15点物理伤害，从对方身上掠夺了1块金币！\n\n");
+			robd-=15;
+		} else if(robd>30) {
 			gold+=2;
-			UpdateJTextArea("你累计造成24点物理伤害，从对方身上掠夺了2块金币！\n\n");
-			robd-=24;
-		} else if(robd>36) {
-			gold+=3;
-			UpdateJTextArea("你累计造成36点物理伤害，从对方身上掠夺了3块金币！\n\n");
-			robd-=36;
+			UpdateJTextArea("你累计造成30点物理伤害，从对方身上掠夺了2块金币！\n\n");
+			robd-=30;
 		}
 		tip1.setText("当前拥有金币："+gold);
 	}
 	
 	public void setrobh(int h) {
 		robh+=h;
-		if(robh>12&&robh<=24) {
+		if(robh>15&&robh<=30) {
 			gold--;
-			UpdateJTextArea("对方累计对你造成12点物理伤害，从你身上掠夺了1块金币！\n\n");
-			robh-=12;
-		} else if(robh>24&&robh<=36) {
+			UpdateJTextArea("对方累计对你造成15点物理伤害，从你身上掠夺了1块金币！\n\n");
+			robh-=15;
+		} else if(robh>30) {
 			gold-=2;
-			UpdateJTextArea("对方累计对你造成24点物理伤害，从你身上掠夺了2块金币！\n\n");
-			robh-=24;
-		} else if(robh>36) {
-			gold-=3;
-			UpdateJTextArea("对方累计对你造成36点物理伤害，从你身上掠夺了3块金币！\n\n");
-			robh-=36;
+			UpdateJTextArea("对方累计对你造成30点物理伤害，从你身上掠夺了2块金币！\n\n");
+			robh-=30;
 		}
 		tip1.setText("当前拥有金币："+gold);
 	}
@@ -1890,10 +1887,12 @@ public class Fight extends JFrame {
 					}
 					if(userh.sjjE) {
 						userh.sjjE=false;
-						UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-						if(userh.getHp()+3<=userhpt.getMaximum()) {
-							hpp += 3;
-							userh.setHp(userh.getHp()+3);
+						int hp = 3;
+						if(userh.jhjj==1) hp = 5;
+						UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+						if(userh.getHp()+hp<=userhpt.getMaximum()) {
+							hpp += hp;
+							userh.setHp(userh.getHp()+hp);
 							userhpt.setValue(userh.getHp());
 							userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 						} else {
@@ -1901,12 +1900,18 @@ public class Fight extends JFrame {
 							userhpt.setValue(userh.getHp());
 							userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 						}
-						if(userh.jhjj==1) d = 10 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
+						if(userh.jhjj==1) d = 9 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 						else d = 6 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 						if(d<0) d=0;
 						balanceskill(userh, d);
 						userbuff.remove(userh.gcj);
 						repaint();
+					}
+					if(userh.hy) {
+						int hy = (int)Math.round((enemyhpt.getMaximum()*0.14)-(1-userh.getApp())*enemyh.getAdf());
+						if(hy<0) hy=0;
+						UpdateJTextArea("【"+userh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+						balancezy(userh, hy);
 					}
 				}
 				p=0;
@@ -1964,10 +1969,12 @@ public class Fight extends JFrame {
 					}
 					if(userh.sjjE) {
 						userh.sjjE=false;
-						UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-						if(userh.getHp()+3<=userhpt.getMaximum()) {
-							hpp += 3;
-							userh.setHp(userh.getHp()+3);
+						int hp = 3;
+						if(userh.jhjj==1) hp = 5;
+						UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+						if(userh.getHp()+hp<=userhpt.getMaximum()) {
+							hpp += hp;
+							userh.setHp(userh.getHp()+hp);
 							userhpt.setValue(userh.getHp());
 							userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 						} else {
@@ -1975,12 +1982,18 @@ public class Fight extends JFrame {
 							userhpt.setValue(userh.getHp());
 							userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 						}
-						if(userh.jhjj==1) d = 10 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
+						if(userh.jhjj==1) d = 9 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 						else d = 6 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 						if(d<0) d=0;
 						balanceskill(userh, d);
 						userbuff.remove(userh.gcj);
 						repaint();
+					}
+					if(userh.hy) {
+						int hy = (int)Math.round((enemyhpt.getMaximum()*0.14)-(1-userh.getApp())*enemyh.getAdf());
+						if(hy<0) hy=0;
+						UpdateJTextArea("【"+userh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+						balancezy(userh, hy);
 					}
 				}
 				p=0;
@@ -2002,10 +2015,12 @@ public class Fight extends JFrame {
 				}
 				if(userh.sjjE) {
 					userh.sjjE=false;
-					UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-					if(userh.getHp()+3<=userhpt.getMaximum()) {
-						hpp += 3;
-						userh.setHp(userh.getHp()+3);
+					int hp = 3;
+					if(userh.jhjj==1) hp = 5;
+					UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+					if(userh.getHp()+hp<=userhpt.getMaximum()) {
+						hpp += hp;
+						userh.setHp(userh.getHp()+hp);
 						userhpt.setValue(userh.getHp());
 						userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 					} else {
@@ -2013,12 +2028,18 @@ public class Fight extends JFrame {
 						userhpt.setValue(userh.getHp());
 						userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 					}
-					if(userh.jhjj==1) d = 10 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
+					if(userh.jhjj==1) d = 9 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 					else d = 6 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 					if(d<0) d=0;
 					balanceskill(userh, d);
 					userbuff.remove(userh.gcj);
 					repaint();
+				}
+				if(userh.hy) {
+					int hy = (int)Math.round((enemyhpt.getMaximum()*0.14)-(1-userh.getApp())*enemyh.getAdf());
+					if(hy<0) hy=0;
+					UpdateJTextArea("【"+userh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+					balancezy(userh, hy);
 				}
 			} else if(enemyh.xyhE>0) {
 				int d = userh.getAtk()-(int)Math.round(enemyh.getDef()*(1-userh.getAdp()));
@@ -2089,10 +2110,12 @@ public class Fight extends JFrame {
 				}
 				if(userh.sjjE) {
 					userh.sjjE=false;
-					UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-					if(userh.getHp()+3<=userhpt.getMaximum()) {
-						hpp += 3;
-						userh.setHp(userh.getHp()+3);
+					int hp = 3;
+					if(userh.jhjj==1) hp = 5;
+					UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+					if(userh.getHp()+hp<=userhpt.getMaximum()) {
+						hpp += hp;
+						userh.setHp(userh.getHp()+hp);
 						userhpt.setValue(userh.getHp());
 						userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 					} else {
@@ -2100,12 +2123,18 @@ public class Fight extends JFrame {
 						userhpt.setValue(userh.getHp());
 						userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 					}
-					if(userh.jhjj==1) d = 10 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
+					if(userh.jhjj==1) d = 9 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 					else d = 6 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 					if(d<0) d=0;
 					balanceskill(userh, d);
 					userbuff.remove(userh.gcj);
 					repaint();
+				}
+				if(userh.hy) {
+					int hy = (int)Math.round((enemyhpt.getMaximum()*0.14)-(1-userh.getApp())*enemyh.getAdf());
+					if(hy<0) hy=0;
+					UpdateJTextArea("【"+userh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+					balancezy(userh, hy);
 				}
 			}
 		} else if(h1.equals(enemyh)) {
@@ -2152,9 +2181,11 @@ public class Fight extends JFrame {
 					}
 					if(enemyh.sjjE) {
 						enemyh.sjjE=false;
-						UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-						if(enemyh.getHp()+3<=enemyhpt.getMaximum()) {
-							enemyh.setHp(enemyh.getHp()+3);
+						int hp =3;
+						if(enemyh.jhjj==1) hp = 5;
+						UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+						if(enemyh.getHp()+hp<=enemyhpt.getMaximum()) {
+							enemyh.setHp(enemyh.getHp()+hp);
 							enemyhpt.setValue(enemyh.getHp());
 							enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 						} else {
@@ -2162,12 +2193,18 @@ public class Fight extends JFrame {
 							enemyhpt.setValue(enemyh.getHp());
 							enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 						}
-						if(enemyh.jhjj==1) d = 10 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+						if(enemyh.jhjj==1) d = 9 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 						else d = 6 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 						if(d<0) d=0;
 						balanceskill(enemyh, d);
 						enemybuff.remove(enemyh.gcj);
 						repaint();
+					}
+					if(enemyh.hy) {
+						int hy = (int)Math.round((userhpt.getMaximum()*0.14)-(1-enemyh.getApp())*userh.getAdf());
+						if(hy<0) hy=0;
+						UpdateJTextArea("【"+enemyh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+						balancezy(enemyh, hy);
 					}
 				}
 				p=0;
@@ -2231,9 +2268,11 @@ public class Fight extends JFrame {
 					}
 					if(enemyh.sjjE) {
 						enemyh.sjjE=false;
-						UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-						if(enemyh.getHp()+3<=enemyhpt.getMaximum()) {
-							enemyh.setHp(enemyh.getHp()+3);
+						int hp =3;
+						if(enemyh.jhjj==1) hp = 5;
+						UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+						if(enemyh.getHp()+hp<=enemyhpt.getMaximum()) {
+							enemyh.setHp(enemyh.getHp()+hp);
 							enemyhpt.setValue(enemyh.getHp());
 							enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 						} else {
@@ -2241,12 +2280,18 @@ public class Fight extends JFrame {
 							enemyhpt.setValue(enemyh.getHp());
 							enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 						}
-						if(enemyh.jhjj==1) d = 10 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+						if(enemyh.jhjj==1) d = 9 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 						else d = 6 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 						if(d<0) d=0;
 						balanceskill(enemyh, d);
 						enemybuff.remove(enemyh.gcj);
 						repaint();
+					}
+					if(enemyh.hy) {
+						int hy = (int)Math.round((userhpt.getMaximum()*0.14)-(1-enemyh.getApp())*userh.getAdf());
+						if(hy<0) hy=0;
+						UpdateJTextArea("【"+enemyh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+						balancezy(enemyh, hy);
 					}
 				}
 				p=0;
@@ -2268,10 +2313,11 @@ public class Fight extends JFrame {
 				}
 				if(enemyh.sjjE) {
 					enemyh.sjjE=false;
-					UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-					if(enemyh.getHp()+3<=enemyhpt.getMaximum()) {
-						hpp += 3;
-						enemyh.setHp(enemyh.getHp()+3);
+					int hp =3;
+					if(enemyh.jhjj==1) hp = 5;
+					UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+					if(enemyh.getHp()+hp<=enemyhpt.getMaximum()) {
+						enemyh.setHp(enemyh.getHp()+hp);
 						enemyhpt.setValue(enemyh.getHp());
 						enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 					} else {
@@ -2279,12 +2325,18 @@ public class Fight extends JFrame {
 						enemyhpt.setValue(enemyh.getHp());
 						enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 					}
-					if(enemyh.jhjj==1) d = 10 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+					if(enemyh.jhjj==1) d = 9 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 					else d = 6 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 					if(d<0) d=0;
 					balanceskill(enemyh, d);
 					enemybuff.remove(enemyh.gcj);
 					repaint();
+				}
+				if(enemyh.hy) {
+					int hy = (int)Math.round((userhpt.getMaximum()*0.14)-(1-enemyh.getApp())*userh.getAdf());
+					if(hy<0) hy=0;
+					UpdateJTextArea("【"+enemyh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+					balancezy(enemyh, hy);
 				}
 			} else if(userh.xyhE>0) {
 				int d = enemyh.getAtk()-(int)Math.round(userh.getDef()*(1-enemyh.getAdp()));
@@ -2354,9 +2406,11 @@ public class Fight extends JFrame {
 				}
 				if(enemyh.sjjE) {
 					enemyh.sjjE=false;
-					UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-					if(enemyh.getHp()+3<=enemyhpt.getMaximum()) {
-						enemyh.setHp(enemyh.getHp()+3);
+					int hp =3;
+					if(enemyh.jhjj==1) hp = 5;
+					UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+					if(enemyh.getHp()+hp<=enemyhpt.getMaximum()) {
+						enemyh.setHp(enemyh.getHp()+hp);
 						enemyhpt.setValue(enemyh.getHp());
 						enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 					} else {
@@ -2364,12 +2418,18 @@ public class Fight extends JFrame {
 						enemyhpt.setValue(enemyh.getHp());
 						enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 					}
-					if(enemyh.jhjj==1) d = 10 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+					if(enemyh.jhjj==1) d = 9 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 					else d = 6 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 					if(d<0) d=0;
 					balanceskill(enemyh, d);
 					enemybuff.remove(enemyh.gcj);
 					repaint();
+				}
+				if(enemyh.hy) {
+					int hy = (int)Math.round((userhpt.getMaximum()*0.14)-(1-enemyh.getApp())*userh.getAdf());
+					if(hy<0) hy=0;
+					UpdateJTextArea("【"+enemyh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+					balancezy(enemyh, hy);
 				}
 			}
 		}
@@ -2449,6 +2509,12 @@ public class Fight extends JFrame {
 					enemyhpt.setString("0"+" / "+enemyhpt.getMaximum());
 				}
 				tip4.setText("累计造成/承受伤害："+damage+" / "+hurt);
+			}
+			if(userh.hy) {
+				int hy = (int)Math.round((enemyhpt.getMaximum()*0.14)-(1-userh.getApp())*enemyh.getAdf());
+				if(hy<0) hy=0;
+				UpdateJTextArea("【"+userh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+				balancezy(userh, hy);
 			}
 			if(userh.zy) {
 				new Thread() {
@@ -2560,6 +2626,12 @@ public class Fight extends JFrame {
 				}
 				tip4.setText("累计造成/承受伤害："+damage+" / "+hurt);
 			}
+			if(enemyh.hy) {
+				int hy = (int)Math.round((userhpt.getMaximum()*0.14)-(1-enemyh.getApp())*userh.getAdf());
+				if(hy<0) hy=0;
+				UpdateJTextArea("【"+enemyh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+				balancezy(enemyh, hy);
+			}
 			if(enemyh.zy) {
 				new Thread() {
 					@Override
@@ -2624,6 +2696,12 @@ public class Fight extends JFrame {
 				enemyhpt.setString("0"+" / "+enemyhpt.getMaximum());
 			}
 			tip4.setText("累计造成/承受伤害："+damage+" / "+hurt);
+			if(userh.hy) {
+				int hy = (int)Math.round((enemyhpt.getMaximum()*0.14)-(1-userh.getApp())*enemyh.getAdf());
+				if(hy<0) hy=0;
+				UpdateJTextArea("【"+userh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+				balancezy(userh, hy);
+			}
 			if(userh.zy) {
 				new Thread() {
 					@Override
@@ -2679,6 +2757,12 @@ public class Fight extends JFrame {
 				userhpt.setString("0"+" / "+userhpt.getMaximum());
 			}
 			tip4.setText("累计造成/承受伤害："+damage+" / "+hurt);
+			if(enemyh.hy) {
+				int hy = (int)Math.round((userhpt.getMaximum()*0.14)-(1-enemyh.getApp())*userh.getAdf());
+				if(hy<0) hy=0;
+				UpdateJTextArea("【"+enemyh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+				balancezy(enemyh, hy);
+			}
 			if(enemyh.zy) {
 				new Thread() {
 					@Override
@@ -2789,6 +2873,27 @@ public class Fight extends JFrame {
 				userbuff.remove(userh.lz);
 				repaint();
 			}
+			if(userh.xsh) {
+				int hp = (int)Math.round(d*0.3);
+				if(userh.getHp()!=userhpt.getMaximum()) {
+					if(userh.getHp()+hp<=userhpt.getMaximum()) {
+						userh.setHp(userh.getHp()+hp);
+						hpp=hpp+hp;
+					} else {
+						hpp=hpp+(userhpt.getMaximum()-userh.getHp());
+						userh.setHp(userhpt.getMaximum());
+					}
+					userhpt.setValue(userh.getHp());
+					userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
+					UpdateJTextArea("【"+userh.getName()+"】发动【学生会会徽】的技能效果回复了"+hp+"点生命值！\n\n");
+				}
+			}
+			if(userh.hy) {
+				int hy = (int)Math.round((enemyhpt.getMaximum()*0.14)-(1-userh.getApp())*enemyh.getAdf());
+				if(hy<0) hy=0;
+				UpdateJTextArea("【"+userh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+				balancezy(userh, hy);
+			}
 			if(userh.zy) {
 				new Thread() {
 					@Override
@@ -2892,6 +2997,25 @@ public class Fight extends JFrame {
 				enemybuff.remove(enemyh.lz);
 				repaint();
 			}
+			if(enemyh.xsh) {
+				int hp = (int)Math.round(d*0.3);
+				if(enemyh.getHp()!=enemyhpt.getMaximum()) {
+					if(enemyh.getHp()+hp<=enemyhpt.getMaximum()) {
+						enemyh.setHp(enemyh.getHp()+hp);
+					} else {
+						enemyh.setHp(enemyhpt.getMaximum());
+					}
+					enemyhpt.setValue(enemyh.getHp());
+					enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
+					UpdateJTextArea("【"+enemyh.getName()+"】发动【学生会会徽】的技能效果回复了"+hp+"点生命值！\n\n");
+				}
+			}
+			if(enemyh.hy) {
+				int hy = (int)Math.round((userhpt.getMaximum()*0.14)-(1-enemyh.getApp())*userh.getAdf());
+				if(hy<0) hy=0;
+				UpdateJTextArea("【"+enemyh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+				balancezy(enemyh, hy);
+			}
 			if(enemyh.zy) {
 				new Thread() {
 					@Override
@@ -2947,23 +3071,6 @@ public class Fight extends JFrame {
 				else enemyh.xyh=8;
 				enemyh.getQ().setMp(enemyh.xyh);
 			}
-			if(enemyh.sjjR>0&&d>0) {
-				if(d-4>=0) {
-					UpdateJTextArea("【"+enemyh.getName()+"】牺牲了一名禁卫军，抵挡了4点伤害！"+"\n\n");
-					d -= 4;
-				}
-				else {
-					UpdateJTextArea("【"+enemyh.getName()+"】牺牲了一名禁卫军，抵挡了"+d+"点伤害！"+"\n\n");
-					d = 0;
-				}
-				enemyh.sjjR--;
-				if(enemyh.sjjR!=0) {
-					enemyh.gzhl.setSuperpose("（禁卫军数量："+enemyh.sjjR+"）");
-				} else {
-					enemybuff.remove(enemyh.gzhl);
-					repaint();
-				}
-			}
 			if(enemyh.xyhE>0) {
 				enemyh.xyhED+=d;
 				d=0;
@@ -3003,6 +3110,21 @@ public class Fight extends JFrame {
 				userbuff.remove(userh.lz);
 				repaint();
 			}
+			if(userh.xsh) {
+				int hp = (int)Math.round(d*0.3);
+				if(userh.getHp()!=userhpt.getMaximum()) {
+					if(userh.getHp()+hp<=userhpt.getMaximum()) {
+						userh.setHp(userh.getHp()+hp);
+						hpp=hpp+hp;
+					} else {
+						hpp=hpp+(userhpt.getMaximum()-userh.getHp());
+						userh.setHp(userhpt.getMaximum());
+					}
+					userhpt.setValue(userh.getHp());
+					userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
+					UpdateJTextArea("【"+userh.getName()+"】发动【学生会会徽】的技能效果回复了"+hp+"点生命值！\n\n");
+				}
+			}
 			tip4.setText("累计造成/承受伤害："+damage+" / "+hurt);
 		} else if(from.equals(enemyh)) {
 			if(userh.getId()==Config.xyh.getId()) {
@@ -3010,23 +3132,6 @@ public class Fight extends JFrame {
 				else userh.xyh=8;
 				userh.getQ().setMp(userh.xyh);
 				skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
-			}
-			if(userh.sjjR>0&&d>0) {
-				if(d-4>=0) {
-					UpdateJTextArea("【"+userh.getName()+"】牺牲了一名禁卫军，抵挡了4点伤害！"+"\n\n");
-					d -= 4;
-				}
-				else {
-					UpdateJTextArea("【"+userh.getName()+"】牺牲了一名禁卫军，抵挡了"+d+"点伤害！"+"\n\n");
-					d = 0;
-				}
-				userh.sjjR--;
-				if(userh.sjjR!=0) {
-					userh.gzhl.setSuperpose("（禁卫军数量："+userh.sjjR+"）");
-				} else {
-					userbuff.remove(userh.gzhl);
-					repaint();
-				}
 			}
 			if(userh.xyhE>0) {
 				userh.xyhED+=d;
@@ -3064,6 +3169,19 @@ public class Fight extends JFrame {
 				usermpt.setString(userh.getMp()+" / "+usermpt.getMaximum());
 				enemybuff.remove(enemyh.lz);
 				repaint();
+			}
+			if(enemyh.xsh) {
+				int hp = (int)Math.round(d*0.3);
+				if(enemyh.getHp()!=enemyhpt.getMaximum()) {
+					if(enemyh.getHp()+hp<=enemyhpt.getMaximum()) {
+						enemyh.setHp(enemyh.getHp()+hp);
+					} else {
+						enemyh.setHp(enemyhpt.getMaximum());
+					}
+					enemyhpt.setValue(enemyh.getHp());
+					enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
+					UpdateJTextArea("【"+enemyh.getName()+"】发动【学生会会徽】的技能效果回复了"+hp+"点生命值！\n\n");
+				}
 			}
 			tip4.setText("累计造成/承受伤害："+damage+" / "+hurt);
 		}
@@ -3111,6 +3229,9 @@ public class Fight extends JFrame {
 				if(enemyh.jhjj==2) enemyh.setXdl(enemyh.getXdl()+999);
 			}
 			if(enemyop==4&&enemyh.getId()==Config.hyq.getId()) { // 郈与却 云霄之巅 的使用判断
+				enemyh.setXdl(enemyh.getXdl()+999);
+			}
+			if(enemyop==1&&enemyh.getId()==Config.sjj.getId()) { // 苏璟静 闪现+ 的使用判断
 				enemyh.setXdl(enemyh.getXdl()+999);
 			}
 		}
@@ -4555,10 +4676,12 @@ public class Fight extends JFrame {
 						}
 						if(userh.sjjE) {
 							userh.sjjE=false;
-							UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-							if(userh.getHp()+3<=userhpt.getMaximum()) {
-								hpp += 3;
-								userh.setHp(userh.getHp()+3);
+							int hp = 3;
+							if(userh.jhjj==1) hp = 5;
+							UpdateJTextArea("【"+userh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+							if(userh.getHp()+hp<=userhpt.getMaximum()) {
+								hpp += hp;
+								userh.setHp(userh.getHp()+hp);
 								userhpt.setValue(userh.getHp());
 								userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 							} else {
@@ -4566,7 +4689,7 @@ public class Fight extends JFrame {
 								userhpt.setValue(userh.getHp());
 								userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
 							}
-							if(userh.jhjj==1) d = 10 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
+							if(userh.jhjj==1) d = 9 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 							else d = 6 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 							if(d<0) d=0;
 							balanceskill(userh, d);
@@ -4691,10 +4814,11 @@ public class Fight extends JFrame {
 						}
 						if(enemyh.sjjE) {
 							enemyh.sjjE=false;
-							UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了3点生命值！"+"\n\n");
-							if(enemyh.getHp()+3<=enemyhpt.getMaximum()) {
-								hpp += 3;
-								enemyh.setHp(enemyh.getHp()+3);
+							int hp =3;
+							if(enemyh.jhjj==1) hp = 5;
+							UpdateJTextArea("【"+enemyh.getName()+"】发动了【光炽剑】的技能效果并回复了"+hp+"点生命值！"+"\n\n");
+							if(enemyh.getHp()+hp<=enemyhpt.getMaximum()) {
+								enemyh.setHp(enemyh.getHp()+hp);
 								enemyhpt.setValue(enemyh.getHp());
 								enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 							} else {
@@ -4702,7 +4826,8 @@ public class Fight extends JFrame {
 								enemyhpt.setValue(enemyh.getHp());
 								enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
 							}
-							d = 6 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+							if(enemyh.jhjj==1) d = 9 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+							else d = 6 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 							if(d<0) d=0;
 							balanceskill(enemyh, d);
 							enemybuff.remove(enemyh.gcj);
@@ -5061,7 +5186,7 @@ public class Fight extends JFrame {
 					int mk = enemyh.getAdf();
 					int d = 0;
 					if(userh.jhjj==2) d = 14 - (int)Math.round((1-userh.getApp())*mk);
-					else d = 10 - (int)Math.round((1-userh.getApp())*mk);
+					else d = 8 - (int)Math.round((1-userh.getApp())*mk);
 					if(d<0) d=0;
 					balanceskill(userh, d);
 					if(userh.jhjj==2) userh.setXdl(userh.getXdl()-999);
@@ -5069,7 +5194,7 @@ public class Fight extends JFrame {
 					int mk = userh.getAdf();
 					int d = 0;
 					if(enemyh.jhjj==2) d = 14 - (int)Math.round((1-enemyh.getApp())*mk);
-					else d = 10 - (int)Math.round((1-enemyh.getApp())*mk);
+					else d = 8 - (int)Math.round((1-enemyh.getApp())*mk);
 					if(d<0) d=0;
 					balanceskill(enemyh, d);
 					if(enemyh.jhjj==2) enemyh.setXdl(enemyh.getXdl()-999);
@@ -5078,21 +5203,27 @@ public class Fight extends JFrame {
 			}
 			case 18:{//郈与却R 云霄之巅
 				if(from.equals(userh)) {
-					int d=0;
-					if(userh.jhjj==1) d = 14 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());//由公式转换为魔法伤害
-					else d = 10 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
+					int d = 10 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
 					if(d<0) d=0;
-					UpdateJTextArea("【"+userh.getName()+"】将在下两回合获得4点攻击力。\n\n");
+					if(userh.jhjj!=1) UpdateJTextArea("【"+userh.getName()+"】将在下两回合获得4点攻击力。\n\n");
+					else UpdateJTextArea("【"+userh.getName()+"】将在下两回合获得6点攻击力和2点行动力。\n\n");
 					balanceskill(userh, d);
 					new Thread() {
 						@Override
 						public void run() {
 							int whenstart=r+1;//设置技能生效的回合
 							int whenstop=r+3;//设置技能失效的回合
+							boolean isjhjj;
+							if(userh.jhjj==1) isjhjj = true;
+							else isjhjj = false;
 							while(true) {//如果游戏进行到的回合 不等于 我们设置技能失效的那个回合 就一直循环
 								if(r==whenstart) {
 									if(userh.getId()==Config.hyq.getId()) {
 										userh.setAtk(userh.getAtk()+4);
+										if(isjhjj) {
+											userh.setAtk(userh.getAtk()+2);
+											userh.setXdl(userh.getXdl()+2);
+										}
 									}
 									usertx.setToolTipText(userh.getProperty());
 									userbuff.remove(userh.yxzd);
@@ -5110,6 +5241,10 @@ public class Fight extends JFrame {
 								if(r==whenstop) {//回合来到我们设置技能失效的那个回合 跳出循环
 									if(userh.getId()==Config.hyq.getId()) {
 										userh.setAtk(userh.getAtk()-4);
+										if(isjhjj) {
+											userh.setAtk(userh.getAtk()-2);
+											userh.setXdl(userh.getXdl()-2);
+										}
 									}
 									usertx.setToolTipText(userh.getProperty());
 									userbuff.remove(userh.yxzd);
@@ -5126,21 +5261,27 @@ public class Fight extends JFrame {
 					}.start();
 					userh.setXdl(userh.getXdl()-999);
 				} else if(from.equals(enemyh)) {
-					int d=0;
-					if(enemyh.jhjj==1) d = 14 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
-					else d = 10 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+					int d = 10 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
 					if(d<0) d=0;
-					UpdateJTextArea("【"+enemyh.getName()+"】将在下两回合获得4点攻击力。\n\n");
+					if(enemyh.jhjj!=1) UpdateJTextArea("【"+enemyh.getName()+"】将在下两回合获得4点攻击力。\n\n");
+					else UpdateJTextArea("【"+enemyh.getName()+"】将在下两回合获得6点攻击力和2点行动力。\n\n");
 					balanceskill(enemyh, d);
 					new Thread() {
 						@Override
 						public void run() {
 							int whenstart=r+1;//设置技能生效的回合
 							int whenstop=r+3;//设置技能失效的回合
+							boolean isjhjj;
+							if(enemyh.jhjj==1) isjhjj = true;
+							else isjhjj = false;
 							while(true) {//如果游戏进行到的回合 不等于 我们设置技能失效的那个回合 就一直循环
 								if(r==whenstart) {
 									if(enemyh.getId()==Config.hyq.getId()) {
 										enemyh.setAtk(enemyh.getAtk()+4);
+										if(isjhjj) {
+											enemyh.setAtk(enemyh.getAtk()+2);
+											enemyh.setXdl(enemyh.getXdl()+2);
+										}
 									}
 									enemytx.setToolTipText(enemyh.getProperty());
 									enemybuff.remove(enemyh.yxzd);
@@ -5158,6 +5299,10 @@ public class Fight extends JFrame {
 								if(r==whenstop) {//回合来到我们设置技能失效的那个回合 跳出循环
 									if(enemyh.getId()==Config.hyq.getId()) {
 										enemyh.setAtk(enemyh.getAtk()-4);
+										if(isjhjj) {
+											enemyh.setAtk(enemyh.getAtk()-2);
+											enemyh.setXdl(enemyh.getXdl()-2);
+										}
 									}
 									enemytx.setToolTipText(enemyh.getProperty());
 									enemybuff.remove(enemyh.yxzd);
@@ -5362,6 +5507,12 @@ public class Fight extends JFrame {
 										UpdateJTextArea("【" + enemyh.getName() + "】发动了【复苏】的效果抵挡了一次【完全行动不能】！\n\n");
 									} else {
 										enemyh.setIsgone(false);
+										userh.zkxQC++;
+										if(userh.zkxQC%2==0&&userh.zkxQC<10) {
+											userh.getQ().setMp(userh.getQ().getMp()+1);
+											UpdateJTextArea("【"+userh.getName()+"】的【冰雪十字】的魔法消耗提高了1点！当前魔法消耗为："+userh.getQ().getMp()+"。\n\n");
+											skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
+										}
 										if(enemyh.xyhE>0) {
 											enemyh.xyhE=0;
 											if(enemyh.xyhED>0) {
@@ -5438,6 +5589,11 @@ public class Fight extends JFrame {
 										UpdateJTextArea("【" + userh.getName() + "】发动了【复苏】的效果抵挡了一次【完全行动不能】！\n\n");
 									} else {
 										userh.setIsgone(false);
+										enemyh.zkxQC++;
+										if(enemyh.zkxQC%2==0&&enemyh.zkxQC<10) {
+											enemyh.getQ().setMp(enemyh.getQ().getMp()+1);
+											UpdateJTextArea("【"+enemyh.getName()+"】的【冰雪十字】的魔法消耗提高了1点！当前魔法消耗为："+enemyh.getQ().getMp()+"。\n\n");
+										}
 										if(userh.xyhE>0) {
 											userh.xyhE=0;
 											if(userh.xyhED>0) {
@@ -5511,7 +5667,7 @@ public class Fight extends JFrame {
 					UpdateJTextArea("【"+userh.getName()+"】的【冰雪十字】和【汐之抉择】效果二获得了1点魔法伤害加成！\n\n");
 					userh.zkxQ++;
 					userh.zkxE++;
-					userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。");
+					userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>每造成2次【完全行动不能】，冰雪十字的魔法消耗就会+1，最多提高至10点。");
 					userh.getE().setdescribe("<html>为冰雪十字和汐之抉择效果二提供永久的1点魔法伤害加成。<br/>随机触发以下效果（该技能在回合数为3及以上时才能使用）：<br />"+
 							"1）下两回合内，提供冰雪十字3点魔法伤害加成；<br />2）对方受到"+(8+userh.zkxE)+"点魔法伤害；<br />3）提升4点双抗，持续3回合。</html>");
 					skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
@@ -5535,13 +5691,13 @@ public class Fight extends JFrame {
 							@Override
 							public void run() {
 								int whenstop=r+3;
-								userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。");
+								userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>每造成2次【完全行动不能】，冰雪十字的魔法消耗就会+1，最多提高至10点。");
 								skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
 								while (true) {
 									if (r==whenstop) {
 										if(userh.getId()==Config.zkx.getId()) {
 											userh.zkxQ-=3;
-											userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。");
+											userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>每造成2次【完全行动不能】，冰雪十字的魔法消耗就会+1，最多提高至10点。");
 											skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
 											if(userh.zkxQ==0) {
 												userbuff.remove(userh.xzjzsh);
@@ -5905,6 +6061,7 @@ public class Fight extends JFrame {
 							}
 						}
 					}.start();
+					userh.setXdl(userh.getXdl()-999);
 				} else if(from.equals(enemyh)) {//使用者是对方
 					UpdateJTextArea("【"+enemyh.getName()+"】获得了80%闪避普通攻击的概率和2点魔法防御！\n\n");
 					if(enemyh.jhjj==3) {
@@ -5945,6 +6102,7 @@ public class Fight extends JFrame {
 							}
 						}
 					}.start();
+					enemyh.setXdl(enemyh.getXdl()-999);
 				}
 				break;
 			}
@@ -8162,6 +8320,7 @@ public class Fight extends JFrame {
 	
 	void sur() { // 投降
 		if(r>=13) {
+			nextround=99;
 			winlose = false;
 			setE(9);
 			UpdateJTextArea("你投降了，对方获得了本次比赛的胜利！游戏将在回合结束时结束。\n\n");
@@ -8286,19 +8445,19 @@ public class Fight extends JFrame {
 	}
 	
 	public void getEnemyEquip(int id) {
-		if(id>=33&&id<=46) {//穿装备1
+		if(id>=33&&id<=47) {//穿装备1
 			enemyh.setZ(Config.Allitems.get(id-21));
 		}
-		if(id>=53&&id<=66) {//穿装备2
+		if(id>=53&&id<=67) {//穿装备2
 			enemyh.setX(Config.Allitems.get(id-41));
 		}
-		if(id>=73&&id<=86) {//取消装备1
+		if(id>=73&&id<=87) {//取消装备1
 			enemyh.setZ(null);
 		}
-		if(id>=93&&id<=106) {//取消装备2
+		if(id>=93&&id<=107) {//取消装备2
 			enemyh.setZ(null);
 		}
-		if(id>=113&&id<=126) {//吃装备
+		if(id>=113&&id<=127) {//吃装备
 			
 		}
 		if(id==-99) {//对方掉线了
@@ -8399,6 +8558,7 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 9:{//对方投降
+				nextround=99;
 				winlose=true;
 				UpdateJTextArea("【"+enemyh.getName()+"】（"+enemy.getUsername()+"）投降了！你获得了本次比赛的胜利！\n\n");
 				break;
@@ -8495,12 +8655,20 @@ public class Fight extends JFrame {
 			}
 			case 45:{//会徽
 				enemyh.setXdl(enemyh.getXdl()+3);
+				enemyh.xsh=true;
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【学生会的会徽】。\n\n");
 				break;			
 			}
 			case 46:{//夜宴之声
 				enemyh.yyzs=true;
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【夜宴之声】。\n\n");
+				break;
+			}
+			case 47:{//二阶红月神杖
+				enemyh.setAtk(enemyh.getAtk()+3);
+				enemyh.setMpp(enemyh.getMpp()+1);
+				enemyh.hy=true;
+				UpdateJTextArea("【"+enemyh.getName()+"】装备了【二阶红月神杖】。\n\n");
 				break;
 			}
 			case 53:{//紫月神杖
@@ -8572,12 +8740,20 @@ public class Fight extends JFrame {
 			}
 			case 65:{//会徽
 				enemyh.setXdl(enemyh.getXdl()+3);
+				enemyh.xsh=true;
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【学生会的会徽】。\n\n");
 				break;			
 			}
 			case 66:{//夜宴之声
 				enemyh.yyzs=true;
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【夜宴之声】。\n\n");
+				break;
+			}
+			case 67:{//二阶红月神杖
+				enemyh.setAtk(enemyh.getAtk()+3);
+				enemyh.setMpp(enemyh.getMpp()+1);
+				enemyh.hy=true;
+				UpdateJTextArea("【"+enemyh.getName()+"】装备了【二阶红月神杖】。\n\n");
 				break;
 			}
 			/**
@@ -8652,12 +8828,20 @@ public class Fight extends JFrame {
 			}
 			case 85:{//会徽
 				enemyh.setXdl(enemyh.getXdl()-3);
+				enemyh.xsh=false;
 				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【学生会的会徽】。\n\n");
 				break;			
 			}
 			case 86:{//夜宴之声
 				enemyh.yyzs=false;
 				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【夜宴之声】。\n\n");
+				break;
+			}
+			case 87:{//二阶红月神杖
+				enemyh.setAtk(enemyh.getAtk()-3);
+				enemyh.setMpp(enemyh.getMpp()-1);
+				enemyh.hy=false;
+				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【二阶红月神杖】。\n\n");
 				break;
 			}
 			case 93:{//紫月神杖
@@ -8729,6 +8913,7 @@ public class Fight extends JFrame {
 			}
 			case 105:{//会徽
 				enemyh.setXdl(enemyh.getXdl()-3);
+				enemyh.xsh=false;
 				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【学生会的会徽】。\n\n");
 				break;			
 			}
@@ -8737,14 +8922,18 @@ public class Fight extends JFrame {
 				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【夜宴之声】。\n\n");
 				break;
 			}
+			case 107:{//二阶红月神杖
+				enemyh.setAtk(enemyh.getAtk()-3);
+				enemyh.setMpp(enemyh.getMpp()-1);
+				enemyh.hy=false;
+				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【二阶红月神杖】。\n\n");
+				break;
+			}
 			/**
 			 * - 吃装备
 			 */
 			case 114:{//红月神杖
-				enemyh.setAtk(enemyh.getAtk()+3);
-				enemyh.setMpp(enemyh.getMpp()+1);
-				UpdateJTextArea("【"+enemyh.getName()+"】装备了【红月神杖】。\n\n");
-				break;
+				
 			}
 			case 115:{//长剑
 				enemyh.setAtk(enemyh.getAtk()+5);
@@ -8790,9 +8979,7 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 125:{//会徽
-				enemyh.setXdl(enemyh.getXdl()+3);
-				UpdateJTextArea("【"+enemyh.getName()+"】装备了【学生会的会徽】。\n\n");
-				break;			
+						
 			}
 		}
 		usertx.setToolTipText(userh.getProperty());
@@ -8871,12 +9058,20 @@ public class Fight extends JFrame {
 			}
 			case 25:{//会徽
 				userh.setXdl(userh.getXdl()+3);
+				userh.xsh=true;
 				UpdateJTextArea("你装备了【学生会的会徽】。\n\n");
 				break;			
 			}
 			case 26:{//夜宴之声
 				userh.yyzs=true;
 				UpdateJTextArea("你装备了【夜宴之声】。\n\n");
+				break;
+			}
+			case 27:{//二阶红月神杖
+				userh.setAtk(userh.getAtk()+3);
+				userh.setMpp(userh.getMpp()+1);
+				userh.hy=true;
+				UpdateJTextArea("你装备了【二阶红月神杖】。\n\n");
 				break;
 			}
 			/**
@@ -8951,12 +9146,20 @@ public class Fight extends JFrame {
 			}
 			case 45:{//会徽
 				userh.setXdl(userh.getXdl()-3);
+				userh.xsh=false;
 				UpdateJTextArea("你取消装备了【学生会的会徽】。\n\n");
 				break;			
 			}
 			case 46:{//夜宴之声
 				userh.yyzs=false;
 				UpdateJTextArea("你取消装备了【夜宴之声】。\n\n");
+				break;
+			}
+			case 47:{//二阶红月神杖
+				userh.setAtk(userh.getAtk()-3);
+				userh.setMpp(userh.getMpp()-1);
+				userh.hy=true;
+				UpdateJTextArea("你取消装备了【二阶红月神杖】。\n\n");
 				break;
 			}
 		}
@@ -8970,6 +9173,14 @@ public class Fight extends JFrame {
 			case 1:{
 				if(enemyh.jhjj==1) {
 					enemyh.setApp(enemyh.getApp()+0.3);
+				}
+				break;
+			}
+			case 6:{
+				if(enemyh.jhjj==1) {
+					enemyh.getR().setMp(enemyh.getR().getMp()+2);
+				} else if(enemyh.jhjj==2) {
+					enemyh.getE().setMp(enemyh.getE().getMp()+2);
 				}
 				break;
 			}

@@ -424,6 +424,73 @@ public class Store extends JFrame {
 						} else {
 							JOptionPane.showMessageDialog(null, "加时赛不再提供回复类道具，无法完成购买！");
 						}
+					} else if(item.getId()==14) {
+						if((hero.getZ()!=null&&hero.getZ().getId()==27)||(hero.getX()!=null&&hero.getX().getId()==27)||matchDJH(27)) {
+							JOptionPane.showMessageDialog(null, "你已拥有二阶红月神杖，无法继续购买红月神杖。");
+						} else {
+							if(hero.getZ()!=null&&hero.getZ().getId()==item.getId()) {
+								this.gold -= item.getGold();
+								usergold.setText("剩余金币："+this.gold);
+								fight.tip1.setText("当前拥有金币："+gold);
+								tb.setTitle("道具盒"+djh.size()+"/"+30);
+								fight.sendAll(user.getUsername()+"（"+hero.getName()+"）购买了"+"【"+item.getName()+"】。");
+								fight.UpdateJTextArea("你购买了"+"【"+item.getName()+"】。\n\n");
+								fight.setE(hero.getZ().getId(),3);
+								fight.getUserEquip(hero.getZ().getId()+20);
+								fight.userh.setZ(null);
+								fight.setE(27,1);
+								fight.getUserEquip(27);
+								fight.userh.setZ(Config.Allitems.get(26));
+								e1.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hysz.jpg")));
+								e1.setToolTipText(Config.Allitems.get(26).getItem());
+								fight.zb1.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hysz.jpg")));
+								fight.zb1.setToolTipText(Config.Allitems.get(26).getItem());
+								fight.sendAll(user.getUsername()+"（"+hero.getName()+"）已将"+"【"+item.getName()+"】升级为【二阶红月神杖】！");
+								fight.UpdateJTextArea("你已将"+"【"+item.getName()+"】升级为【二阶红月神杖】！\n\n");
+								JOptionPane.showMessageDialog(null, "已完成付款并将红月神杖升级成了二阶红月神杖。");
+							} else if(hero.getX()!=null&&hero.getX().getId()==item.getId()) {
+								this.gold -= item.getGold();
+								usergold.setText("剩余金币："+this.gold);
+								fight.tip1.setText("当前拥有金币："+gold);
+								tb.setTitle("道具盒"+djh.size()+"/"+30);
+								fight.sendAll(user.getUsername()+"（"+hero.getName()+"）购买了"+"【"+item.getName()+"】。");
+								fight.UpdateJTextArea("你购买了"+"【"+item.getName()+"】。\n\n");
+								fight.setE(hero.getX().getId(),4);
+								fight.getUserEquip(hero.getX().getId()+20);
+								fight.userh.setX(null);
+								fight.setE(27,2);
+								fight.getUserEquip(27);
+								fight.userh.setX(Config.Allitems.get(26));
+								e2.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hysz.jpg")));
+								e2.setToolTipText(Config.Allitems.get(26).getItem());
+								fight.zb2.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hysz.jpg")));
+								fight.zb2.setToolTipText(Config.Allitems.get(26).getItem());
+								fight.sendAll(user.getUsername()+"（"+hero.getName()+"）已将"+"【"+item.getName()+"】升级为【二阶红月神杖】！");
+								fight.UpdateJTextArea("你已将"+"【"+item.getName()+"】升级为【二阶红月神杖】！\n\n");
+								JOptionPane.showMessageDialog(null, "已完成付款并将红月神杖升级成了二阶红月神杖。");
+							} else if(matchDJH(item.getId())) {
+								this.gold -= item.getGold();
+								usergold.setText("剩余金币："+this.gold);
+								fight.tip1.setText("当前拥有金币："+gold);
+								tb.setTitle("道具盒"+djh.size()+"/"+30);
+								fight.sendAll(user.getUsername()+"（"+hero.getName()+"）购买了"+"【"+item.getName()+"】。");
+								fight.UpdateJTextArea("你购买了"+"【"+item.getName()+"】。\n\n");
+								djh.remove(item);
+								djh.add(Config.Allitems.get(26));
+								JOptionPane.showMessageDialog(null, "已完成付款并将红月神杖升级成了二阶红月神杖。");
+							} else {
+								this.gold -= item.getGold();
+								fight.sendAll(user.getUsername()+"（"+hero.getName()+"）购买了"+"【"+item.getName()+"】。");
+								fight.UpdateJTextArea("你购买了"+"【"+item.getName()+"】。\n\n");
+								djh.add(item);
+								have.add(Config.s.getItemIcon(item.getId()));
+								usergold.setText("剩余金币："+this.gold);
+								fight.tip1.setText("当前拥有金币："+gold);
+								tb.setTitle("道具盒"+djh.size()+"/"+30);
+								JOptionPane.showMessageDialog(null, "已完成付款。");
+							}
+							repaint();
+						}
 					} else {
 						this.gold -= item.getGold();
 						fight.sendAll(user.getUsername()+"（"+hero.getName()+"）购买了"+"【"+item.getName()+"】。");
@@ -444,10 +511,9 @@ public class Store extends JFrame {
 							have.add(Config.s.getItemIcon(item.getId()));
 							JOptionPane.showMessageDialog(null, "已完成付款。");
 						} else { // 回合>35 吃装备
-							if(item.getId()!=13&&item.getId()!=19&&item.getId()!=22&&item.getId()!=26) {
+							if(item.getId()!=13&&item.getId()!=14&&item.getId()!=19&&item.getId()!=22&&item.getId()!=25&&item.getId()!=26) {
 								if(fight.eatequip) {
-									if(hero.getZ()!=null||hero.getX()!=null) {
-										if(item.getId()==hero.getZ().getId()||item.getId()==hero.getX().getId()) {
+										if((hero.getZ()!=null&&hero.getZ().getId()==item.getId())||(hero.getX()!=null&&hero.getX().getId()==item.getId())) {
 											fight.eatequip=false;
 											fight.sendAll(user.getUsername()+"（"+hero.getName()+"）吃掉了"+"【"+item.getName()+"】，永久获得了该装备的效果！");
 											fight.UpdateJTextArea("你吃掉了"+"【"+item.getName()+"】，永久获得了该装备的效果！\n\n");
@@ -466,7 +532,6 @@ public class Store extends JFrame {
 											have.add(Config.s.getItemIcon(item.getId()));
 											JOptionPane.showMessageDialog(null, "已完成付款。");
 										}
-									}
 								} else {
 									djh.add(item);
 									have.add(Config.s.getItemIcon(item.getId()));

@@ -116,10 +116,12 @@ public class GetSkillUp extends JFrame {
 			}
 			case 6:{
 				if(h.jhjj==1) {
-					h.getR().setdescribe("<html>无视行动力对对方造成14点魔法伤害，下2回合你提升4点攻击力。<br/><br/>已激活结晶之力。</html>");
+					h.getR().setdescribe("<html>无视行动力对对方造成10点魔法伤害，且下2回合提升自身6点攻击力和2点行动力。<br/><br/>已激活结晶之力。</html>");
+					h.getR().setMp(h.getR().getMp()+2);
 					f.skill4.setToolTipText("<html>（R）"+h.getR().getSkill()+"</html>");
 				} else if(h.jhjj==2) {
 					h.getE().setdescribe("<html>无视行动力对对方造成14点魔法伤害。<br/><br/>已激活结晶之力。</html>");
+					h.getE().setMp(h.getE().getMp()+2);
 					f.skill3.setToolTipText("<html>（E）"+h.getE().getSkill()+"</html>");
 				} else if(h.jhjj==3) {
 					h.getQ().setdescribe("<html>提高30%技能伤害，持续3回合。<br/><br/>该效果影响的回合数可以叠加。已激活结晶之力。</html>");
@@ -152,13 +154,13 @@ public class GetSkillUp extends JFrame {
 			}
 			case 11:{
 				if(h.jhjj==1) {
-					h.getE().setdescribe("<html>下一次普通攻击造成伤害时会使得你回复3点生命值并造成额外的10点魔法伤害。不可叠加。<br/><br/>已激活结晶之力。</html>");
+					h.getE().setdescribe("<html>下一次普通攻击造成伤害时会使得你回复5点生命值并造成额外的9点魔法伤害。不可叠加。<br/><br/>已激活结晶之力。</html>");
 					f.skill3.setToolTipText("<html>（E）"+h.getE().getSkill()+"</html>");
 				} else if(h.jhjj==2) {
 					h.setAtk(h.getAtk()+4);
 					f.usertx.setToolTipText(h.getProperty());
 				} else if(h.jhjj==3) {
-					h.getQ().setdescribe("<html>增加80%闪避普通攻击（在伤害结算前，闪避该攻击）的概率并提升2点魔法防御，持续3回合。<br/><br/>该效果可以叠加。已激活结晶之力。</html>");
+					h.getQ().setdescribe("<html>增加80%闪避普通攻击（在伤害结算前，闪避该攻击）的概率并提升2点魔法防御，持续3回合。<br/><br/>该技能无视行动力且效果可以叠加。已激活结晶之力。</html>");
 					f.skill1.setToolTipText("<html>（Q）"+h.getQ().getSkill()+"</html>");
 				}
 				break;
@@ -175,8 +177,8 @@ public class GetSkillUp extends JFrame {
 				break;
 			}
 			case 6:{
-				cb.addItem("云霄之巅的魔法伤害+4");
-				cb.addItem("星月奇迹的魔法伤害+4且无视行动力");
+				cb.addItem("云霄之巅额外提升2点攻击力和2点行动力（+2魔法消耗）");
+				cb.addItem("星月奇迹的魔法伤害+6且无视行动力（+2魔法消耗）");
 				cb.addItem("先入为主变为伤害增强");
 				break;
 			}
@@ -187,7 +189,7 @@ public class GetSkillUp extends JFrame {
 				break;
 			}
 			case 11:{
-				cb.addItem("光炽剑的魔法伤害+4");
+				cb.addItem("光炽剑的魔法伤害+3且生命回复+2");
 				cb.addItem("基础物攻+4");
 				cb.addItem("闪现+的持续回合+1且回合数允许叠加");
 				break;

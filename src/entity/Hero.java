@@ -42,6 +42,7 @@ public class Hero {
 	public int ysnW=0;//杨圣诺W
 	public boolean zfW=false;//张枫W
 	public int zkxQ=0;//张可汐Q的伤害
+	public int zkxQC=0;//张可汐Q的使用次数
 	public int zkxW=0;//张可汐W
 	public int zkxWH=0;//张可汐W累计承受
 	public int zkxE=0;//张可汐E2的伤害
@@ -69,12 +70,14 @@ public class Hero {
 	 * - 英雄装备 生效判断
 	 */
 	public boolean zy=false;//紫月神杖
+	public boolean hy=false;//红月神杖
 	public boolean yjg=false;//鹰角弓
 	public boolean pjzm=false;//破军之矛
 	public boolean ispjzm=false;//破军之矛不回蓝
 	public int pjzmcd=0;//破军之矛CD
 	public boolean jrz=false;//坚韧者之盾
 	public boolean yyzs=false;//夜宴之声
+	public boolean xsh=false;//学生会会徽
 	public boolean fs=false;//复苏
 	/*
 	 * - 英雄图标 初始化
