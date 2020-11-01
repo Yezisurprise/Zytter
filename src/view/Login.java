@@ -90,8 +90,8 @@ public class Login extends JFrame {
 		xzfwq.setForeground(Color.white);
 		
 		JComboBox<String> fwq = new JComboBox<String>();
-		fwq.addItem("官方服务器（上海）");
-		fwq.addItem("登录至Zytter第三方社区");
+		fwq.addItem("官方上海服务器");
+		fwq.addItem("第三方社区");
 		fwq.setFont(Config.SmallFont);
 		fwq.setBounds(880,365,320,50);
 		fwq.setOpaque(false);
@@ -181,7 +181,7 @@ public class Login extends JFrame {
 					if(String.valueOf(srmm.getPassword()).equals("")) {
 						JOptionPane.showMessageDialog(null,"密码不能为空");
 					} else {
-						if(fwq.getSelectedItem().equals("官方服务器（上海）")) {
+						if(fwq.getSelectedItem().equals("官方上海服务器")) {
 							User user=LoginGame(sryhm.getText().trim(),String.valueOf(srmm.getPassword()));
 							if(user!=null) {
 								if(!user.getUsername().equals("游戏服务器处于关闭状态！")) {

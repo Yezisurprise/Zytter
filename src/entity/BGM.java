@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.util.ArrayList;
 
 import javazoom.jl.player.*;
+import util.Config;
 
 public class BGM extends Thread {
     
@@ -33,7 +34,7 @@ public class BGM extends Thread {
     
     public void stopBGM() {
     	isplaying = false;
-    	player.close();
+    	if(Config.isbgm) player.close();
     	interrupt();
     }
     
@@ -44,45 +45,47 @@ public class BGM extends Thread {
 	@Override
 	public void run() {
 		try {
-			while(isplaying) {
-				String filename = playerlist.get(m);
-				BufferedInputStream buffer = new BufferedInputStream((getClass().getResourceAsStream(filename)));
-		        player = new Player(buffer);
-	        	player.play();
-	        	switch(m) {
-		    		case 0:{
-		    			m = 1;
-		    			break;
-		    		}
-		    		case 1:{
-		    			m = 0;
-		    			break;
-		    		}
-		    		case 2:{
-		    			break;
-		    		}
-		    		case 3:{
-		    			m = 4;
-				    	break;
-		    		}
-		    		case 4:{
-		    			m = 5;
-				    	break;
-		    		}
-		    		case 5:{
-		    			m = 3;
-				    	break;
-		    		}
-		    		case 6:{
-				    	break;
-		    		}
-		    		case 7:{
-				    	break;
-		    		}
-		    		case 8:{
-				    	break;
-		    		}
-		    	}
+			if(Config.isbgm) {
+				while(isplaying) {
+					String filename = playerlist.get(m);
+					BufferedInputStream buffer = new BufferedInputStream((getClass().getResourceAsStream(filename)));
+			        player = new Player(buffer);
+		        	player.play();
+		        	switch(m) {
+			    		case 0:{
+			    			m = 1;
+			    			break;
+			    		}
+			    		case 1:{
+			    			m = 0;
+			    			break;
+			    		}
+			    		case 2:{
+			    			break;
+			    		}
+			    		case 3:{
+			    			m = 4;
+					    	break;
+			    		}
+			    		case 4:{
+			    			m = 5;
+					    	break;
+			    		}
+			    		case 5:{
+			    			m = 3;
+					    	break;
+			    		}
+			    		case 6:{
+					    	break;
+			    		}
+			    		case 7:{
+					    	break;
+			    		}
+			    		case 8:{
+					    	break;
+			    		}
+			    	}
+				}
 	        }
 		} catch (Exception e) {
 			e.printStackTrace();

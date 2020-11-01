@@ -60,14 +60,14 @@ public class Season extends JFrame {
 		tips.setBounds(10, 10, 980, 530);
 		this.add(tips);
 		
-		JLabel season = new JLabel("[S1] \u52C7\u58EB\u957F\u6B4C");
+		JLabel season = new JLabel("[S2] 天赋梦路");
 		season.setForeground(new Color(32, 178, 170));
 		season.setFont(new Font("微软雅黑", Font.BOLD, 35));
 		season.setHorizontalAlignment(SwingConstants.CENTER);
 		season.setBounds(561, 11, 429, 50);
 		this.add(season);
 		
-		JLabel seasontime = new JLabel("\u8D5B\u5B63\u65F6\u95F4\uFF1A2020\u5E741\u67087\u65E5~2020\u5E7410\u670831\u65E5");
+		JLabel seasontime = new JLabel("赛季时间：2020年11月1日~2021年7月31日");
 		seasontime.setFont(new Font("微软雅黑", Font.BOLD, 18));
 		seasontime.setHorizontalAlignment(SwingConstants.CENTER);
 		seasontime.setBounds(561, 71, 429, 42);

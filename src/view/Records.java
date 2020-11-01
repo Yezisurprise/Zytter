@@ -400,9 +400,9 @@ public class Records extends JFrame{
 		
 		for(int i=0;i<recordlist.size();i++) {
 			Record temp = recordlist.get(i);
-			if(temp.getP1().equals(user.getUsername())) {
-				if(temp.getWinner()!=null) {
-					if(temp.getWinner().equals(user.getUsername())) {
+			if(temp.getP1id() == user.getUid()) {
+				if(temp.getWinid()!=0) {
+					if(temp.getWinid() == user.getUid()) {
 						if(temp.getP1djs()==0) {
 							if(temp.getP1elop()>=0) {
 								dtm.addRow(new Object[] { temp.getId(), "胜", "+"+String.valueOf(temp.getP1elop()) });
@@ -435,8 +435,8 @@ public class Records extends JFrame{
 					}
 				}
 			} else {
-				if(temp.getWinner()!=null) {
-					if(temp.getWinner().equals(user.getUsername())) {
+				if(temp.getWinid()!=0) {
+					if(temp.getWinid() == user.getUid()) {
 						if(temp.getP2djs()==0) {
 							if(temp.getP2elop()>=0) {
 								dtm.addRow(new Object[] { temp.getId(), "胜", "+"+String.valueOf(temp.getP2elop()) });
@@ -481,7 +481,7 @@ public class Records extends JFrame{
 					ShowSpec();
 					r=recordlist.get(table.getSelectedRow());
 					gameip.setText(user.getUsername()+" - "+r.getServer()+" - "+r.getHostip()+" - "+r.getTime());
-					if(r.getP1().equals(user.getUsername())) {
+					if(r.getP1id() == user.getUid()) {
 						userrating.setText("本场比赛Rating："+r.getP1rating());
 						if(r.getP1djs()==0) {
 							if(r.getP1elop()>=0) {
@@ -506,6 +506,19 @@ public class Records extends JFrame{
 					}
 					p1.setText(r.getP1());
 					p2.setText(r.getP2());
+					if(r.getP1id() == user.getUid()) {
+						if(r.getWinid() == user.getUid()) {
+							p1.setText(r.getP1()+"[W]");
+						} else {
+							p1.setText(r.getP1()+"[L]");
+						}
+					} else {
+						if(r.getWinid() == user.getUid()) {
+							p2.setText(r.getP2()+"[W]");
+						} else {
+							p2.setText(r.getP2()+"[L]");
+						}
+					}
 					p1k.setText(String.valueOf(r.getP1k()));
 					p1d.setText(String.valueOf(r.getP1d()));
 					p2k.setText(String.valueOf(r.getP2k()));

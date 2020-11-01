@@ -1411,7 +1411,8 @@ public class Fight extends JFrame {
 							elo = 0;
 						}
 						new BalanceGame(winlose, user, enemy, kill, death, 
-								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this).setVisible(true);
+								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this,
+								userbanned, enemybanned, userpicked, enemypicked).setVisible(true);
 						Config.Allheroes.clear();
 						Config.Allitems.clear();
 						Config.Allskills.clear();
@@ -1491,7 +1492,8 @@ public class Fight extends JFrame {
 							elo = 0;
 						}
 						new BalanceGame(winlose, user, enemy, kill, death, 
-								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this).setVisible(true);
+								useror, enemyor, adr, getenemyadr(), useroe, enemyoe, rating, elo, Fight.this,
+								userbanned, enemybanned, userpicked, enemypicked).setVisible(true);
 						Config.Allheroes.clear();
 						Config.Allitems.clear();
 						Config.Allskills.clear();
@@ -7888,41 +7890,41 @@ public class Fight extends JFrame {
 			 * @function 行动力算法
 			 */
 			if (userh.getXdl() > enemyh.getXdl()) {
-				new Voice(getClass().getResourceAsStream("/bgm/atk.mp3")).start();
 				if(userh.getHp()>0) ActionOfUser(userop);
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				new Voice(getClass().getResourceAsStream("/bgm/atk.mp3")).start();
 				if(enemyh.getHp()>0) ActionOfEnemy(enemyop);
 			} else if (userh.getXdl() < enemyh.getXdl()) {
-				new Voice(getClass().getResourceAsStream("/bgm/magic.mp3")).start();
 				if(enemyh.getHp()>0) ActionOfEnemy(enemyop);
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				new Voice(getClass().getResourceAsStream("/bgm/magic.mp3")).start();
 				if(userh.getHp()>0) ActionOfUser(userop);
 			} else if (userh.getXdl() == enemyh.getXdl()) {
 				if (roomcreater) {
-					new Voice(getClass().getResourceAsStream("/bgm/atk.mp3")).start();
 					if(userh.getHp()>0) ActionOfUser(userop);
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					new Voice(getClass().getResourceAsStream("/bgm/magic.mp3")).start();
 					if(enemyh.getHp()>0) ActionOfEnemy(enemyop);
 				} else {
-					new Voice(getClass().getResourceAsStream("/bgm/magic.mp3")).start();
 					if(enemyh.getHp()>0) ActionOfEnemy(enemyop);
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
+					new Voice(getClass().getResourceAsStream("/bgm/atk.mp3")).start();
 					if(userh.getHp()>0) ActionOfUser(userop);
 				}
 			}

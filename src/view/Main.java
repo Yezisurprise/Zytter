@@ -119,7 +119,7 @@ public class Main extends JFrame {
 		rankinglist.setBounds(1149, 564, 207, 92);
 		this.add(rankinglist);
 		
-		JLabel status = new JLabel("[S1] 勇士长歌");
+		JLabel status = new JLabel("[S2] 天赋梦路");
 		status.setForeground(new Color(255, 20, 147));
 		status.setFont(new Font("微软雅黑", Font.BOLD, 45));
 		status.setHorizontalAlignment(SwingConstants.CENTER);
@@ -206,7 +206,7 @@ public class Main extends JFrame {
 		matching.setBounds(855, 708, 420, 44);
 		this.add(matching);
 		
-		matchingtimer = new JLabel("已匹配时长：0分32秒");
+		matchingtimer = new JLabel("已匹配时长：0分0秒");
 		matchingtimer.setVisible(false);
 		matchingtimer.setForeground(new Color(240, 128, 128));
 		matchingtimer.setHorizontalAlignment(SwingConstants.CENTER);

@@ -1,44 +1,63 @@
 package view;
 
 import java.awt.Color;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
 
 import entity.BGM;
+import entity.Hero;
+import entity.PlayerIcon;
 import entity.User;
 import util.Config;
 
-public class BalanceGame extends JFrame {
-
+public class BalanceGame extends JFrame{
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4633977666927622823L;
+	private static final long serialVersionUID = 2929342851569586735L;
+	
+	JPanel spec;
 
+	JLabel p1,p2,vs,kills,deaths,adr,rating,elo,p1k,p1d,p1adr,p1r,p1e,p2k,p2d,p2adr,p2r,p2e;
+	JLabel p1p,p1b,p2p,p2b;
+	JPanel p1p1,p1p2,p1p3,p2p1,p2p2,p2p3,p1b1,p1b2,p2b1,p2b2;
+	
+	JLabel game,userelo,userrating,userrank,gametitle;
+	
+	User user;
+	
 	public BalanceGame(boolean winlose,User user,User enemy,int kill,int death,double p1rating,double p2rating,
-			double p1a,double p2a,int p1elo,int p2elo,double ratingadd,int eloadd,Fight f) {
+			double p1a,double p2a,int p1elo,int p2elo,double ratingadd,int eloadd,Fight f,
+			ArrayList<Hero> userbanned,ArrayList<Hero> enemybanned,ArrayList<Hero> userpicked,ArrayList<Hero> enemypicked) {
+		
+		this.user = user;
+		
 		this.setTitle("Zytter 比赛结算");
-		this.setLayout(null);
 		this.setUndecorated(true);
 		this.setBackground(new Color(255,255,255,220));
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setSize(1000, 550);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setSize(1030, 500);
 		this.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource("img/logo.png")).getImage());
+		this.setLocationRelativeTo(null);
+		this.setLayout(null);
 		
 		JButton back = new JButton("");
 		back.setContentAreaFilled(false);
 		back.setIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/return.png")));
-		back.setBounds(373, 440, 256, 100);
+		back.setBounds(768, 390, 256, 100);
+		this.add(back);
 		back.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
@@ -56,182 +75,1517 @@ public class BalanceGame extends JFrame {
 				Config.bgm.start();
 			}
 		});
-		this.add(back);
 		
-		JLabel game = new JLabel();
+		spec = new JPanel();
+		spec.setLayout(null);
+		spec.setOpaque(false);
+		spec.setBounds(10, 110, 748, 380);
+		this.add(spec);
+		
+		p1 = new JLabel("玩家1");
+		p1.setForeground(new Color(233, 150, 122));
+		p1.setHorizontalAlignment(SwingConstants.CENTER);
+		p1.setFont(new Font("微软雅黑", Font.PLAIN, 42));
+		p1.setBounds(10, 10, 307, 62);
+		spec.add(p1);
+		
+		p2 = new JLabel("玩家2");
+		p2.setForeground(new Color(240, 128, 128));
+		p2.setHorizontalAlignment(SwingConstants.CENTER);
+		p2.setFont(new Font("微软雅黑", Font.PLAIN, 42));
+		p2.setBounds(439, 10, 299, 62);
+		spec.add(p2);
+		
+		vs = new JLabel("VS.");
+		vs.setForeground(new Color(95, 158, 160));
+		vs.setHorizontalAlignment(SwingConstants.CENTER);
+		vs.setFont(new Font("微软雅黑", Font.PLAIN, 45));
+		vs.setBounds(327, 10, 102, 62);
+		spec.add(vs);
+		
+		kills = new JLabel("击杀");
+		kills.setForeground(new Color(95, 158, 160));
+		kills.setHorizontalAlignment(SwingConstants.CENTER);
+		kills.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		kills.setBounds(327, 110, 102, 42);
+		spec.add(kills);
+		
+		deaths = new JLabel("死亡");
+		deaths.setForeground(new Color(95, 158, 160));
+		deaths.setHorizontalAlignment(SwingConstants.CENTER);
+		deaths.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		deaths.setBounds(327, 162, 102, 42);
+		spec.add(deaths);
+		
+		adr = new JLabel("平均伤害");
+		adr.setForeground(new Color(95, 158, 160));
+		adr.setHorizontalAlignment(SwingConstants.CENTER);
+		adr.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		adr.setBounds(327, 214, 102, 42);
+		spec.add(adr);
+		
+		rating = new JLabel("Rating");
+		rating.setForeground(new Color(95, 158, 160));
+		rating.setHorizontalAlignment(SwingConstants.CENTER);
+		rating.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		rating.setBounds(327, 266, 102, 42);
+		spec.add(rating);
+		
+		elo = new JLabel("Elo(+/-)");
+		elo.setForeground(new Color(95, 158, 160));
+		elo.setHorizontalAlignment(SwingConstants.CENTER);
+		elo.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		elo.setBounds(327, 318, 102, 42);
+		spec.add(elo);
+		
+		p1k = new JLabel("玩家1击杀");
+		p1k.setHorizontalAlignment(SwingConstants.CENTER);
+		p1k.setForeground(new Color(95, 158, 160));
+		p1k.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p1k.setBounds(190, 110, 119, 42);
+		spec.add(p1k);
+		
+		p1d = new JLabel("玩家1死亡");
+		p1d.setHorizontalAlignment(SwingConstants.CENTER);
+		p1d.setForeground(new Color(95, 158, 160));
+		p1d.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p1d.setBounds(190, 162, 119, 42);
+		spec.add(p1d);
+		
+		p1adr = new JLabel("玩家1adr");
+		p1adr.setHorizontalAlignment(SwingConstants.CENTER);
+		p1adr.setForeground(new Color(95, 158, 160));
+		p1adr.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p1adr.setBounds(190, 214, 119, 42);
+		spec.add(p1adr);
+		
+		p1r = new JLabel("玩家1技术分");
+		p1r.setHorizontalAlignment(SwingConstants.CENTER);
+		p1r.setForeground(new Color(95, 158, 160));
+		p1r.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p1r.setBounds(190, 266, 119, 42);
+		spec.add(p1r);
+		
+		p1e = new JLabel("玩家1天梯分");
+		p1e.setHorizontalAlignment(SwingConstants.CENTER);
+		p1e.setForeground(new Color(95, 158, 160));
+		p1e.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p1e.setBounds(190, 318, 119, 42);
+		spec.add(p1e);
+		
+		p2k = new JLabel("玩家2击杀");
+		p2k.setHorizontalAlignment(SwingConstants.CENTER);
+		p2k.setForeground(new Color(95, 158, 160));
+		p2k.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p2k.setBounds(439, 110, 119, 42);
+		spec.add(p2k);
+		
+		p2d = new JLabel("玩家2死亡");
+		p2d.setHorizontalAlignment(SwingConstants.CENTER);
+		p2d.setForeground(new Color(95, 158, 160));
+		p2d.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p2d.setBounds(439, 162, 119, 42);
+		spec.add(p2d);
+		
+		p2adr = new JLabel("玩家2adr");
+		p2adr.setHorizontalAlignment(SwingConstants.CENTER);
+		p2adr.setForeground(new Color(95, 158, 160));
+		p2adr.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p2adr.setBounds(439, 214, 119, 42);
+		spec.add(p2adr);
+		
+		p2r = new JLabel("玩家2技术分");
+		p2r.setHorizontalAlignment(SwingConstants.CENTER);
+		p2r.setForeground(new Color(95, 158, 160));
+		p2r.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p2r.setBounds(439, 266, 119, 42);
+		spec.add(p2r);
+		
+		p2e = new JLabel("玩家2天梯分");
+		p2e.setHorizontalAlignment(SwingConstants.CENTER);
+		p2e.setForeground(new Color(95, 158, 160));
+		p2e.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p2e.setBounds(439, 318, 119, 42);
+		spec.add(p2e);
+		
+		p1p = new JLabel("PICK");
+		p1p.setForeground(new Color(233, 150, 122));
+		p1p.setHorizontalAlignment(SwingConstants.CENTER);
+		p1p.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p1p.setBounds(10, 77, 80, 25);
+		spec.add(p1p);
+		
+		p1b = new JLabel("BAN");
+		p1b.setHorizontalAlignment(SwingConstants.CENTER);
+		p1b.setForeground(new Color(233, 150, 122));
+		p1b.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p1b.setBounds(100, 165, 80, 25);
+		spec.add(p1b);
+		
+		p2p = new JLabel("PICK");
+		p2p.setHorizontalAlignment(SwingConstants.CENTER);
+		p2p.setForeground(new Color(240, 128, 128));
+		p2p.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p2p.setBounds(658, 75, 80, 25);
+		spec.add(p2p);
+		
+		p2b = new JLabel("BAN");
+		p2b.setHorizontalAlignment(SwingConstants.CENTER);
+		p2b.setForeground(new Color(240, 128, 128));
+		p2b.setFont(new Font("微软雅黑", Font.BOLD, 20));
+		p2b.setBounds(568, 165, 80, 25);
+		spec.add(p2b);
+		
+		p1p1 = new JPanel();
+		p1p1.setBorder(new LineBorder(new Color(233, 150, 122), 3));
+		p1p1.setOpaque(false);
+		p1p1.setBounds(10, 110, 80, 80);
+		spec.add(p1p1);
+		
+		p1p2 = new JPanel();
+		p1p2.setOpaque(false);
+		p1p2.setBorder(new LineBorder(new Color(233, 150, 122), 3));
+		p1p2.setBounds(10, 200, 80, 80);
+		spec.add(p1p2);
+		
+		p1p3 = new JPanel();
+		p1p3.setOpaque(false);
+		p1p3.setBorder(new LineBorder(new Color(233, 150, 122), 3));
+		p1p3.setBounds(10, 290, 80, 80);
+		spec.add(p1p3);
+		
+		p1b1 = new JPanel();
+		p1b1.setOpaque(false);
+		p1b1.setBorder(new LineBorder(new Color(233, 150, 122), 3));
+		p1b1.setBounds(100, 200, 80, 80);
+		spec.add(p1b1);
+		
+		p1b2 = new JPanel();
+		p1b2.setOpaque(false);
+		p1b2.setBorder(new LineBorder(new Color(233, 150, 122), 3));
+		p1b2.setBounds(100, 290, 80, 80);
+		spec.add(p1b2);
+		
+		p2p1 = new JPanel();
+		p2p1.setOpaque(false);
+		p2p1.setBorder(new LineBorder(new Color(240, 128, 128), 3));
+		p2p1.setBounds(658, 110, 80, 80);
+		spec.add(p2p1);
+		
+		p2p2 = new JPanel();
+		p2p2.setOpaque(false);
+		p2p2.setBorder(new LineBorder(new Color(240, 128, 128), 3));
+		p2p2.setBounds(658, 200, 80, 80);
+		spec.add(p2p2);
+		
+		p2p3 = new JPanel();
+		p2p3.setOpaque(false);
+		p2p3.setBorder(new LineBorder(new Color(240, 128, 128), 3));
+		p2p3.setBounds(658, 290, 80, 80);
+		spec.add(p2p3);
+		
+		p2b1 = new JPanel();
+		p2b1.setOpaque(false);
+		p2b1.setBorder(new LineBorder(new Color(240, 128, 128), 3));
+		p2b1.setBounds(568, 200, 80, 80);
+		spec.add(p2b1);
+		
+		p2b2 = new JPanel();
+		p2b2.setOpaque(false);
+		p2b2.setBorder(new LineBorder(new Color(240, 128, 128), 3));
+		p2b2.setBounds(568, 290, 80, 80);
+		spec.add(p2b2);
+		
+		game = new JLabel("比赛胜利/失败");
+		game.setForeground(new Color(95, 158, 160));
+		game.setHorizontalAlignment(SwingConstants.CENTER);
+		game.setFont(new Font("微软雅黑", Font.BOLD, 44));
+		game.setBounds(10, 10, 1014, 90);
+		this.add(game);
+		
+		userelo = new JLabel();
+		userelo.setToolTipText("");
+		userelo.setText("Elo：2999（+999）");
+		userelo.setHorizontalAlignment(SwingConstants.CENTER);
+		userelo.setForeground(new Color(95, 158, 160));
+		userelo.setFont(new Font("微软雅黑", Font.BOLD, 26));
+		userelo.setBounds(772, 259, 252, 40);
+		this.add(userelo);
+		
+		userrating = new JLabel();
+		userrating.setToolTipText("");
+		userrating.setText("Rating：2.22 ↑");
+		userrating.setHorizontalAlignment(SwingConstants.CENTER);
+		userrating.setForeground(new Color(95, 158, 160));
+		userrating.setFont(new Font("微软雅黑", Font.BOLD, 26));
+		userrating.setBounds(772, 185, 252, 40);
+		this.add(userrating);
+		
+		userrank = new JLabel();
+		userrank.setToolTipText("");
+		userrank.setBounds(768, 326, 256, 40);
+		this.add(userrank);
+		userrank.setText("定级赛剩余：5局");
+		userrank.setHorizontalAlignment(SwingConstants.CENTER);
+		userrank.setForeground(new Color(95, 158, 160));
+		userrank.setFont(new Font("微软雅黑", Font.BOLD, 26));
+		
+		gametitle = new JLabel();
+		gametitle.setToolTipText("");
+		gametitle.setText("比赛结算");
+		gametitle.setHorizontalAlignment(SwingConstants.CENTER);
+		gametitle.setForeground(new Color(199, 21, 133));
+		gametitle.setFont(new Font("等线", Font.BOLD, 30));
+		gametitle.setBounds(772, 110, 252, 40);
+		this.add(gametitle);
+		
+		// TODO 比赛结算
+		
 		if(winlose) {
 			game.setText("比赛胜利");
 		} else {
 			game.setText("比赛失败");
 		}
-		game.setHorizontalAlignment(SwingConstants.CENTER);
-		game.setForeground(new Color(106, 90, 205));
-		game.setFont(new Font("等线", Font.BOLD, 42));
-		game.setBounds(22, 22, 245, 68);
-		this.add(game);
 		
-		JLabel p1name = new JLabel(user.getUsername());
-		p1name.setForeground(new Color(205, 92, 92));
-		p1name.setFont(new Font("等线", Font.BOLD, 28));
-		p1name.setBounds(60, 128, 207, 52);
-		this.add(p1name);
-		
-		JLabel p2name = new JLabel(enemy.getUsername());
-		p2name.setForeground(new Color(205, 92, 92));
-		p2name.setFont(new Font("等线", Font.BOLD, 28));
-		p2name.setBounds(60, 205, 207, 52);
-		this.add(p2name);
-		
-		JLabel plk = new JLabel("击杀");
-		plk.setHorizontalAlignment(SwingConstants.CENTER);
-		plk.setFont(new Font("等线", Font.BOLD, 28));
-		plk.setForeground(new Color(240, 128, 128));
-		plk.setBounds(277, 34, 93, 52);
-		this.add(plk);
-		
-		JLabel pld = new JLabel("死亡");
-		pld.setHorizontalAlignment(SwingConstants.CENTER);
-		pld.setForeground(new Color(240, 128, 128));
-		pld.setFont(new Font("等线", Font.BOLD, 28));
-		pld.setBounds(391, 34, 93, 52);
-		this.add(pld);
-		
-		JLabel plrate = new JLabel("Rating");
-		plrate.setHorizontalAlignment(SwingConstants.CENTER);
-		plrate.setForeground(new Color(240, 128, 128));
-		plrate.setFont(new Font("等线", Font.BOLD, 28));
-		plrate.setBounds(512, 34, 93, 52);
-		this.add(plrate);
-		
-		JLabel pladr = new JLabel("平均伤害");
-		pladr.setHorizontalAlignment(SwingConstants.CENTER);
-		pladr.setForeground(new Color(240, 128, 128));
-		pladr.setFont(new Font("等线", Font.BOLD, 28));
-		pladr.setBounds(649, 34, 119, 52);
-		this.add(pladr);
-		
-		JLabel plelo = new JLabel("天梯积分");
-		plelo.setHorizontalAlignment(SwingConstants.CENTER);
-		plelo.setForeground(new Color(240, 128, 128));
-		plelo.setFont(new Font("等线", Font.BOLD, 28));
-		plelo.setBounds(795, 34, 169, 52);
-		this.add(plelo);
-		
-		JLabel p1k = new JLabel(String.valueOf(kill));
-		p1k.setHorizontalAlignment(SwingConstants.CENTER);
-		p1k.setForeground(new Color(240, 128, 128));
-		p1k.setFont(new Font("等线", Font.BOLD, 28));
-		p1k.setBounds(277, 128, 93, 52);
-		this.add(p1k);
-		
-		JLabel p1d = new JLabel(String.valueOf(death));
-		p1d.setHorizontalAlignment(SwingConstants.CENTER);
-		p1d.setForeground(new Color(240, 128, 128));
-		p1d.setFont(new Font("等线", Font.BOLD, 28));
-		p1d.setBounds(391, 128, 93, 52);
-		this.add(p1d);
-		
-		JLabel p1r = new JLabel(String.valueOf(p1rating));
-		p1r.setHorizontalAlignment(SwingConstants.CENTER);
-		p1r.setForeground(new Color(240, 128, 128));
-		p1r.setFont(new Font("等线", Font.BOLD, 28));
-		p1r.setBounds(512, 128, 93, 52);
-		this.add(p1r);
-		
-		JLabel p1adr = new JLabel(String.valueOf(p1a));
-		p1adr.setHorizontalAlignment(SwingConstants.CENTER);
-		p1adr.setForeground(new Color(240, 128, 128));
-		p1adr.setFont(new Font("等线", Font.BOLD, 28));
-		p1adr.setBounds(649, 128, 119, 52);
-		this.add(p1adr);
-		
-		JLabel p1e = new JLabel();
-		if(user.getDjs()<=0) {
-			p1e.setText(String.valueOf(p1elo));
+		if(ratingadd>=user.getRating()) {
+			userrating.setText("Rating："+ratingadd+" ↑");
 		} else {
-			p1e.setText("未定级");
+			userrating.setText("Rating："+ratingadd+" ↓");
 		}
-		p1e.setHorizontalAlignment(SwingConstants.CENTER);
-		p1e.setForeground(new Color(240, 128, 128));
-		p1e.setFont(new Font("等线", Font.BOLD, 28));
-		p1e.setBounds(795, 128, 169, 52);
-		this.add(p1e);
 		
-		JLabel p2k = new JLabel(String.valueOf(death));
-		p2k.setHorizontalAlignment(SwingConstants.CENTER);
-		p2k.setForeground(new Color(240, 128, 128));
-		p2k.setFont(new Font("等线", Font.BOLD, 28));
-		p2k.setBounds(277, 205, 93, 52);
-		this.add(p2k);
-		
-		JLabel p2d = new JLabel(String.valueOf(kill));
-		p2d.setHorizontalAlignment(SwingConstants.CENTER);
-		p2d.setForeground(new Color(240, 128, 128));
-		p2d.setFont(new Font("等线", Font.BOLD, 28));
-		p2d.setBounds(391, 205, 93, 52);
-		this.add(p2d);
-		
-		JLabel p2r = new JLabel(String.valueOf(p2rating));
-		p2r.setHorizontalAlignment(SwingConstants.CENTER);
-		p2r.setForeground(new Color(240, 128, 128));
-		p2r.setFont(new Font("等线", Font.BOLD, 28));
-		p2r.setBounds(512, 205, 93, 52);
-		this.add(p2r);
-		
-		JLabel p2adr = new JLabel(String.valueOf(p2a));
-		p2adr.setHorizontalAlignment(SwingConstants.CENTER);
-		p2adr.setForeground(new Color(240, 128, 128));
-		p2adr.setFont(new Font("等线", Font.BOLD, 28));
-		p2adr.setBounds(649, 205, 119, 52);
-		this.add(p2adr);
-		
-		JLabel p2e = new JLabel();
-		if(enemy.getDjs()<=0) {
-			p2e.setText(String.valueOf(p2elo));
-		} else {
-			p2e.setText("未定级");
-		}
-		p2e.setHorizontalAlignment(SwingConstants.CENTER);
-		p2e.setForeground(new Color(240, 128, 128));
-		p2e.setFont(new Font("等线", Font.BOLD, 28));
-		p2e.setBounds(795, 205, 169, 52);
-		this.add(p2e);
-		
-		JLabel rating = new JLabel("您本次比赛的技术得分："+ratingadd);
-		rating.setHorizontalAlignment(SwingConstants.CENTER);
-		rating.setForeground(new Color(95, 158, 160));
-		rating.setFont(new Font("等线", Font.BOLD, 28));
-		rating.setBounds(10, 289, 980, 40);
-		this.add(rating);
-		
-		JLabel elo = new JLabel();
 		if(user.getDjs()<=0) {
 			if(eloadd>=0) {
-				elo.setText("您当前的天梯积分："+user.getElo()+"（+"+eloadd+"）");
+				userelo.setText("Elo："+user.getElo()+"（+"+eloadd+"）");
 			} else {
-				elo.setText("您当前的天梯积分："+user.getElo()+"（"+eloadd+"）");
+				userelo.setText("Elo："+user.getElo()+"（"+eloadd+"）");
 			}
 		} else {
-			elo.setText("您当前尚未激活天梯积分");
+			userelo.setText("Elo：定级赛");
 		}
-		elo.setHorizontalAlignment(SwingConstants.CENTER);
-		elo.setForeground(new Color(95, 158, 160));
-		elo.setFont(new Font("等线", Font.BOLD, 28));
-		elo.setBounds(10, 339, 980, 40);
-		this.add(elo);
 		
-		JLabel rank = new JLabel();
 		if(user.getDjs()<=0) {
-			rank.setText("您当前的段位："+user.getRank());
+			userrank.setText("Rank："+user.getRank());
 		} else {
-			rank.setText("再胜利"+user.getDjs()+"场天梯匹配即可显示您的段位");
+			userrank.setText("定级赛剩余："+user.getDjs()+"局");
+			userrank.setToolTipText("再获得"+user.getDjs()+"局天梯匹配的胜利以激活段位评价");
 		}
-		rank.setHorizontalAlignment(SwingConstants.CENTER);
-		rank.setForeground(new Color(95, 158, 160));
-		rank.setFont(new Font("等线", Font.BOLD, 28));
-		rank.setBounds(10, 390, 980, 40);
-		this.add(rank);
 		
-		this.setLocationRelativeTo(null);
+		// TODO 比赛记录
+		
+		p1.setText(user.getUsername());
+		p2.setText(enemy.getUsername());
+		p1k.setText(String.valueOf(kill));
+		p1d.setText(String.valueOf(death));
+		p2k.setText(String.valueOf(death));
+		p2d.setText(String.valueOf(kill));
+		p1adr.setText(String.valueOf(p1a));
+		p2adr.setText(String.valueOf(p2a));
+		p1r.setText(String.valueOf(p1rating));
+		p2r.setText(String.valueOf(p2rating));
+		
+		if(user.getDjs()==0) {
+			if(eloadd>=0) {
+				p1e.setText("+"+eloadd);
+			} else {
+				p1e.setText(String.valueOf(eloadd));
+			}
+		} else {
+			p1e.setText("定级赛");
+		}
+		if(enemy.getDjs()==0) {
+			p2e.setText("-");
+		} else {
+			p2e.setText("定级赛");
+		}
+		
+		for(int i=0,j=1;i<userbanned.size();i++,j+=2) {
+			getBannedImage(userbanned.get(i).getId(), j);
+		}
+		
+		for(int i=0,j=1;i<userpicked.size();i++,j+=2) {
+			getPickedImage(userpicked.get(i).getId(), j);
+		}
+		
+		for(int i=0,j=2;i<enemybanned.size();i++,j+=2) {
+			getBannedImage(enemybanned.get(i).getId(), j);
+		}
+		
+		for(int i=0,j=2;i<enemypicked.size();i++,j+=2) {
+			getPickedImage(enemypicked.get(i).getId(), j);
+		}
+		
+	}
+	
+	void getBannedImage(int id,int x) {
+		switch(id) {
+			case 0:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new JPanel();
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new JPanel();
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new JPanel();
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new JPanel();
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 1:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 2:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 3:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 4:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 5:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 6:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 7:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 8:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 9:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 10:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 11:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+			case 12:{
+				if(x==1) {
+					spec.remove(p1b1);
+					p1b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p1b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b1.setBounds(100, 200, 80, 80);
+					p1b1.setOpaque(false);
+					spec.add(p1b1);
+				} else if(x==2) {
+					spec.remove(p2b1);
+					p2b1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p2b1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b1.setBounds(568, 200, 80, 80);
+					p2b1.setOpaque(false);
+					spec.add(p2b1);
+				} else if(x==3) {
+					spec.remove(p1b2);
+					p1b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p1b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1b2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1b2.setBounds(100, 290, 80, 80);
+					p1b2.setOpaque(false);
+					spec.add(p1b2);
+				} else if(x==4) {
+					spec.remove(p2b2);
+					p2b2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p2b2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2b2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2b2.setBounds(568, 290, 80, 80);
+					p2b2.setOpaque(false);
+					spec.add(p2b2);
+				}
+				repaint();
+				break;
+			}
+		}
+	}
+	
+	void getPickedImage(int id,int x) {
+		/**
+		 * 1
+		 */
+		switch(id) {
+			case 0:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new JPanel();
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new JPanel();
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new JPanel();
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new JPanel();
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new JPanel();
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new JPanel();
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 1:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 2:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lxs.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 3:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ysn.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 4:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/ltj.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 5:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zf.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 6:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/hyq.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 7:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/xyh.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 8:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zkx.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 9:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/zxy.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 10:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/lm.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 11:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/sjj.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+			case 12:{
+				if(x==1) {
+					spec.remove(p1p1);
+					p1p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p1p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p1.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p1.setBounds(10, 110, 80, 80);
+					p1p1.setOpaque(false);
+					spec.add(p1p1);
+				} else if(x==2) {
+					spec.remove(p2p1);
+					p2p1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p2p1.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p1.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p1.setBounds(658, 110, 80, 80);
+					p2p1.setOpaque(false);
+					spec.add(p2p1);
+				} else if(x==3) {
+					spec.remove(p1p2);
+					p1p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p1p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p2.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p2.setBounds(10, 200, 80, 80);
+					p1p2.setOpaque(false);
+					spec.add(p1p2);
+				} else if(x==4) {
+					spec.remove(p2p2);
+					p2p2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p2p2.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p2.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p2.setBounds(658, 200, 80, 80);
+					p2p2.setOpaque(false);
+					spec.add(p2p2);
+				} else if(x==5) {
+					spec.remove(p1p3);
+					p1p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p1p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p1p3.setBorder(new LineBorder(Config.usercolor, 3));
+					p1p3.setBounds(10, 290, 80, 80);
+					p1p3.setOpaque(false);
+					spec.add(p1p3);
+				} else if(x==6) {
+					spec.remove(p2p3);
+					p2p3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/w.jpg")).getImage());  
+					p2p3.setToolTipText(Config.Allheroes.get(id-1).getName());
+					p2p3.setBorder(new LineBorder(Config.enemycolor, 3));
+					p2p3.setBounds(658, 290, 80, 80);
+					p2p3.setOpaque(false);
+					spec.add(p2p3);
+				}
+				repaint();
+				break;
+			}
+		}
 	}
 }

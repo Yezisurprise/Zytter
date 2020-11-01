@@ -4,7 +4,9 @@ public class Record {
 	
 	private int id;//比赛记录号（房间号）
 	private String p1,p2;//玩家ID
+	private int p1id,p2id;
 	private String winner;//胜利者ID
+	private int winid;
 	private int p1elo,p2elo;//天梯积分
 	private int p1elop,p2elop;//积分变动
 	private int p1b1,p1b2,p2b1,p2b2;//BAN
@@ -33,11 +35,29 @@ public class Record {
 	public void setP2(String p2) {
 		this.p2 = p2;
 	}
+	public int getP1id() {
+		return p1id;
+	}
+	public void setP1id(int p1id) {
+		this.p1id = p1id;
+	}
+	public int getP2id() {
+		return p2id;
+	}
+	public void setP2id(int p2id) {
+		this.p2id = p2id;
+	}
 	public String getWinner() {
 		return winner;
 	}
 	public void setWinner(String winner) {
 		this.winner = winner;
+	}
+	public int getWinid() {
+		return winid;
+	}
+	public void setWinid(int winid) {
+		this.winid = winid;
 	}
 	public int getP1elo() {
 		return p1elo;
@@ -205,7 +225,7 @@ public class Record {
 	public Record(int id, String p1, String p2, String winner, int p1elo, int p2elo, int p1elop, int p2elop, int p1b1,
 			int p1b2, int p2b1, int p2b2, int p1p1, int p1p2, int p1p3, int p2p1, int p2p2, int p2p3, double p1rating,
 			double p2rating, int p1k, int p1d, int p2k, int p2d, double p1adr, double p2adr, int p1djs, int p2djs,
-			String time, String server, String hostip) {
+			String time, String server, String hostip, int p1id, int p2id, int winid) {
 		super();
 		this.id = id;
 		this.p1 = p1;
@@ -238,6 +258,9 @@ public class Record {
 		this.time = time;
 		this.server = server;
 		this.hostip = hostip;
+		this.p1id = p1id;
+		this.p2id = p2id;
+		this.winid = winid;
 	}
 	
 }

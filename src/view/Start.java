@@ -15,6 +15,7 @@ public class Start {
 		/*
 		 * Test
 		 */
+		if(args.length==1&&args[0].equals("-bgmoff")) Config.isbgm = false;
 		InitGlobalFont(Config.GlobalFont);
 		InitToolTipShowTime();
 		new Welcome().setVisible(true);

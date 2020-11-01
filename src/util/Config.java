@@ -17,14 +17,15 @@ public class Config {
 	 * - 游戏常量定义
 	 */
 	public static final String GlobalTitle = "Zytter Client"; // 全局界面标题
-	public static final int clientversion = 20200920; // 客户端版本号
-	public static final String clientengversion = "v1.7"; // 另一个版本号
+	public static final int clientversion = 20201101; // 客户端版本号
+	public static final String clientengversion = "v1.8"; // 另一个版本号
 	public static final String version = clientversion + " by Zy初心组"; // 首页显示版本号
 	public static Service s = new Service(); // 用于调用Dao包底层方法
 	public static boolean isinroom = false; // 玩家是否处于房间状态
 	
 	//BGM
 	public static BGM bgm;
+	public static boolean isbgm = true; // BGM播放开关
 	
 	//字体
 	public static Font LoginFont = new Font("微软雅黑 Light",Font.PLAIN,48);

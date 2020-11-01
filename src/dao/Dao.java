@@ -1302,14 +1302,15 @@ public class Dao {
 		int i=0;
 		Connection conn = DBUtil.getConnect();
 		PreparedStatement psmt=null;
-		String sql="insert into games(p1,roomid,gametime,server,hostip) values(?,?,?,?,?)";
+		String sql="insert into games(p1,p1id,roomid,gametime,server,hostip) values(?,?,?,?,?,?)";
 		try {
 			psmt=conn.prepareStatement(sql);
 			psmt.setString(1, user.getUsername());
-			psmt.setInt(2, roomid);
-			psmt.setString(3, gametime);
-			psmt.setString(4, server);
-			psmt.setString(5, hostip);
+			psmt.setInt(2, user.getUid());
+			psmt.setInt(3, roomid);
+			psmt.setString(4, gametime);
+			psmt.setString(5, server);
+			psmt.setString(6, hostip);
 			i=psmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1388,8 +1389,11 @@ public class Dao {
 				int p1djs = rs.getInt(28),p2djs = rs.getInt(29);
 				String time = rs.getString(30),server = rs.getString(31);
 				String hostip = rs.getString(32);
+				int p1id = rs.getInt(33), p2id = rs.getInt(34);
+				int winid = rs.getInt(35);
 				r = new Record(id, p1, p2, winner, p1elo, p2elo, p1elop, p2elop, p1b1, p1b2, p2b1, p2b2, p1p1,
-						p1p2, p1p3, p2p1, p2p2, p2p3, p1rating, p2rating, p1k, p1d, p2k, p2d, p1adr, p2adr, p1djs, p2djs, time, server, hostip);
+						p1p2, p1p3, p2p1, p2p2, p2p3, p1rating, p2rating, p1k, p1d, p2k, p2d, p1adr, p2adr, p1djs, p2djs,
+						time, server, hostip, p1id, p2id, winid);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1407,11 +1411,11 @@ public class Dao {
 		ResultSet rs =null;
 		PreparedStatement psmt=null;
 		Record r =null;
-		String sql="select * from games where p1=? or p2=?";
+		String sql="select * from games where p1id=? or p2id=?";
 		try {
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, user.getUsername());
-			psmt.setString(2, user.getUsername());
+			psmt.setInt(1, user.getUid());
+			psmt.setInt(2, user.getUid());
 			rs = psmt.executeQuery();
 			while (rs.next()) {
 				int id = rs.getInt(2);
@@ -1427,8 +1431,11 @@ public class Dao {
 				int p1djs = rs.getInt(28),p2djs = rs.getInt(29);
 				String time = rs.getString(30),server = rs.getString(31);
 				String hostip = rs.getString(32);
+				int p1id = rs.getInt(33), p2id = rs.getInt(34);
+				int winid = rs.getInt(35);
 				r = new Record(id, p1, p2, winner, p1elo, p2elo, p1elop, p2elop, p1b1, p1b2, p2b1, p2b2, p1p1,
-						p1p2, p1p3, p2p1, p2p2, p2p3, p1rating, p2rating, p1k, p1d, p2k, p2d, p1adr, p2adr, p1djs, p2djs, time, server, hostip);
+						p1p2, p1p3, p2p1, p2p2, p2p3, p1rating, p2rating, p1k, p1d, p2k, p2d, p1adr, p2adr, p1djs, p2djs,
+						time, server, hostip, p1id, p2id, winid);
 				a.add(r);
 			}
 		} catch (SQLException e) {
@@ -1517,9 +1524,9 @@ public class Dao {
 		String sql;
 		String sql2;
 		if(roomcreater) {
-			sql2="update games set p1rating=?,p1k=?,p1d=?,p1adr=?,p1djs=? where roomid=?";
+			sql2="update games set p1id=?,p1rating=?,p1k=?,p1d=?,p1adr=?,p1djs=? where roomid=?";
 		} else {
-			sql2="update games set p2rating=?,p2k=?,p2d=?,p2adr=?,p2djs=? where roomid=?";
+			sql2="update games set p2id=?,p2rating=?,p2k=?,p2d=?,p2adr=?,p2djs=? where roomid=?";
 		}
 		try {
 			if(roomcreater) {
@@ -1738,12 +1745,13 @@ public class Dao {
 				}
 			}
 			psmt2=conn.prepareStatement(sql2);
-			psmt2.setDouble(1, rating);
-			psmt2.setInt(2, kill);
-			psmt2.setInt(3, death);
-			psmt2.setDouble(4, adr);
-			psmt2.setInt(5, djs);
-			psmt2.setInt(6, roomid);
+			psmt2.setInt(1, user.getUid());
+			psmt2.setDouble(2, rating);
+			psmt2.setInt(3, kill);
+			psmt2.setInt(4, death);
+			psmt2.setDouble(5, adr);
+			psmt2.setInt(6, djs);
+			psmt2.setInt(7, roomid);
 			i=psmt2.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1765,11 +1773,12 @@ public class Dao {
 		PreparedStatement psmt1=null;
 		PreparedStatement psmt2=null;
 		PreparedStatement psmt3=null;
-		String sql1="update games set winner=? where roomid=?";
+		String sql1="update games set winner=?,winid=? where roomid=?";
 		try {
 			psmt1=conn.prepareStatement(sql1);
 			psmt1.setString(1, user.getUsername());
-			psmt1.setInt(2, roomid);
+			psmt1.setInt(2, user.getUid());
+			psmt1.setInt(3, roomid);
 			i=psmt1.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -1779,9 +1788,9 @@ public class Dao {
 		String sql2;
 		String sql3;
 		if(roomcreater) {
-			sql3="update games set p1rating=?,p1k=?,p1d=?,p1adr=?,p1djs=? where roomid=?";
+			sql3="update games set p1id=?,p1rating=?,p1k=?,p1d=?,p1adr=?,p1djs=? where roomid=?";
 		} else {
-			sql3="update games set p2rating=?,p2k=?,p2d=?,p2adr=?,p2djs=? where roomid=?";
+			sql3="update games set p2id=?,p2rating=?,p2k=?,p2d=?,p2adr=?,p2djs=? where roomid=?";
 		}
 		try {
 			if(roomcreater) {
@@ -2000,12 +2009,13 @@ public class Dao {
 				}
 			}
 			psmt3=conn.prepareStatement(sql3);
-			psmt3.setDouble(1, rating);
-			psmt3.setInt(2, kill);
-			psmt3.setInt(3, death);
-			psmt3.setDouble(4, adr);
-			psmt3.setInt(5, djs);
-			psmt3.setInt(6, roomid);
+			psmt3.setInt(1, user.getUid());
+			psmt3.setDouble(2, rating);
+			psmt3.setInt(3, kill);
+			psmt3.setInt(4, death);
+			psmt3.setDouble(5, adr);
+			psmt3.setInt(6, djs);
+			psmt3.setInt(7, roomid);
 			i=psmt3.executeUpdate();
 		} catch (Exception e1) {
 			e1.printStackTrace();
