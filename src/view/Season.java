@@ -44,7 +44,7 @@ public class Season extends JFrame {
 		
 		main.setEnabled(false);
 		
-		this.setTitle("Season Status");
+		this.setTitle("赛季数据 "+Config.seasonversion+" "+Config.GlobalTitle);
 		this.setLayout(null);
 		this.setUndecorated(true);
 		this.setBackground(new Color(255,255,255,220));
@@ -60,14 +60,14 @@ public class Season extends JFrame {
 		tips.setBounds(10, 10, 980, 530);
 		this.add(tips);
 		
-		JLabel season = new JLabel("[S2] 天赋梦路");
+		JLabel season = new JLabel(Config.seasonversion);
 		season.setForeground(new Color(32, 178, 170));
 		season.setFont(new Font("微软雅黑", Font.BOLD, 35));
 		season.setHorizontalAlignment(SwingConstants.CENTER);
 		season.setBounds(561, 11, 429, 50);
 		this.add(season);
 		
-		JLabel seasontime = new JLabel("赛季时间：2020年11月1日~2021年7月31日");
+		JLabel seasontime = new JLabel(Config.seasontime);
 		seasontime.setFont(new Font("微软雅黑", Font.BOLD, 18));
 		seasontime.setHorizontalAlignment(SwingConstants.CENTER);
 		seasontime.setBounds(561, 71, 429, 42);

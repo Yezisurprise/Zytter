@@ -198,7 +198,7 @@ public class Looking extends JFrame {
 							if(pw!=null) { // 密码不为null
 								if(!pw.equals("")) { // 密码不为空
 									String input = JOptionPane.showInputDialog("请输入该服务器的连接密码：");
-									if(input.equals(pw)) {
+									if(input!=null&&input.equals(pw)) {
 										ConnectServer(s);
 									} else {
 										om.setEnabled(true);
@@ -333,17 +333,17 @@ public class Looking extends JFrame {
 								} else {
 									om.setEnabled(true);
 									Looking.this.setEnabled(true);
-									JOptionPane.showMessageDialog(null, "账号或密码错误，请重新输入。");
+									JOptionPane.showMessageDialog(null, "通行证用户名或密码错误，请重新输入。");
 								}
 							} else {
 								om.setEnabled(true);
 								Looking.this.setEnabled(true);
-								JOptionPane.showMessageDialog(null, "该账号已被官方封停无法进入任何服务器！");
+								JOptionPane.showMessageDialog(null, "该通行证已被官方封停无法进入任何服务器！");
 							}
 						} else {
 							om.setEnabled(true);
 							Looking.this.setEnabled(true);
-							JOptionPane.showMessageDialog(null, "该账号在该服务器上处于登录状态，不能重复登录。");
+							JOptionPane.showMessageDialog(null, "该通行证在该服务器上处于登录状态，不能重复登录。");
 						}
 					} else {
 						om.setEnabled(true);

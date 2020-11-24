@@ -16,19 +16,21 @@ public class Config {
 	/*
 	 * - 游戏常量定义
 	 */
-	public static final String GlobalTitle = "Zytter Client"; // 全局界面标题
-	public static final int clientversion = 20201101; // 客户端版本号
-	public static final String clientengversion = "v1.8"; // 另一个版本号
-	public static final String version = clientversion + " by Zy初心组"; // 首页显示版本号
+	public static final String GlobalTitle = "学园激斗事件簿客户端"; // 全局界面标题
+	public static final int clientversion = 20201124; // 客户端版本号
+	public static final String clientengversion = "v1.8a"; // 另一个版本号
+	public static final String version = clientversion + " by Team Zy"; // 首页显示版本号
+	public static final String seasonversion = "[S2] 天赋梦路"; // 赛季名称
+	public static final String seasontime = "赛季时间：2020年11月1日~2021年7月31日"; // 赛季时间
 	public static Service s = new Service(); // 用于调用Dao包底层方法
-	public static boolean isinroom = false; // 玩家是否处于房间状态
 	
 	//BGM
 	public static BGM bgm;
 	public static boolean isbgm = true; // BGM播放开关
 	
 	//字体
-	public static Font LoginFont = new Font("微软雅黑 Light",Font.PLAIN,48);
+	public static Font LoginFont = new Font("微软雅黑 Light",Font.PLAIN,44);
+	public static Font FortyFont = new Font("微软雅黑 Light",Font.PLAIN,40);
 	public static Font SmallFont = new Font("微软雅黑 Light",Font.PLAIN,28);
 	public static Font ButtonFont = new Font("微软雅黑 Light",Font.PLAIN,32);
 	public static Font GlobalFont = new Font("微软雅黑 Light",Font.PLAIN,18);

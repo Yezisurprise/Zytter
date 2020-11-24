@@ -61,10 +61,10 @@ public class HeroesList extends JFrame {
 		
 		main.setEnabled(false);
 		
-		this.setTitle("Zytter HeroesList");
+		this.setTitle("Ó¢ÐÛÍ¼¼ø "+Config.GlobalTitle);
 		this.setUndecorated(true);
 		this.setBackground(new Color(255,255,255,220));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setSize(1250, 650);
 		this.setLayout(null);
 		

@@ -90,7 +90,7 @@ public class OfflineMain extends JFrame {
 		username.setForeground(new Color(233, 150, 122));
 		username.setFont(new Font("微软雅黑", Font.BOLD, 40));
 		
-		JLabel tip = new JLabel("欢迎来到Zytter的第三方社区");
+		JLabel tip = new JLabel("学园激斗事件簿的第三方社区欢迎您");
 		tip.setForeground(new Color(255, 20, 147));
 		tip.setFont(new Font("微软雅黑", Font.BOLD, 30));
 		tip.setHorizontalAlignment(SwingConstants.CENTER);
@@ -140,7 +140,7 @@ public class OfflineMain extends JFrame {
 			
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "确定退出游戏？", "离开Zytter", JOptionPane.OK_CANCEL_OPTION)==0) {
+				if(JOptionPane.showConfirmDialog(null, "确定退出游戏？", "登出学园激斗事件簿", JOptionPane.OK_CANCEL_OPTION)==0) {
 					System.exit(0);
 				}
 			}
@@ -183,7 +183,7 @@ public class OfflineMain extends JFrame {
 	 */
 	
 	void quit(User user) {
-		if(JOptionPane.showConfirmDialog(null, "确定退出游戏？", "离开Zytter", JOptionPane.OK_CANCEL_OPTION)==0) {
+		if(JOptionPane.showConfirmDialog(null, "确定退出游戏？", "登出学园激斗事件簿", JOptionPane.OK_CANCEL_OPTION)==0) {
 			System.exit(0);
 		}
 	}

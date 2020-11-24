@@ -119,7 +119,7 @@ public class Main extends JFrame {
 		rankinglist.setBounds(1149, 564, 207, 92);
 		this.add(rankinglist);
 		
-		JLabel status = new JLabel("[S2] 天赋梦路");
+		JLabel status = new JLabel(Config.seasonversion);
 		status.setForeground(new Color(255, 20, 147));
 		status.setFont(new Font("微软雅黑", Font.BOLD, 45));
 		status.setHorizontalAlignment(SwingConstants.CENTER);
@@ -326,11 +326,11 @@ public class Main extends JFrame {
 			
 			@Override
 			public void windowClosing(WindowEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "确定退出游戏？", "离开Zytter", JOptionPane.OK_CANCEL_OPTION)==0) {
+				if(JOptionPane.showConfirmDialog(null, "确定退出游戏？", "登出学园激斗事件簿", JOptionPane.OK_CANCEL_OPTION)==0) {
 					if(Config.s.ConnectServer(3,user,server)==1) {
 						System.exit(0);
 					} else {
-						JOptionPane.showMessageDialog(null, "您已与服务器断开连接，若退出后出现意外情况，请立刻联系服务器管理员");
+						JOptionPane.showMessageDialog(null, "您已与服务器断开连接，若退出后出现意外情况，请立刻联系管理员。");
 						System.exit(0);
 					}
 				}
@@ -379,12 +379,12 @@ public class Main extends JFrame {
 	}
 	
 	void quit(User user) {
-		int n=JOptionPane.showConfirmDialog(null,"确认退出游戏？","离开Zytter", JOptionPane.OK_CANCEL_OPTION);
+		int n=JOptionPane.showConfirmDialog(null,"确认退出游戏？","登出学园激斗事件簿", JOptionPane.OK_CANCEL_OPTION);
 		if(n==0) {
 			if(Config.s.ConnectServer(3,user,server)==1) {
 				System.exit(0);
 			} else {
-				JOptionPane.showMessageDialog(null, "您已与服务器断开连接，若退出后出现意外情况，请立刻联系服务器管理员");
+				JOptionPane.showMessageDialog(null, "您已与服务器断开连接，若退出后出现意外情况，请立刻联系管理员。");
 				System.exit(0);
 			}
 		}

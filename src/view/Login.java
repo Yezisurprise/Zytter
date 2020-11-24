@@ -48,7 +48,7 @@ public class Login extends JFrame {
 		this.setLayout(null);
 		
 		this.setSize(1366,768);
-		this.setTitle("登录 Zytter ID");
+		this.setTitle("登录至学园激斗事件簿");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setUndecorated(true);
 		this.setBackground(new Color(255,255,255,220));
@@ -62,12 +62,12 @@ public class Login extends JFrame {
 		
 		this.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource("img/logo.png")).getImage());
 		
-		JLabel yhm=new JLabel(" Zytter ID");
+		JLabel yhm=new JLabel("学园通行证");
 		yhm.setFont(Config.LoginFont);
 		yhm.setBounds(620,170,300,80);
 		yhm.setForeground(Color.white);
 		
-		JLabel mm=new JLabel("Password");
+		JLabel mm=new JLabel("通行证密码");
 		mm.setFont(Config.LoginFont);
 		mm.setBounds(620,260,300,80);
 		mm.setForeground(Color.white);
@@ -84,11 +84,6 @@ public class Login extends JFrame {
 		srmm.setOpaque(false);
 		srmm.setForeground(Color.white);
 		
-		JLabel xzfwq=new JLabel("Server");
-		xzfwq.setFont(Config.LoginFont);
-		xzfwq.setBounds(655,363,320,50);
-		xzfwq.setForeground(Color.white);
-		
 		JComboBox<String> fwq = new JComboBox<String>();
 		fwq.addItem("官方上海服务器");
 		fwq.addItem("第三方社区");
@@ -96,12 +91,17 @@ public class Login extends JFrame {
 		fwq.setBounds(880,365,320,50);
 		fwq.setOpaque(false);
 		
-		JLabel copyright=new JLabel("Copyright \u00A92014-2020 紫荆学园 Inc.");
-		copyright.setFont(new Font("等线",Font.PLAIN,20));
-		copyright.setBounds(1000,700,366,50);
-		copyright.setForeground(new Color(230,102,131));
+		JLabel copyright=new JLabel("游戏内所有背景设定版权归紫荆学园所有");
+		copyright.setFont(new Font("微软雅黑 Light",Font.PLAIN,20));
+		copyright.setBounds(983,685,375,50);
+		copyright.setForeground(new Color(205,92,92));
 		
-		JButton reg=new JButton("注册账号");
+		JLabel copyright2=new JLabel("Copyright \u00A92014-2020 紫荆学园 Inc.");
+		copyright2.setFont(new Font("微软雅黑 Light",Font.PLAIN,16));
+		copyright2.setBounds(1080,710,375,50);
+		copyright2.setForeground(new Color(205,92,92));
+		
+		JButton reg=new JButton("注册入口");
 		reg.setBounds(1185,185,200,50);
 		reg.setFont(Config.SmallFont);
 		reg.setForeground(Color.white);
@@ -127,40 +127,7 @@ public class Login extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				int n=JOptionPane.showConfirmDialog(null,"您是否记得您的账号？","找回密码",JOptionPane.YES_NO_OPTION);
-				if(n==0) {
-					String getun = JOptionPane.showInputDialog("请输入需要找回的账号：");
-					if(getun!=null) {
-						String getuid = JOptionPane.showInputDialog("请输入该账号的数字ID：");
-						if(getuid!=null) {
-							if(!getuid.equals("")) {
-								User findpw = Config.s.queryUser(getun, Integer.parseInt(getuid));
-								if(findpw!=null){
-									JOptionPane.showMessageDialog(null,"您的密码为："+findpw.getPassword()+"，请牢记！");
-								} else {
-									JOptionPane.showMessageDialog(null,"账号和数字ID不相符。");
-								}
-							}
-						}
-					}
-				} else if(n==1) {
-					if(JOptionPane.showConfirmDialog(null,"是否需要找回Zytter ID？","忘记Zytter ID",JOptionPane.YES_NO_OPTION)==0) {
-						String getuid = JOptionPane.showInputDialog("请输入该账号的数字ID：");
-						if(getuid!=null) {
-							if(!getuid.equals("")) {
-								String getpw = JOptionPane.showInputDialog("请输入该账号的密码：");
-								if(getpw!=null) {
-									User findun = Config.s.queryUser(Integer.parseInt(getuid),getpw);
-									if(findun!=null){
-										JOptionPane.showMessageDialog(null,"账号名为："+findun.getUsername()+"。");
-									} else {
-										JOptionPane.showMessageDialog(null,"数字ID和密码不相符。");
-									}
-								} 
-							}
-						}
-					}
-				}			
+				JOptionPane.showMessageDialog(null,"该功能正在开发中，如需找回密码，请联系管理员邮箱：yezi@wrss.org。");
 			}
 		});
 		
@@ -176,7 +143,7 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(sryhm.getText().equals("")) {
-					JOptionPane.showMessageDialog(null,"未提供账号");
+					JOptionPane.showMessageDialog(null,"未提供学园通行证");
 				} else {
 					if(String.valueOf(srmm.getPassword()).equals("")) {
 						JOptionPane.showMessageDialog(null,"密码不能为空");
@@ -195,16 +162,16 @@ public class Login extends JFrame {
 														Config.bgm.start();
 														new Main(user,Host.officialserver).setVisible(true);
 													} else {
-														JOptionPane.showMessageDialog(null,"账号或密码错误，请重新输入。");
+														JOptionPane.showMessageDialog(null,"通行证用户名或密码错误，请重新输入。");
 													}
 												} else {
-													JOptionPane.showMessageDialog(null,"该账号已被封停！！！");
+													JOptionPane.showMessageDialog(null,"该通行证已被封停！！！请联系管理员解封。");
 												}
 											} else {
-												JOptionPane.showMessageDialog(null,"该账号处于登录状态，不能重复登录！");
+												JOptionPane.showMessageDialog(null,"该通行证处于登录状态，不能重复登录！请联系管理员取消登录限制。");
 											}
 										} else {
-											JOptionPane.showMessageDialog(null,"客户端版本过低，无法正常登录，请前往官方博客下载最新版本！");
+											JOptionPane.showMessageDialog(null,"客户端版本过低，无法登录，请前往官方博客下载最新版本！");
 										}
 									} else {
 										JOptionPane.showMessageDialog(null,"与服务器连接失败。");
@@ -223,7 +190,7 @@ public class Login extends JFrame {
 								Config.bgm.start();
 								new OfflineMain(user).setVisible(true);
 							} else {
-								JOptionPane.showMessageDialog(null,"登录失败，请检查用户名和密码是否正确。");
+								JOptionPane.showMessageDialog(null,"登录失败，请检查通行证用户名和密码是否正确。");
 							}
 						}
 					}
@@ -271,9 +238,9 @@ public class Login extends JFrame {
 		this.add(mm);
 		this.add(sryhm);
 		this.add(srmm);
-		this.add(xzfwq);
 		this.add(fwq);
 		this.add(copyright);
+		this.add(copyright2);
 		this.add(reg);
 		this.add(find);
 		this.add(ok);

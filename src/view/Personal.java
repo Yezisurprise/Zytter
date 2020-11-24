@@ -21,7 +21,7 @@ public class Personal extends JFrame {
 	 */
 	private static final long serialVersionUID = 70564710787316524L;
 
-	JLabel id = new JLabel("Zytter ID："), numberid = new JLabel("数字ID："), numberid1 = new JLabel("这里填什么");
+	JLabel id = new JLabel("通行证："), numberid = new JLabel("数字ID："), numberid1 = new JLabel("这里填什么");
 	JLabel total = new JLabel("总场次："), total1 = new JLabel("这里填什么"), victory = new JLabel("胜场："),
 			victory1 = new JLabel("这里填什么");
 	JLabel fail = new JLabel("败场："), fail1 = new JLabel("这里填什么"), probability = new JLabel("胜率："),
@@ -29,7 +29,7 @@ public class Personal extends JFrame {
 	JLabel Rating = new JLabel("Rating："), Rating1 = new JLabel("这是啥"), Elo = new JLabel("Elo："),
 			Elo1 = new JLabel("看不懂"), Rank = new JLabel("Rank:"), Rank1 = new JLabel("不会做");
 	JTextField id1 = new JTextField();
-	JButton quit = new JButton("关闭"), ok = new JButton("确认"), cancel = new JButton("取消"), changeid = new JButton("修改ID"), changepassword = new JButton("修改密码");
+	JButton quit = new JButton("关闭"), ok = new JButton("确认"), cancel = new JButton("取消"), changeid = new JButton("修改用户名"), changepassword = new JButton("修改密码");
 
 	public Personal(User user, Main main) {
 		id1.setEditable(false);
@@ -67,7 +67,7 @@ public class Personal extends JFrame {
 		id1.setBounds(300, 65, 300, 35);
 		id1.setText(user.getUsername());
 		
-		changeid.setBounds(630, 64, 115, 35);
+		changeid.setBounds(625, 64, 125, 35);
 		changeid.setContentAreaFilled(false);
 		changeid.setBorderPainted(false);
 		
@@ -154,7 +154,7 @@ public class Personal extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null,"确认修改？","修改Zytter ID",JOptionPane.YES_NO_OPTION) == 0) {
+				if(JOptionPane.showConfirmDialog(null,"确认修改？","修改通行证用户名",JOptionPane.YES_NO_OPTION) == 0) {
 					String newname = id1.getText();
 					if(newname.length()>=2&&newname.length()<=6) {
 						if(!isSpace(newname)) {
@@ -179,13 +179,13 @@ public class Personal extends JFrame {
 									JOptionPane.showMessageDialog(null, "修改失败");
 								}
 							} else {
-								JOptionPane.showMessageDialog(null, "该Zytter ID已被使用，请重新输入");
+								JOptionPane.showMessageDialog(null, "该用户名已被使用，请重新输入");
 							}
 						} else {
-							JOptionPane.showMessageDialog(null, "Zytter ID不允许包含空格");
+							JOptionPane.showMessageDialog(null, "通行证的用户名不允许包含空格");
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Zytter ID必须控制在2~6个字符内");
+						JOptionPane.showMessageDialog(null, "通行证的用户名必须控制在2~6个字符内");
 					}
 				}
 			}

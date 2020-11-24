@@ -1018,7 +1018,7 @@ public class Fight extends JFrame {
 		this.add(enemybuff);
 		enemybuff.setLayout(new GridLayout(0, 8, 0, 0));
 		
-		UpdateJTextArea("欢迎来到Zytter！现在为热身时间，20秒后比赛正式开始。"+"\n\n");
+		UpdateJTextArea("欢迎来到学园激斗事件簿！现在为热身时间，20秒后比赛正式开始。"+"\n\n");
 		
 		UpdateJTextArea("当前版本号："+Config.clientversion+"（"+Config.clientengversion+"）"+"\n\n");
 		
@@ -1047,14 +1047,14 @@ public class Fight extends JFrame {
 					round.setText("商店回合");
 					whoact.setText("请在商店里购买物品");
 					if(nextround<35) {
-						UpdateJTextArea("王国商店为大家发放了工资：2块金币。\n\n");
+						UpdateJTextArea("学园商店为大家发放了对战奖励：2块金币。\n\n");
 						gold+=2;
 						tip1.setText("当前拥有金币："+gold);
 						new openStore(this,nextround,20,gold,djh,user,userh).start();
 						remain=22;
 						remaintime.setText("还剩" + remain + "秒");
 					} else {
-						UpdateJTextArea("王国商店为大家发放了工资：4块金币。\n\n");
+						UpdateJTextArea("学园商店为大家发放了对战奖励：4块金币。\n\n");
 						gold+=4;
 						tip1.setText("当前拥有金币："+gold);
 						new openStore(this,nextround,15,gold,djh,user,userh).start();
@@ -1151,7 +1151,7 @@ public class Fight extends JFrame {
 				enemytx.setToolTipText(enemyh.getProperty());
 				atk.setToolTipText("<html>使用普通攻击。<br /><br />提示：最多可造成"+userh.getAtk()+"点物理伤害。</html>");
 				if(r==36) {
-					UpdateJTextArea("比赛进入加时赛阶段，为了激励大家，王国商店推出仅有一次的活动：\n在下一个商店的时间里，购买一件重复的装备（正在穿戴的或者道具盒里有的）即可永久获得该装备的效果！\n\n");
+					UpdateJTextArea("比赛进入加时赛阶段，为了激励大家，学园商店推出仅有一次的活动：\n在下一个商店的时间里，购买一件重复的装备（正在穿戴的或者道具盒里有的）即可永久获得该装备的效果！\n\n");
 				}
 				if(!enemyh.isIslimte()||!userh.isIslimte()) {
 					remain = 10;
@@ -1310,7 +1310,7 @@ public class Fight extends JFrame {
 				/*
 				 * 结束阶段
 				 */
-				UpdateJTextArea("偃革倒戈阶段：\n\n王国商店为大家发放了工资：1块金币。\n\n");
+				UpdateJTextArea("偃革倒戈阶段：\n\n学园商店为大家发放了对战奖励：1块金币。\n\n");
 				gold++;
 				tip1.setText("当前拥有金币：" + gold);
 				tip4.setText("累计造成/承受伤害："+damage+" / "+hurt);

@@ -380,8 +380,8 @@ public class BalanceGame extends JFrame{
 		p2d.setText(String.valueOf(kill));
 		p1adr.setText(String.valueOf(p1a));
 		p2adr.setText(String.valueOf(p2a));
-		p1r.setText(String.valueOf(p1rating));
-		p2r.setText(String.valueOf(p2rating));
+		p1r.setText(String.valueOf(ratingadd));
+		p2r.setText("-");
 		
 		if(user.getDjs()==0) {
 			if(eloadd>=0) {

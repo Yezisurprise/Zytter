@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -22,7 +23,7 @@ public class Reg extends JFrame{
 	
 	Login login=null;
 	
-	JLabel id=new JLabel("Zytter ID",JLabel.CENTER),passwor=new JLabel("密码",JLabel.CENTER),password=new JLabel("确认密码",JLabel.CENTER);
+	JLabel id=new JLabel("用户名",JLabel.CENTER),passwor=new JLabel("密码",JLabel.CENTER),password=new JLabel("确认密码",JLabel.CENTER);
 	JTextField id1=new JTextField();
 	JPasswordField passwor1=new JPasswordField(),password1=new JPasswordField();
 	JButton ok=new JButton("注册");
@@ -35,7 +36,8 @@ public class Reg extends JFrame{
 		this.setLayout(null);
 		this.setUndecorated(true);
 		this.setBackground(new Color(255,255,255,220));
-		this.setTitle("注册Zytter ID");
+		this.setTitle("注册学园通行证");
+		this.setIconImage(new ImageIcon(this.getClass().getClassLoader().getResource("img/logo.png")).getImage());
 		this.add(id);
 		this.add(id1);
 		this.add(ok);
@@ -79,10 +81,10 @@ public class Reg extends JFrame{
 				String pw1=String.valueOf(passwor1.getPassword());
 				String pw2=String.valueOf(password1.getPassword());
 				if(username.length()<2||username.length()>6) {
-					JOptionPane.showMessageDialog(null,"Zytter ID必须控制在2~6个字符内");
+					JOptionPane.showMessageDialog(null,"通行证的用户名必须控制在2~6个字符内");
 				} else {
 					if(isSpace(username)) {
-						JOptionPane.showMessageDialog(null,"Zytter ID不允许包含空格");
+						JOptionPane.showMessageDialog(null,"通行证的用户名不允许包含空格");
 					} else {
 						if(!Config.s.isexist(username)) {
 							if(pw1.length()<6||pw1.length()>18) {
@@ -93,7 +95,7 @@ public class Reg extends JFrame{
 								} else {
 									if(pw1.equals(pw2)) {
 										if(Config.s.addUser(username,pw1)!=0) {
-											JOptionPane.showMessageDialog(null,"恭喜您，注册成功！"+"\n请牢记您的Zytter ID："+id1.getText()+"\n密码："+String.valueOf(passwor1.getPassword()));
+											JOptionPane.showMessageDialog(null,"恭喜您，注册成功！"+"\n请牢记您的用户名："+id1.getText()+"\n密码："+String.valueOf(passwor1.getPassword()));
 											login.setEnabled(true);
 											dispose();
 										} else {
@@ -127,7 +129,6 @@ public class Reg extends JFrame{
 			}
 		});
 		
-		this.setType(JFrame.Type.UTILITY);
 		this.setLocationRelativeTo(null);
 		
 	}
