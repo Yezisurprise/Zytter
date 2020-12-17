@@ -2,6 +2,7 @@ package entity;
 
 import java.io.BufferedInputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javazoom.jl.player.*;
 import util.Config;
@@ -64,15 +65,21 @@ public class BGM extends Thread {
 			    			break;
 			    		}
 			    		case 3:{
-			    			m = 4;
+			    			int b = new Random().nextInt(3);
+			    			if(b!=0) m = b+3;
+			    			else m = 4;
 					    	break;
 			    		}
 			    		case 4:{
-			    			m = 5;
+			    			int b = new Random().nextInt(3);
+			    			if(b!=1) m = b+3;
+			    			else m = 4;
 					    	break;
 			    		}
 			    		case 5:{
-			    			m = 3;
+			    			int b = new Random().nextInt(3);
+			    			if(b!=2) m = b+3;
+			    			else m = 4;
 					    	break;
 			    		}
 			    		case 6:{

@@ -42,7 +42,7 @@ public class Hero {
 	public int ysnW=0;//杨圣诺W
 	public boolean zfW=false;//张枫W
 	public int zkxQ=0;//张可汐Q的伤害
-	public int zkxQC=0;//张可汐Q的使用次数
+	public int zkxQC=0;//张可汐Q的伤害次数
 	public int zkxW=0;//张可汐W
 	public int zkxWH=0;//张可汐W累计承受
 	public int zkxE=0;//张可汐E2的伤害
@@ -100,8 +100,8 @@ public class Hero {
 	public BuffIcon sgsl = new BuffIcon("时光沙漏", 3, Config.s.magicimmunity, "该英雄完全免疫任何伤害。");
 	public BuffIcon bxsz = new BuffIcon("冰雪十字", 1, Config.s.allunable, "该英雄完全行动不能。");
 	public BuffIcon bzyy = new BuffIcon("冰之羽翼", 3, Config.s.defup, "该英雄完全免疫物理伤害。");
-	public BuffIcon xzjz = new BuffIcon("汐之抉择", -1, Config.s.appup, "每层汐之抉择都会为该英雄提供1点魔法伤害加成。");
-	public BuffIcon xzjzsh = new BuffIcon("汐之抉择", -1, Config.s.appup, "汐之抉择的效果一为冰雪十字提供了3点魔法伤害加成。");
+	public BuffIcon xzjz = new BuffIcon("汐之抉择", -1, Config.s.appup, "每层汐之抉择都会为该英雄提供2点魔法伤害加成。");
+	public BuffIcon xzjzsh = new BuffIcon("汐之抉择", -1, Config.s.appup, "汐之抉择的效果一为冰雪十字提供了4点魔法伤害加成。");
 	public BuffIcon xzjzmk = new BuffIcon("汐之抉择", -1, Config.s.mdfup, "该英雄的魔法防御提升了4点。");
 	public BuffIcon xzjzwk = new BuffIcon("汐之抉择", -1, Config.s.defup, "该英雄的物理护甲提升了4点。");
 	public BuffIcon lz = new BuffIcon("礼赞", -1, Config.s.appup, "该英雄下一次造成魔法伤害时会减少对方相当于其最大魔法值42%的魔法值。");

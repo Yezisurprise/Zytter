@@ -594,17 +594,17 @@ public class HeroesList extends JFrame {
 		switch(i) {
 			case 1:{
 				heroIcon = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/heroes/yy.jpg")).getImage());
-				e1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hysz.jpg")).getImage());
-				e2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/zysz.jpg")).getImage());
-				e3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/xinye.jpg")).getImage());
-				e4 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/zzqy.jpg")).getImage());
-				e1.setToolTipText(Config.Allitems.get(13).getItem());
-				e2.setToolTipText(Config.Allitems.get(12).getItem());
-				e3.setToolTipText(Config.Allitems.get(17).getItem());
-				e4.setToolTipText(Config.Allitems.get(14).getItem());
+				e1 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hh.jpg")).getImage());
+				e2 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/xinye.jpg")).getImage());
+				e3 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/hysz.jpg")).getImage());
+				e4 = new PlayerIcon(new ImageIcon(this.getClass().getClassLoader().getResource("img/items/zysz.jpg")).getImage());
+				e1.setToolTipText(Config.Allitems.get(24).getItem());
+				e2.setToolTipText(Config.Allitems.get(17).getItem());
+				e3.setToolTipText(Config.Allitems.get(13).getItem());
+				e4.setToolTipText(Config.Allitems.get(12).getItem());
 				heroname.setText("概率论");
-				herodescribe.setText("<html>奕阳的概率计算：烈日之箭：将对方血量消耗至个位数为9的值，此时命中率为100%。暗影之刺：适当取消穿戴增加攻击力的装备来提高命中率。屠杀之风：(自身魔法值-5)的个位数+对方生命值的个位数为9时命中率为100%。"+
-						"烈日之箭每次灼烧都会叠加一层【紫月神杖】的效果。"+"</html>");
+				herodescribe.setText("<html>奕阳最重要的属性是行动力，所以他首选的装备是【学生会的会徽】。概率计算：对方生命值的个位数为9时，烈日之箭的命中率为100%；你生命值的个位数为9时，屠杀之风的命中率为100%"
+						+ "行动力为9时，暗影之刺的命中率为100%。烈日之箭每次灼烧都会触发【神杖】的效果。"+"</html>");
 				break;
 			}
 			case 2:{
@@ -618,7 +618,7 @@ public class HeroesList extends JFrame {
 				e3.setToolTipText(Config.Allitems.get(14).getItem());
 				e4.setToolTipText(Config.Allitems.get(14).getItem());
 				heroname.setText("魔王");
-				herodescribe.setText("<html>刘晓释的打法分两种流派，界限突破这个技能为分水岭。当对方为软输出时，可穿戴防御装备和回蓝装，走秒杀路线。当对方输出强硬，并且自身有物理输出装的储备，建议走解放真名路线。第二种打法禁止使用界限突破。</html>");
+				herodescribe.setText("<html>刘晓释的打法分两种流派，界限突破这个技能为分水岭。当对方为软输出时，可穿戴防御装备，走秒杀路线。当对方输出强硬，并且自身有物理输出装的储备，建议走解放真名路线。</html>");
 				break;
 			}
 			case 3:{

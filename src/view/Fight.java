@@ -350,7 +350,8 @@ public class Fight extends JFrame {
 		this.enemyh = Config.s.GetSkillByHero(getEnemyHero());
 		
 		Config.bgm = new BGM();
-		Config.bgm.setBGM(3);
+		int bgmselect = new Random().nextInt(3);
+		Config.bgm.setBGM(bgmselect+3);
 		Config.bgm.start();
 		
 		tip1 = new JLabel("当前拥有金币："+gold);
@@ -778,9 +779,6 @@ public class Fight extends JFrame {
 														JOptionPane.showMessageDialog(null, "【光炽剑】正在生效中，不能重复使用。");
 													}
 												} else {
-													if(op==2&&userh.getId()==Config.yy.getId()) { // 奕阳 暗影之刺 的使用判断
-														userh.setXdl(userh.getXdl()+999);
-													}
 													if(op==1&&userh.getId()==Config.xyh.getId()) { // 谢悠涵 洁净之灵  的使用判断
 														userh.setXdl(userh.getXdl()+9999);
 													}
@@ -1861,7 +1859,7 @@ public class Fight extends JFrame {
 					UpdateJTextArea("【"+enemyh.getName()+"】发动了【闪现】的技能效果但未成功闪避此攻击！"+"\n\n");
 					int d = userh.getAtk()-(int)Math.round(enemyh.getDef()*(1-userh.getAdp()));
 					if(d<0) d=0;
-					if(userh.yjg) d=(int)Math.round(d*1.36);
+					if(userh.yjg) d=(int)Math.round(d*1.42);
 					if(enemyh.jrz) d=(int)Math.round(d*0.75);
 					d=(int)Math.round(d*(1-enemyh.getDefrate()));
 					if(userh.lmQ) d=(int)Math.round(d*0.5);
@@ -1926,7 +1924,7 @@ public class Fight extends JFrame {
 					UpdateJTextArea("【"+enemyh.getName()+"】发动了【闪现+】的技能效果但未成功闪避此攻击！"+"\n\n");
 					int d = userh.getAtk()-(int)Math.round(enemyh.getDef()*(1-userh.getAdp()));
 					if(d<0) d=0;
-					if(userh.yjg) d=(int)Math.round(d*1.36);
+					if(userh.yjg) d=(int)Math.round(d*1.42);
 					if(enemyh.jrz) d=(int)Math.round(d*0.75);
 					d=(int)Math.round(d*(1-enemyh.getDefrate()));
 					if(userh.lmQ) d=(int)Math.round(d*0.5);
@@ -2002,7 +2000,7 @@ public class Fight extends JFrame {
 			} else if(enemyh.zkxW>0) {
 				int d = userh.getAtk()-(int)Math.round(enemyh.getDef()*(1-userh.getAdp()));
 				if(d<0) d=0;
-				if(userh.yjg) d=(int)Math.round(d*1.36);
+				if(userh.yjg) d=(int)Math.round(d*1.42);
 				if(enemyh.jrz) d=(int)Math.round(d*0.75);
 				d=(int)Math.round(d*(1-enemyh.getDefrate()));
 				if(userh.lmQ) d=(int)Math.round(d*0.5);
@@ -2010,8 +2008,20 @@ public class Fight extends JFrame {
 				enemyh.bzyy.setDescribe("该英雄完全免疫物理伤害。目前已积累（"+enemyh.zkxWH+"/20）点伤害。");
 				UpdateJTextArea("【"+enemyh.getName()+"】受到了0点物理伤害！"+"\n\n");
 				if(enemyh.zkxWH>=20) {
+					int hpadd = (int)Math.round(enemyh.zkxW*0.6);
 					enemyh.zkxW=0;
-					UpdateJTextArea("【"+enemyh.getName()+"】的【冰之羽翼】已破碎！"+"\n\n");
+					enemyh.zkxWH=0;
+					UpdateJTextArea("【"+enemyh.getName()+"】的【冰之羽翼】已破碎！已为【张可汐】回复"+hpadd+"点魔法值。\n\n");
+					if(enemyh.getHp()+hpadd<=enemyhpt.getMaximum()) {
+						hpp += hpadd;
+						enemyh.setHp(enemyh.getHp()+hpadd);
+						enemyhpt.setValue(enemyh.getHp());
+						enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
+					} else {
+						enemyh.setHp(enemyhpt.getMaximum());
+						enemyhpt.setValue(enemyh.getHp());
+						enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
+					}
 					enemybuff.remove(enemyh.bzyy);
 					repaint();
 				}
@@ -2046,7 +2056,7 @@ public class Fight extends JFrame {
 			} else if(enemyh.xyhE>0) {
 				int d = userh.getAtk()-(int)Math.round(enemyh.getDef()*(1-userh.getAdp()));
 				if(d<0) d=0;
-				if(userh.yjg) d=(int)Math.round(d*1.36);
+				if(userh.yjg) d=(int)Math.round(d*1.42);
 				if(enemyh.jrz) d=(int)Math.round(d*0.75);
 				d=(int)Math.round(d*(1-enemyh.getDefrate()));
 				if(userh.lmQ) d=(int)Math.round(d*0.5);
@@ -2058,7 +2068,7 @@ public class Fight extends JFrame {
 			} else {
 				int d = userh.getAtk()-(int)Math.round(enemyh.getDef()*(1-userh.getAdp()));
 				if(d<0) d=0;
-				if(userh.yjg) d=(int)Math.round(d*1.36);
+				if(userh.yjg) d=(int)Math.round(d*1.42);
 				if(enemyh.jrz) d=(int)Math.round(d*0.75);
 				if(enemyh.zxyE>0) {
 					enemyh.zxyEE=true;
@@ -2157,7 +2167,7 @@ public class Fight extends JFrame {
 					UpdateJTextArea("【"+userh.getName()+"】发动了【闪现】的技能效果但未成功闪避此攻击！"+"\n\n");
 					int d = enemyh.getAtk()-(int)Math.round(userh.getDef()*(1-enemyh.getAdp()));
 					if(d<0) d=0;
-					if(enemyh.yjg) d=(int)Math.round(d*1.36);
+					if(enemyh.yjg) d=(int)Math.round(d*1.42);
 					if(userh.jrz) d=(int)Math.round(d*0.75);
 					d=(int)Math.round(d*(1-userh.getDefrate()));
 					if(enemyh.lmQ) d=(int)Math.round(d*0.5);
@@ -2227,7 +2237,7 @@ public class Fight extends JFrame {
 					UpdateJTextArea("【"+userh.getName()+"】发动了【闪现+】的技能效果但未成功闪避此攻击！"+"\n\n");
 					int d = enemyh.getAtk()-(int)Math.round(userh.getDef()*(1-enemyh.getAdp()));
 					if(d<0) d=0;
-					if(enemyh.yjg) d=(int)Math.round(d*1.36);
+					if(enemyh.yjg) d=(int)Math.round(d*1.42);
 					if(userh.jrz) d=(int)Math.round(d*0.75);
 					d=(int)Math.round(d*(1-userh.getDefrate()));
 					if(enemyh.lmQ) d=(int)Math.round(d*0.5);
@@ -2300,7 +2310,7 @@ public class Fight extends JFrame {
 			} else if(userh.zkxW>0) {
 				int d = enemyh.getAtk()-(int)Math.round(userh.getDef()*(1-enemyh.getAdp()));
 				if(d<0) d=0;
-				if(enemyh.yjg) d=(int)Math.round(d*1.36);
+				if(enemyh.yjg) d=(int)Math.round(d*1.42);
 				if(userh.jrz) d=(int)Math.round(d*0.75);
 				d=(int)Math.round(d*(1-userh.getDefrate()));
 				if(enemyh.lmQ) d=(int)Math.round(d*0.5);
@@ -2308,8 +2318,20 @@ public class Fight extends JFrame {
 				userh.bzyy.setDescribe("该英雄完全免疫物理伤害。目前已积累（"+userh.zkxWH+"/20）点伤害。");
 				UpdateJTextArea("【"+userh.getName()+"】受到了0点物理伤害！"+"\n\n");
 				if(userh.zkxWH>=20) {
+					int hpadd = (int)Math.round(userh.zkxW*0.6);
 					userh.zkxW=0;
-					UpdateJTextArea("【"+userh.getName()+"】的【冰之羽翼】已破碎！"+"\n\n");
+					userh.zkxWH=0;
+					UpdateJTextArea("【"+userh.getName()+"】的【冰之羽翼】已破碎！已为【张可汐】回复"+hpadd+"点魔法值。\n\n");
+					if(userh.getHp()+hpadd<=userhpt.getMaximum()) {
+						hpp += hpadd;
+						userh.setHp(userh.getHp()+hpadd);
+						userhpt.setValue(userh.getHp());
+						userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
+					} else {
+						userh.setHp(userhpt.getMaximum());
+						userhpt.setValue(userh.getHp());
+						userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
+					}
 					userbuff.remove(userh.bzyy);
 					repaint();
 				}
@@ -2343,7 +2365,7 @@ public class Fight extends JFrame {
 			} else if(userh.xyhE>0) {
 				int d = enemyh.getAtk()-(int)Math.round(userh.getDef()*(1-enemyh.getAdp()));
 				if(d<0) d=0;
-				if(enemyh.yjg) d=(int)Math.round(d*1.36);
+				if(enemyh.yjg) d=(int)Math.round(d*1.42);
 				if(userh.jrz) d=(int)Math.round(d*0.75);
 				d=(int)Math.round(d*(1-userh.getDefrate()));
 				if(enemyh.lmQ) d=(int)Math.round(d*0.5);
@@ -2355,7 +2377,7 @@ public class Fight extends JFrame {
 			} else {
 				int d = enemyh.getAtk()-(int)Math.round(userh.getDef()*(1-enemyh.getAdp()));
 				if(d<0) d=0;
-				if(enemyh.yjg) d=(int)Math.round(d*1.36);
+				if(enemyh.yjg) d=(int)Math.round(d*1.42);
 				if(userh.jrz) d=(int)Math.round(d*0.75);
 				if(userh.zxyE>0) {
 					userh.zxyEE=true;
@@ -2448,8 +2470,20 @@ public class Fight extends JFrame {
 				enemyh.bzyy.setDescribe("该英雄完全免疫物理伤害。目前已积累（"+enemyh.zkxWH+"/20）点伤害。");
 				UpdateJTextArea("【"+enemyh.getName()+"】受到了0点物理伤害！"+"\n\n");
 				if(enemyh.zkxWH>=20) {
+					int hpadd = (int)Math.round(enemyh.zkxW*0.6);
 					enemyh.zkxW=0;
-					UpdateJTextArea("【"+enemyh.getName()+"】的【冰之羽翼】已破碎！"+"\n\n");
+					enemyh.zkxWH=0;
+					UpdateJTextArea("【"+enemyh.getName()+"】的【冰之羽翼】已破碎！已为【张可汐】回复"+hpadd+"点魔法值。\n\n");
+					if(enemyh.getHp()+hpadd<=enemyhpt.getMaximum()) {
+						hpp += hpadd;
+						enemyh.setHp(enemyh.getHp()+hpadd);
+						enemyhpt.setValue(enemyh.getHp());
+						enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
+					} else {
+						enemyh.setHp(enemyhpt.getMaximum());
+						enemyhpt.setValue(enemyh.getHp());
+						enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
+					}
 					enemybuff.remove(enemyh.bzyy);
 					repaint();
 				}
@@ -2565,8 +2599,20 @@ public class Fight extends JFrame {
 				userh.bzyy.setDescribe("该英雄完全免疫物理伤害。目前已积累（"+userh.zkxWH+"/20）点伤害。");
 				UpdateJTextArea("【"+userh.getName()+"】受到了0点物理伤害！"+"\n\n");
 				if(userh.zkxWH>=20) {
+					int hpadd = (int)Math.round(userh.zkxW*0.6);
 					userh.zkxW=0;
-					UpdateJTextArea("【"+userh.getName()+"】的【冰之羽翼】已破碎！"+"\n\n");
+					userh.zkxWH=0;
+					UpdateJTextArea("【"+userh.getName()+"】的【冰之羽翼】已破碎！已为【张可汐】回复"+hpadd+"点魔法值。\n\n");
+					if(userh.getHp()+hpadd<=userhpt.getMaximum()) {
+						hpp += hpadd;
+						userh.setHp(userh.getHp()+hpadd);
+						userhpt.setValue(userh.getHp());
+						userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
+					} else {
+						userh.setHp(userhpt.getMaximum());
+						userhpt.setValue(userh.getHp());
+						userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
+					}
 					userbuff.remove(userh.bzyy);
 					repaint();
 				}
@@ -2861,6 +2907,14 @@ public class Fight extends JFrame {
 				enemyhpt.setString("0"+" / "+enemyhpt.getMaximum());
 			}
 			userh.damage+=d;
+			if(d>7&&userh.getId()==Config.zkx.getId()) {
+				userh.zkxQC++;
+				if(userh.zkxQC!=0&&userh.zkxQC%2==0&&userh.zkxQC<10) {
+					userh.getQ().setMp(userh.getQ().getMp()+1);
+					UpdateJTextArea("【"+userh.getName()+"】的【冰雪十字】的魔法消耗提高了1点！当前魔法消耗为："+userh.getQ().getMp()+"。\n\n");
+					skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
+				}
+			}
 			if(userh.zxyQ) {
 				userh.zxyQ=false;
 				UpdateJTextArea("【"+userh.getName()+"】发动了【礼赞】的技能效果，减少了"+enemyh.getName()+"的魔法值！"+"\n\n");
@@ -2985,6 +3039,14 @@ public class Fight extends JFrame {
 				userhpt.setString("0"+" / "+userhpt.getMaximum());
 			}
 			enemyh.damage+=d;
+			if(d>7&&enemyh.getId()==Config.zkx.getId()) {
+				enemyh.zkxQC++;
+				if(enemyh.zkxQC!=0&&enemyh.zkxQC%2==0&&enemyh.zkxQC<10) {
+					enemyh.getQ().setMp(enemyh.getQ().getMp()+1);
+					UpdateJTextArea("【"+enemyh.getName()+"】的【冰雪十字】的魔法消耗提高了1点！当前魔法消耗为："+enemyh.getQ().getMp()+"。\n\n");
+					skill1.setToolTipText("<html>（Q）"+enemyh.getQ().getSkill()+"</html>");
+				}
+			}
 			if(enemyh.zxyQ) {
 				enemyh.zxyQ=false;
 				UpdateJTextArea("【"+enemyh.getName()+"】发动了【礼赞】的技能效果，减少了"+userh.getName()+"的魔法值！"+"\n\n");
@@ -3220,9 +3282,6 @@ public class Fight extends JFrame {
 			}
 			if(enemyop>0) {
 				UpdateJTextArea("对方已经决定了该回合的行动。  \n\n");
-			}
-			if(enemyop==2&&enemyh.getId()==Config.yy.getId()) { // 奕阳 暗影之刺 的使用判断
-				enemyh.setXdl(enemyh.getXdl()+999);
 			}
 			if(enemyop==1&&enemyh.getId()==Config.xyh.getId()) { // 谢悠涵 洁净之灵 的使用判断
 				enemyh.setXdl(enemyh.getXdl()+9999);
@@ -3946,7 +4005,7 @@ public class Fight extends JFrame {
 			case 2:{//奕阳W 暗影之刺
 				if(from.equals(userh)) {
 					p = new Random().nextInt(10);
-					int pd = userh.getAtk()+enemyh.getXdl();
+					int pd = userh.getXdl();
 					if(pd<100) pd = pd%10;
 					else if(pd<1000) pd = pd%100;
 					sendP(p);
@@ -3963,7 +4022,6 @@ public class Fight extends JFrame {
 					} else {
 						UpdateJTextArea("这次什么也没有发生。\n\n");
 					}
-					userh.setXdl(userh.getXdl()-999);
 				} else if(from.equals(enemyh)) {
 					try {
 						p = dis5.readInt();
@@ -3975,7 +4033,7 @@ public class Fight extends JFrame {
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-					int pd = enemyh.getAtk()+userh.getXdl();
+					int pd = enemyh.getXdl();
 					if(pd<100) pd = pd%10;
 					else if(pd<1000) pd = pd%100;
 					UpdateJTextArea("【"+enemyh.getName()+"】抽取的幸运数字为："+p+"\n\n");
@@ -3986,7 +4044,6 @@ public class Fight extends JFrame {
 					} else {
 						UpdateJTextArea("这次什么也没有发生。\n\n");
 					}
-					enemyh.setXdl(enemyh.getXdl()-999);
 				}
 				p=0;
 				break;
@@ -4001,11 +4058,12 @@ public class Fight extends JFrame {
 						e.printStackTrace();
 					}
 					UpdateJTextArea("【"+userh.getName()+"】抽取的幸运数字为："+p+"\n\n");
-					int pd = enemyh.getHp()+userh.getMp();
+					int pd = userh.getHp();
 					if(pd<100) pd = pd%10;
 					else if(pd<1000) pd = pd%100;
 					if(p<=pd) {
-						UpdateJTextArea("【"+userh.getName()+"】获得了魔法伤害加成的效果！\n\n");
+						UpdateJTextArea("【"+userh.getName()+"】获得了魔法伤害加成的效果并提升了2点行动力！\n\n");
+						userh.setXdl(userh.getXdl()+2);
 						if(userh.jhjj==3) userh.yyE+=6;
 						else userh.yyE+=3;
 						userh.yyER+=4;
@@ -4016,11 +4074,11 @@ public class Fight extends JFrame {
 							userh.getQ().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于对方当前生命值的个位数，那么对对方造成灼烧，每回合造成"+(5+userh.yyE)+"点魔法伤害，持续3回合。<br />该效果影响的回合数可以叠加。<br/><br />【激活结晶之力】100%生效。");
 							skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
 						}
-						userh.getW().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于对方行动力和你攻击力之和的个位数，那么对对方造成"+(10+userh.yyE)+"点魔法伤害。该技能无视行动力。");
+						userh.getW().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于你的行动力的个位数，那么对对方造成"+(10+userh.yyE)+"点魔法伤害。");
 						skill2.setToolTipText("<html>（W）"+userh.getW().getSkill()+"</html>");
 						userbuff.remove(userh.tszf);
 						userbuff.add(userh.tszf);
-						userh.tszf.setDescribe("屠杀之风会为该英雄提供"+userh.yyE+"点魔法伤害加成。");
+						userh.tszf.setDescribe("屠杀之风会为该英雄提供"+userh.yyE+"点魔法伤害加成和2点行动力。");
 						userh.tszf.setRound(userh.yyER);
 						repaint();
 					} else {
@@ -4038,45 +4096,54 @@ public class Fight extends JFrame {
 						e.printStackTrace();
 					}
 					UpdateJTextArea("【"+enemyh.getName()+"】抽取的幸运数字为："+p+"\n\n");
-					int pd = userh.getHp()+enemyh.getMp();
+					int pd = enemyh.getHp();
 					if(pd<100) pd = pd%10;
 					else if(pd<1000) pd = pd%100;
 					if(p<=pd) {
-						UpdateJTextArea("【"+enemyh.getName()+"】获得了魔法伤害加成的效果！\n\n");
+						UpdateJTextArea("【"+enemyh.getName()+"】获得了魔法伤害加成的效果并提升了2点行动力！\n\n");
+						enemyh.setXdl(enemyh.getXdl()+2);
 						if(enemyh.jhjj==3) enemyh.yyE+=6;
 						else enemyh.yyE+=3;
 						enemyh.yyER+=4;
 						enemybuff.remove(enemyh.tszf);
 						enemybuff.add(enemyh.tszf);
-						enemyh.tszf.setDescribe("屠杀之风会为该英雄提供"+enemyh.yyE+"点魔法伤害加成。");
+						enemyh.tszf.setDescribe("屠杀之风会为该英雄提供"+enemyh.yyE+"点魔法伤害加成和2点行动力。");
 						enemyh.tszf.setRound(enemyh.yyER);
 						repaint();
 					} else {
 						UpdateJTextArea("这次什么也没有发生。\n\n");
 					}
 				}
+				usertx.setToolTipText(userh.getProperty());
+				enemytx.setToolTipText(enemyh.getProperty());
 				p=0;
 				break;
 			}
 			case 4:{//刘晓释Q 界限突破
 				if(from.equals(userh)) {
-					UpdateJTextArea("【"+userh.getName()+"】提升了1点魔法上限！\n\n");
+					UpdateJTextArea("【"+userh.getName()+"】永久提升了1点魔法上限和魔法回复！\n\n");
 					usermpt.setMaximum(usermpt.getMaximum()+1);
 					int mp = userh.getMp();
+					int mpp = userh.getMpp();
 					userh.setMp(mp+1);
+					userh.setMpp(mpp+1);
 					usermpt.setValue(userh.getMp());
 					usermpt.setString(userh.getMp()+" / "+usermpt.getMaximum());
 					userh.getW().setMp(userh.getW().getMp()+1);
 					skill2.setToolTipText("<html>（W）"+userh.getW().getSkill()+"</html>");
 				} else if(from.equals(enemyh)) {
-					UpdateJTextArea("【"+enemyh.getName()+"】提升了1点魔法上限！\n\n");
+					UpdateJTextArea("【"+enemyh.getName()+"】永久提升了1点魔法上限和魔法回复！\n\n");
 					enemympt.setMaximum(enemympt.getMaximum()+1);
 					int mp = enemyh.getMp();
+					int mpp = enemyh.getMpp();
 					enemyh.setMp(mp+1);
+					enemyh.setMpp(mpp+1);
 					enemympt.setValue(enemyh.getMp());
 					enemympt.setString(enemyh.getMp()+" / "+enemympt.getMaximum());
 					enemyh.getW().setMp(enemyh.getW().getMp()+1);
 				}
+				usertx.setToolTipText(userh.getProperty());
+				enemytx.setToolTipText(enemyh.getProperty());
 				break;
 			}
 			case 5:{//刘晓释W 解放真名
@@ -4137,6 +4204,8 @@ public class Fight extends JFrame {
 						}
 					}.start();
 				}
+				usertx.setToolTipText(userh.getProperty());
+				enemytx.setToolTipText(enemyh.getProperty());
 				break;
 			}
 			case 6:{//刘晓释E 魔王怒
@@ -4663,7 +4732,7 @@ public class Fight extends JFrame {
 					if(enemyh.zkxW>0) {
 						int d = userh.getAtk()-(int)Math.round(enemyh.getDef()*(1-userh.getAdp()));
 						if(d<0) d=0;
-						if(userh.yjg) d=(int)Math.round(d*1.36);
+						if(userh.yjg) d=(int)Math.round(d*1.42);
 						if(enemyh.jrz) d=(int)Math.round(d*0.75);
 						d=(int)Math.round(d*(1-enemyh.getDefrate()));
 						if(userh.lmQ) d=(int)Math.round(d*0.5);
@@ -4671,8 +4740,20 @@ public class Fight extends JFrame {
 						enemyh.bzyy.setDescribe("该英雄完全免疫物理伤害。目前已积累（"+enemyh.zkxWH+"/20）点伤害。");
 						UpdateJTextArea("【"+enemyh.getName()+"】受到了0点物理伤害！"+"\n\n");
 						if(enemyh.zkxWH>=20) {
+							int hpadd = (int)Math.round(enemyh.zkxW*0.6);
 							enemyh.zkxW=0;
-							UpdateJTextArea("【"+enemyh.getName()+"】的【冰之羽翼】已破碎！"+"\n\n");
+							enemyh.zkxWH=0;
+							UpdateJTextArea("【"+enemyh.getName()+"】的【冰之羽翼】已破碎！已为【张可汐】回复"+hpadd+"点魔法值。\n\n");
+							if(enemyh.getHp()+hpadd<=enemyhpt.getMaximum()) {
+								hpp += hpadd;
+								enemyh.setHp(enemyh.getHp()+hpadd);
+								enemyhpt.setValue(enemyh.getHp());
+								enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
+							} else {
+								enemyh.setHp(enemyhpt.getMaximum());
+								enemyhpt.setValue(enemyh.getHp());
+								enemyhpt.setString(enemyh.getHp()+" / "+enemyhpt.getMaximum());
+							}
 							enemybuff.remove(enemyh.bzyy);
 							repaint();
 						}
@@ -4801,7 +4882,7 @@ public class Fight extends JFrame {
 					if(userh.zkxW>0) {
 						int d = enemyh.getAtk()-(int)Math.round(userh.getDef()*(1-enemyh.getAdp()));
 						if(d<0) d=0;
-						if(enemyh.yjg) d=(int)Math.round(d*1.36);
+						if(enemyh.yjg) d=(int)Math.round(d*1.42);
 						if(userh.jrz) d=(int)Math.round(d*0.75);
 						d=(int)Math.round(d*(1-userh.getDefrate()));
 						if(enemyh.lmQ) d=(int)Math.round(d*0.5);
@@ -4809,8 +4890,20 @@ public class Fight extends JFrame {
 						userh.bzyy.setDescribe("该英雄完全免疫物理伤害。目前已积累（"+userh.zkxWH+"/20）点伤害。");
 						UpdateJTextArea("【"+userh.getName()+"】受到了0点物理伤害！"+"\n\n");
 						if(userh.zkxWH>=20) {
+							int hpadd = (int)Math.round(userh.zkxW*0.6);
 							userh.zkxW=0;
-							UpdateJTextArea("【"+userh.getName()+"】的【冰之羽翼】已破碎！"+"\n\n");
+							userh.zkxWH=0;
+							UpdateJTextArea("【"+userh.getName()+"】的【冰之羽翼】已破碎！已为【张可汐】回复"+hpadd+"点魔法值。\n\n");
+							if(userh.getHp()+hpadd<=userhpt.getMaximum()) {
+								hpp += hpadd;
+								userh.setHp(userh.getHp()+hpadd);
+								userhpt.setValue(userh.getHp());
+								userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
+							} else {
+								userh.setHp(userhpt.getMaximum());
+								userhpt.setValue(userh.getHp());
+								userhpt.setString(userh.getHp()+" / "+userhpt.getMaximum());
+							}
 							userbuff.remove(userh.bzyy);
 							repaint();
 						}
@@ -5509,12 +5602,6 @@ public class Fight extends JFrame {
 										UpdateJTextArea("【" + enemyh.getName() + "】发动了【复苏】的效果抵挡了一次【完全行动不能】！\n\n");
 									} else {
 										enemyh.setIsgone(false);
-										userh.zkxQC++;
-										if(userh.zkxQC%2==0&&userh.zkxQC<10) {
-											userh.getQ().setMp(userh.getQ().getMp()+1);
-											UpdateJTextArea("【"+userh.getName()+"】的【冰雪十字】的魔法消耗提高了1点！当前魔法消耗为："+userh.getQ().getMp()+"。\n\n");
-											skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
-										}
 										if(enemyh.xyhE>0) {
 											enemyh.xyhE=0;
 											if(enemyh.xyhED>0) {
@@ -5591,11 +5678,6 @@ public class Fight extends JFrame {
 										UpdateJTextArea("【" + userh.getName() + "】发动了【复苏】的效果抵挡了一次【完全行动不能】！\n\n");
 									} else {
 										userh.setIsgone(false);
-										enemyh.zkxQC++;
-										if(enemyh.zkxQC%2==0&&enemyh.zkxQC<10) {
-											enemyh.getQ().setMp(enemyh.getQ().getMp()+1);
-											UpdateJTextArea("【"+enemyh.getName()+"】的【冰雪十字】的魔法消耗提高了1点！当前魔法消耗为："+enemyh.getQ().getMp()+"。\n\n");
-										}
 										if(userh.xyhE>0) {
 											userh.xyhE=0;
 											if(userh.xyhED>0) {
@@ -5644,7 +5726,6 @@ public class Fight extends JFrame {
 				if(from.equals(userh)) { // 判断使用技能的英雄是我方英雄
 					UpdateJTextArea("【"+userh.getName()+"】获得了物理伤害免疫的效果！\n\n");
 					userh.zkxW+=3;//这个技能持续3回合
-					userh.zkxWH=0;
 					userbuff.remove(userh.bzyy);
 					userbuff.add(userh.bzyy);
 					userh.bzyy.setRound(userh.zkxW);
@@ -5653,7 +5734,6 @@ public class Fight extends JFrame {
 				} else if(from.equals(enemyh)) { // 判断使用技能的英雄是对方英雄
 					UpdateJTextArea("【"+enemyh.getName()+"】获得了物理伤害免疫的效果！\n\n");
 					enemyh.zkxW+=3;//这个技能持续3回合
-					enemyh.zkxWH=0;
 					enemybuff.remove(enemyh.bzyy);
 					enemybuff.add(enemyh.bzyy);
 					enemyh.bzyy.setRound(enemyh.zkxW);
@@ -5666,12 +5746,12 @@ public class Fight extends JFrame {
 				if(from.equals(userh)) {
 					p = new Random().nextInt(3);
 					sendP(p);
-					UpdateJTextArea("【"+userh.getName()+"】的【冰雪十字】和【汐之抉择】效果二获得了1点魔法伤害加成！\n\n");
-					userh.zkxQ++;
-					userh.zkxE++;
-					userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>每造成2次【完全行动不能】，冰雪十字的魔法消耗就会+1，最多提高至10点。");
-					userh.getE().setdescribe("<html>为冰雪十字和汐之抉择效果二提供永久的1点魔法伤害加成。<br/>随机触发以下效果（该技能在回合数为3及以上时才能使用）：<br />"+
-							"1）下两回合内，提供冰雪十字3点魔法伤害加成；<br />2）对方受到"+(8+userh.zkxE)+"点魔法伤害；<br />3）提升4点双抗，持续3回合。</html>");
+					UpdateJTextArea("【"+userh.getName()+"】的【冰雪十字】和【汐之抉择】效果二获得了2点魔法伤害加成！\n\n");
+					userh.zkxQ+=2;
+					userh.zkxE+=2;
+					userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>当张可汐造成2次超过7点的魔法伤害时，冰雪十字的魔法消耗就会+1，最多提高至10点。");
+					userh.getE().setdescribe("<html>为冰雪十字和汐之抉择效果二提供永久的2点魔法伤害加成。<br/>随机触发以下效果（该技能在回合数为3及以上时才能使用）：<br />"+
+							"1）下两回合内，提供冰雪十字4点魔法伤害加成；<br />2）对方受到"+(8+userh.zkxE)+"点魔法伤害；<br />3）提升4点双抗，持续3回合。</html>");
 					skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
 					skill3.setToolTipText("<html>（E）"+userh.getE().getSkill()+"</html>");
 					userh.xzjz.setV1(userh.xzjz.getV1()+1);
@@ -5683,8 +5763,8 @@ public class Fight extends JFrame {
 					}
 					if(p==0) {
 						UpdateJTextArea("【"+userh.getName()+"】随机触发了【汐之抉择】效果一！\n\n");
-						UpdateJTextArea("【"+userh.getName()+"】的【冰雪十字】获得了3点魔法伤害加成！\n\n");
-						userh.zkxQ+=3;
+						UpdateJTextArea("【"+userh.getName()+"】的【冰雪十字】获得了4点魔法伤害加成！\n\n");
+						userh.zkxQ+=4;
 						userbuff.remove(userh.xzjzsh);
 						userbuff.add(userh.xzjzsh);
 						userh.xzjzsh.setDescribe("汐之抉择的效果一为冰雪十字提供了"+userh.zkxQ+"点魔法伤害加成。");
@@ -5693,13 +5773,13 @@ public class Fight extends JFrame {
 							@Override
 							public void run() {
 								int whenstop=r+3;
-								userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>每造成2次【完全行动不能】，冰雪十字的魔法消耗就会+1，最多提高至10点。");
+								userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>当张可汐造成2次超过7点的魔法伤害时，冰雪十字的魔法消耗就会+1，最多提高至10点。");
 								skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
 								while (true) {
 									if (r==whenstop) {
 										if(userh.getId()==Config.zkx.getId()) {
-											userh.zkxQ-=3;
-											userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>每造成2次【完全行动不能】，冰雪十字的魔法消耗就会+1，最多提高至10点。");
+											userh.zkxQ-=4;
+											userh.getQ().setdescribe("对对方造成"+(4+userh.zkxQ)+"点魔法伤害，并使对方下个回合【完全行动不能】。<br/>当张可汐造成2次超过7点的魔法伤害时，冰雪十字的魔法消耗就会+1，最多提高至10点。");
 											skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
 											if(userh.zkxQ==0) {
 												userbuff.remove(userh.xzjzsh);
@@ -5759,9 +5839,9 @@ public class Fight extends JFrame {
 						}.start();
 					}
 				} else if(from.equals(enemyh)) {
-					UpdateJTextArea("【"+enemyh.getName()+"】的【冰雪十字】和【汐之抉择】效果二获得了1点魔法伤害加成！\n\n");
-					enemyh.zkxQ++;
-					enemyh.zkxE++;
+					UpdateJTextArea("【"+enemyh.getName()+"】的【冰雪十字】和【汐之抉择】效果二获得了2点魔法伤害加成！\n\n");
+					enemyh.zkxQ+=2;
+					enemyh.zkxE+=2;
 					enemyh.xzjz.setV1(enemyh.xzjz.getV1()+1);
 					enemyh.xzjz.setSuperpose("（当前层数："+enemyh.xzjz.getV1()+"）");
 					try {
@@ -5776,8 +5856,8 @@ public class Fight extends JFrame {
 					}
 					if(p==0) {
 						UpdateJTextArea("【"+enemyh.getName()+"】随机触发了【汐之抉择】效果一！\n\n");
-						UpdateJTextArea("【"+enemyh.getName()+"】的【冰雪十字】获得了3点魔法伤害加成！\n\n");
-						enemyh.zkxQ+=3;
+						UpdateJTextArea("【"+enemyh.getName()+"】的【冰雪十字】获得了4点魔法伤害加成！\n\n");
+						enemyh.zkxQ+=4;
 						enemybuff.remove(enemyh.xzjzsh);
 						enemybuff.add(enemyh.xzjzsh);
 						enemyh.xzjzsh.setDescribe("汐之抉择的效果一为冰雪十字提供了"+enemyh.zkxQ+"点魔法伤害加成。");
@@ -5789,7 +5869,7 @@ public class Fight extends JFrame {
 								while (true) {
 									if (r==whenstop) {
 										if(enemyh.getId()==Config.zkx.getId()) {
-											enemyh.zkxQ-=3;
+											enemyh.zkxQ-=4;
 											if(enemyh.zkxQ==0) {
 												enemybuff.remove(enemyh.xzjzsh);
 												repaint();
@@ -6383,7 +6463,7 @@ public class Fight extends JFrame {
 					new Thread() {
 						@Override
 						public void run() {
-							int whenstop=r+2;//设置技能失效的回合
+							int whenstop=r+3;//设置技能失效的回合
 							while(true) {//如果游戏进行到的回合 不等于 我们设置技能失效的那个回合 就一直循环
 								if(r==whenstop) {//回合来到我们设置技能失效的那个回合 跳出循环
 									if(userh.getId()==Config.w.getId()) {
@@ -6419,7 +6499,7 @@ public class Fight extends JFrame {
 					new Thread() {
 						@Override
 						public void run() {
-							int whenstop=r+2;//设置技能失效的回合
+							int whenstop=r+3;//设置技能失效的回合
 							while(true) {//如果游戏进行到的回合 不等于 我们设置技能失效的那个回合 就一直循环
 								if(r==whenstop) {//回合来到我们设置技能失效的那个回合 跳出循环
 									if(enemyh.getId()==Config.w.getId()) {
@@ -6836,6 +6916,7 @@ public class Fight extends JFrame {
 			userh.yyER--;
 			if(userh.yyER>0) UpdateJTextArea("【"+userh.getName()+"】的【屠杀之风】持续时间还剩"+userh.yyER+"个回合。\n\n");
 			else {
+				userh.setXdl(userh.getXdl()-2);
 				userh.yyE=0;
 				userbuff.remove(userh.tszf);
 				repaint();
@@ -6846,7 +6927,7 @@ public class Fight extends JFrame {
 					userh.getQ().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于对方当前生命值的个位数，那么对对方造成灼烧，每回合造成"+(5+userh.yyE)+"点魔法伤害，持续3回合。<br />该效果影响的回合数可以叠加。<br/><br />【激活结晶之力】100%生效。");
 					skill1.setToolTipText("<html>（Q）"+userh.getQ().getSkill()+"</html>");
 				}
-				userh.getW().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于对方行动力和你攻击力之和的个位数，那么对对方造成"+(10+userh.yyE)+"点魔法伤害。该技能无视行动力。");
+				userh.getW().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于你的行动力的个位数，那么对对方造成"+(10+userh.yyE)+"点魔法伤害。");
 				skill2.setToolTipText("<html>（W）"+userh.getW().getSkill()+"</html>");
 			}
 		}
@@ -6854,6 +6935,7 @@ public class Fight extends JFrame {
 			enemyh.yyER--;
 			if(enemyh.yyER>0) UpdateJTextArea("【"+enemyh.getName()+"】的【屠杀之风】持续时间还剩"+enemyh.yyER+"个回合。\n\n");
 			else {
+				enemyh.setXdl(enemyh.getXdl()+2);
 				enemyh.yyE=0;
 				enemybuff.remove(enemyh.tszf);
 				repaint();
@@ -7976,6 +8058,53 @@ public class Fight extends JFrame {
 						userhpt.setValue(0);
 						userhpt.setString("0"+" / "+userhpt.getMaximum());
 					}
+					if(userh.hy) {
+						int hy = (int)Math.round((enemyhpt.getMaximum()*0.14)-(1-userh.getApp())*enemyh.getAdf());
+						if(hy<0) hy=0;
+						UpdateJTextArea("【"+userh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+						balancezy(userh, hy);
+					}
+					if(userh.zy) {
+						new Thread() {
+							@Override
+							public void run() {
+								int whenstart=r+1;
+								int whenstop=r+2;
+								while(true) {
+									if(rend==whenstart) {
+										if(userh.getHp()>0) {
+											int d = 4 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
+											if(d<0) d=0;
+											UpdateJTextArea("【"+userh.getName()+"】发动了【紫月神杖】的技能效果！\n\n");
+											balancezy(userh, d);
+										}
+										break;
+									}
+									try {
+										sleep(700);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+								while(true) {
+									if(rend==whenstop) {
+										if(userh.getHp()>0) {
+											int d = 4 - (int)Math.round((1-userh.getApp())*enemyh.getAdf());
+											if(d<0) d=0;
+											UpdateJTextArea("【"+userh.getName()+"】发动了【紫月神杖】的技能效果！\n\n");
+											balancezy(userh, d);
+										}
+										break;
+									}
+									try {
+										sleep(700);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}.start();
+					}
 				}
 				if(userh.yyQ>0) {
 					UpdateJTextArea("【"+userh.getName()+"】的【灼烧】持续时间还剩"+userh.yyQ+"个回合。\n\n");
@@ -8032,6 +8161,53 @@ public class Fight extends JFrame {
 						enemyhpt.setValue(0);
 						enemyhpt.setString("0"+" / "+enemyhpt.getMaximum());
 					}
+					if(enemyh.hy) {
+						int hy = (int)Math.round((userhpt.getMaximum()*0.14)-(1-enemyh.getApp())*userh.getAdf());
+						if(hy<0) hy=0;
+						UpdateJTextArea("【"+enemyh.getName()+"】发动了【二阶红月神杖】的技能效果！\n\n");
+						balancezy(enemyh, hy);
+					}
+					if(enemyh.zy) {
+						new Thread() {
+							@Override
+							public void run() {
+								int whenstart=r+1;
+								int whenstop=r+2;
+								while(true) {
+									if(rend==whenstart) {
+										if(enemyh.getHp()>0) {
+											int d = 4 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+											if(d<0) d=0;
+											UpdateJTextArea("【"+enemyh.getName()+"】发动了【紫月神杖】的技能效果！\n\n");
+											balancezy(enemyh, d);
+										}
+										break;
+									}
+									try {
+										sleep(700);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+								while(true) {
+									if(rend==whenstop) {
+										if(enemyh.getHp()>0) {
+											int d = 4 - (int)Math.round((1-enemyh.getApp())*userh.getAdf());
+											if(d<0) d=0;
+											UpdateJTextArea("【"+enemyh.getName()+"】发动了【紫月神杖】的技能效果！\n\n");
+											balancezy(enemyh, d);
+										}
+										break;
+									}
+									try {
+										sleep(700);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+								}
+							}
+						}.start();
+					}
 				}
 				if(enemyh.yyQ>0) {
 					UpdateJTextArea("【"+enemyh.getName()+"】的【灼烧】持续时间还剩"+enemyh.yyQ+"个回合。\n\n");
@@ -8087,6 +8263,7 @@ public class Fight extends JFrame {
 			}
 			//张枫W行动受限生效
 			if(userh.zfW) {
+				userh.zfW = false;
 				new Thread() {
 					@Override
 					public void run() {
@@ -8136,6 +8313,7 @@ public class Fight extends JFrame {
 								enemyh.setIslimte(true);
 								enemybuff.remove(enemyh.fzjj2);
 								repaint();
+								userh.zfW = false;
 								break;
 							}
 							try {
@@ -8148,6 +8326,7 @@ public class Fight extends JFrame {
 				}.start();
 			}
 			if(enemyh.zfW) {
+				enemyh.zfW = false;
 				new Thread() {
 					@Override
 					public void run() {
@@ -8214,6 +8393,7 @@ public class Fight extends JFrame {
 								userh.setIslimte(true);
 								userbuff.remove(userh.fzjj2);
 								repaint();
+								enemyh.zfW = false;
 								break;
 							}
 							try {
@@ -8631,12 +8811,12 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 40:{//维多利娜长袍
-				enemyh.setDef(enemyh.getDef()+2);
+				enemyh.setDef(enemyh.getDef()+3);
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【维多利娜长袍】。\n\n");
 				break;
 			}
 			case 41:{//圣月斗篷
-				enemyh.setAdf(enemyh.getAdf()+2);
+				enemyh.setAdf(enemyh.getAdf()+3);
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【圣月斗篷】。\n\n");
 				break;
 			}
@@ -8716,12 +8896,12 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 60:{//维多利娜长袍
-				enemyh.setDef(enemyh.getDef()+2);
+				enemyh.setDef(enemyh.getDef()+3);
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【维多利娜长袍】。\n\n");
 				break;
 			}
 			case 61:{//圣月斗篷
-				enemyh.setAdf(enemyh.getAdf()+2);
+				enemyh.setAdf(enemyh.getAdf()+3);
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【圣月斗篷】。\n\n");
 				break;
 			}
@@ -8804,12 +8984,12 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 80:{//维多利娜长袍
-				enemyh.setDef(enemyh.getDef()-2);
+				enemyh.setDef(enemyh.getDef()-3);
 				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【维多利娜长袍】。\n\n");
 				break;
 			}
 			case 81:{//圣月斗篷
-				enemyh.setAdf(enemyh.getAdf()-2);
+				enemyh.setAdf(enemyh.getAdf()-3);
 				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【圣月斗篷】。\n\n");
 				break;
 			}
@@ -8889,12 +9069,12 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 100:{//维多利娜长袍
-				enemyh.setDef(enemyh.getDef()-2);
+				enemyh.setDef(enemyh.getDef()-3);
 				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【维多利娜长袍】。\n\n");
 				break;
 			}
 			case 101:{//圣月斗篷
-				enemyh.setAdf(enemyh.getAdf()-2);
+				enemyh.setAdf(enemyh.getAdf()-3);
 				UpdateJTextArea("【"+enemyh.getName()+"】取消装备了【圣月斗篷】。\n\n");
 				break;
 			}
@@ -8961,12 +9141,12 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 120:{//维多利娜长袍
-				enemyh.setDef(enemyh.getDef()+2);
+				enemyh.setDef(enemyh.getDef()+3);
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【维多利娜长袍】。\n\n");
 				break;
 			}
 			case 121:{//圣月斗篷
-				enemyh.setAdf(enemyh.getAdf()+2);
+				enemyh.setAdf(enemyh.getAdf()+3);
 				UpdateJTextArea("【"+enemyh.getName()+"】装备了【圣月斗篷】。\n\n");
 				break;
 			}
@@ -9034,12 +9214,12 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 20:{//维多利娜长袍
-				userh.setDef(userh.getDef()+2);
+				userh.setDef(userh.getDef()+3);
 				UpdateJTextArea("你装备了【维多利娜长袍】。\n\n");
 				break;
 			}
 			case 21:{//圣月斗篷
-				userh.setAdf(userh.getAdf()+2);
+				userh.setAdf(userh.getAdf()+3);
 				UpdateJTextArea("你装备了【圣月斗篷】。\n\n");
 				break;
 			}
@@ -9122,12 +9302,12 @@ public class Fight extends JFrame {
 				break;
 			}
 			case 40:{//维多利娜长袍
-				userh.setDef(userh.getDef()-2);
+				userh.setDef(userh.getDef()-3);
 				UpdateJTextArea("你取消装备了【维多利娜长袍】。\n\n");
 				break;
 			}
 			case 41:{//圣月斗篷
-				userh.setAdf(userh.getAdf()-2);
+				userh.setAdf(userh.getAdf()-3);
 				UpdateJTextArea("你取消装备了【圣月斗篷】。\n\n");
 				break;
 			}

@@ -17,8 +17,8 @@ public class Config {
 	 * - 游戏常量定义
 	 */
 	public static final String GlobalTitle = "学园激斗事件簿客户端"; // 全局界面标题
-	public static final int clientversion = 20201124; // 客户端版本号
-	public static final String clientengversion = "v1.8a"; // 另一个版本号
+	public static final int clientversion = 20201217; // 客户端版本号
+	public static final String clientengversion = "v1.9"; // 另一个版本号
 	public static final String version = clientversion + " by Team Zy"; // 首页显示版本号
 	public static final String seasonversion = "[S2] 天赋梦路"; // 赛季名称
 	public static final String seasontime = "赛季时间：2020年11月1日~2021年7月31日"; // 赛季时间

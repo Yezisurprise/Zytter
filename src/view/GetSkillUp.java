@@ -105,11 +105,11 @@ public class GetSkillUp extends JFrame {
 					h.getQ().setdescribe("<html>对对方造成灼烧，每回合造成"+(5+f.userh.yyE)+"点魔法伤害，持续3回合。该效果影响的回合数可以叠加。<br/><br/>已激活结晶之力。</html>");
 					f.skill1.setToolTipText("<html>（Q）"+h.getQ().getSkill()+"</html>");
 				} else if(h.jhjj==3) {
-					h.getE().setdescribe("<html>从0～9中抽取幸运数字。<br />若该数字小于或等于对方当前生命值和你当前魔法值之和的个位数，那么使烈日之箭和暗影之刺获得6点魔法伤害加成，持续4回合。<br/><br/>该效果影响的回合数可以叠加。已激活结晶之力。</html>");
+					h.getE().setdescribe("<html>从0～9中抽取幸运数字。<br />若该数字小于或等于你的当前生命值的个位数，那么使烈日之箭和暗影之刺获得6点魔法伤害加成，并提高你2点行动力，持续4回合。<br/><br/>该效果影响的回合数可以叠加。已激活结晶之力。</html>");
 					f.skill3.setToolTipText("<html>（E）"+h.getE().getSkill()+"</html>");
 					h.getQ().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于对方当前生命值的个位数，那么对对方造成灼烧，每回合造成"+(5+f.userh.yyE)+"点魔法伤害，持续3回合。<br />该效果影响的回合数可以叠加。<br/><br />【激活结晶之力】100%生效。");
 					f.skill1.setToolTipText("<html>（Q）"+h.getQ().getSkill()+"</html>");
-					h.getW().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于对方行动力和你攻击力之和的个位数，那么对对方造成"+(10+f.userh.yyE)+"点魔法伤害。该技能无视行动力。");
+					h.getW().setdescribe("从0～9中抽取幸运数字。<br />若该数字小于或等于你的行动力的个位数，那么对对方造成"+(10+f.userh.yyE)+"点魔法伤害。");
 					f.skill2.setToolTipText("<html>（W）"+h.getW().getSkill()+"</html>");
 				}
 				break;
